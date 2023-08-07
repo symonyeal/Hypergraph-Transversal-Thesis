@@ -27,7 +27,7 @@ If the inputs passes ```check_pre```, the base case for the recursive algorithm 
 
 * If $` |f|= 1, |g|= 0 `$, then they are transversals if the single row in _f_ is a row of all 0s.
 * If $`|f|= |g|= 1`$, then they are transversals if both hypergraphs have only one non-zero entry, and they are in the same variable.
-* If $`|f|= 1, |g|= k, k \in \mathbb{N} `$, this is also a special condition that FK-A can terminate on. If _f_  is  _k_-_ary_ and _g_ is a $`k \cross k `$ array, then they are transversals when _g_  has all 1s on the diagonal and the row index of 1s in _g_ matches the column index of 1s in _f_.
+* If $`|f|= 1, |g|= k, k \in \mathbb{N} `$, this is also a special condition that FK-A can terminate on. If _f_  is  _k_-_ary_ and _g_ is a $`k \times k `$ array, then they are transversals when _g_  has all 1s on the diagonal and the row index of 1s in _g_ matches the column index of 1s in _f_.
 
 ### Splitting
 * Once the algorithm finishes it's pre-conditions check and base case, it implements a recursive ```split``` function for FK-A. With each call, the algorithm chooses a splitting variable to decompose the input functions into two smaller instances of the problem and denotes it as Most Frequent Variable.
