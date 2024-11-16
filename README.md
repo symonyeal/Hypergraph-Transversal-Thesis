@@ -1,41 +1,125 @@
-# ```fk_a``` + Visualization
-This repository contains the source code for the implementation of [Fredman-Khachiyan Algorithm- A](https://www.semanticscholar.org/paper/On-the-Complexity-of-Dualization-of-Monotone-Normal-Fredman-Khachiyan/cf09761a7a863915f91346881df95484b5bee617?p2df) to detect if two given hypergraphs are transversals of each other or not. Furthermore, the code includes a visualization tool that charts the recursive instances of the algorithm.
+# FK-A Algorithm + Visualization
 
-## Usage
-## Code Explanation
-### Input
-For the implementation of the FK-A algorithm, the main libraries used here are Numpy and Pandas. The inputs are two binary incidence matrices of two hypergraphs, where each row represents a hyper-edge and each column represents a variable.  
-### Pre-processing Steps
-Before the recursive step, the algorithm performs several pre-processing checks to verify that the given hypergraphs satify the conditions of two hypergraphs being transversal to each other in that recursion. 
-* **Duplicate Rows Removal**: The function Unique(f, g) helps us to remove duplicate rows in the matrices. Numpy library has a build in function called _unique_, that will return the unique elements in the array.
-Since our input is n-dimensional array, and we only want to remove the duplicate rows, we use axis = 0 to tell the function to look at the rows only: ```np.unique(np f, axis = 0)```.
-* **Superset Removal** : For sets _A_ and _B_, _A_ is a superset of _B_ if all elements of _B_ are in set _A_. In FK_A, the function takes a matrix as an input where the row _A_ is a superset of row _B_ if all 1s in row _B_ are also 1s in row _A_. The function operates by sorting the array by descending order of the sums of the rows so that the first row will have the least number of 0s, then iterates through the array for each row, it identifies the columns that have 0 and checks if there exists another row with matching 0 columns. If such a row exists, then current row is identified as a superset and removed.
-*  _The algorithm only records the columns with 0 value instead of 1 because if the current row has a column value 1, regardless of values on the 0 or 1 in the corresponding 1 column, the current row is considered a super set of the corresponding row if the algorithm only considered the 1 columns._
-*  The input array is denoted as ```np arr```. First, it sorts the array with:  ```np_arr``` = ```sorted(np_arr, key= lambda x: sum(x), reverse=True)``` . ```Sorted``` sorts the rows in an array in a specific order, since the default order is ascending, set **reverse= True**, to return the result in descending order.
-  ```key=lambda x: sum(x)``` means that the sums of each row are used as a key for the sort comparison. Next, ```deleted_rows``` stores the index of the superset rows that needs to be removed. Lastly, it deletes all rows based on the index in ```delete_rows``` and returs both ```np_arr``` and ```delete_rows```.
-### Pre-conditions
-After the duplicate and superset removals, FK-A checks the inputs against a set of conditions based on transversal relationships before decomposing and recursing. If the inputs fail any of the conditions, the algorithm stops and returns FALSE. The function ```check_pre``` tests the following pre-conditions:
-* _f_ and _g_ must contain the same set of variables.
-* Largest row sum in _f_ must be at most the number of rows in _g_, or vice versa.
-* Let r<sub>s</sub> be the row sum of each row of _f_ and _g_. Then, $` \sum_{r_s \in f} 2^{-|r_s|} + \sum_{r_s \in g} 2^{-|r_s|}  \geq 1 `$. This guarantees the existence of a frequent variable.
-* For any rows in _f_ and any rows in _g_, they must have at least one variable in common (must have one matching column with value 1). The function for this condition uses bit-wise operator  ```xor``` and iterates through each element in the array, and returns false if they are the same, then the loop pauses and returns true. Else, it checks the next element.
+This repository implements the **Fredman-Khachiyan Algorithm-A (FK-A)** for solving the hypergraph dualization problem, also known as the transversal hypergraph problem (\texttt{Trans-Hyp}). The implementation includes a visualization tool for recursion trees and animations of the algorithm’s execution.
 
-### Additional Transversal Condition Check
-If the inputs passes ```check_pre```, the base case for the recursive algorithm is applied by the function ```check_base```. It takes _f_ and _g_ as inputs and checks for the following three conditions: 
+## Overview
 
-**For simplicity, we will be addressing an (_f_,_g_) case, but they also apply for (_g_,_f_) cases as well.**
+The FK-A algorithm determines whether two hypergraphs $` G `$ and $` H `$, represented as sets of hyperedges, are transversals of each other. A hypergraph $` G `$ is a transversal of $` H `$ if every hyperedge in $` G `$ intersects at least one hyperedge in $` H `$, and vice versa. The algorithm works recursively, decomposing hypergraphs until base cases are reached. 
 
-* If $` |f|= 1, |g|= 0 `$, then they are transversals if the single row in _f_ is a row of all 0s.
-* If $`|f|= |g|= 1`$, then they are transversals if both hypergraphs have only one non-zero entry, and they are in the same variable.
-* If $`|f|= 1, |g|= k, k \in \mathbb{N} `$, this is also a special condition that FK-A can terminate on. If _f_  is  _k_-_ary_ and _g_ is a $`k \times k `$ array, then they are transversals when _g_  has all 1s on the diagonal and the row index of 1s in _g_ matches the column index of 1s in _f_.
 
-### Splitting
-* Once the algorithm finishes it's pre-conditions check and base case, it implements a recursive ```split``` function for FK-A. With each call, the algorithm chooses a splitting variable to decompose the input functions into two smaller instances of the problem and denotes it as Most Frequent Variable.
-* A variable is identified as _Frequent_ if it's frequency exceeds $` \frac{1}{log_2 (|f|+ |g|)}`$. Due to the pre-conditions, all transversal hypergraphs are guaranteed to have frequent variables.
-* A variable is **Most Frequent** if it attains maximal frequency in either _f_ or _g_, meaning for most frequent variable $`x`$, $` F_x = \max \{\frac{Count_E: E \in f, x \in E, \forall x \in f}{|f|}, \frac{Count_E: E \in g, x \in E, \forall x \in g}{|g|} \} `$. For variables with same frequency, the splitting variables are selected lexicographically.
-* Using the splititng variable, the inputs _f_, _g_ are decomposed into $`f_0, g_0, f_1, g_1`$. Finally, ```split``` returns the most frequent variable, and the resultling $`f_0, g_0, f_1, g_1`$.
+## Authors and Copyright
 
-## ```fk(f,g)``` Function
-* Input of the function is _f_, _g_ and a list variable called path that keeps track of the current position of the tree. ```def_fk(f, g, path)```. If the output is true, means that the input _f_ and _g_ are dual to each other; if is false, means they are not dual.
-* At each recursion call, if the base case is not satisfied, it first prints the list variable path to show the current position of the tree, then run the split function on the current input _f_ and _g_.
-* It takes the decomposed $`f_0, g_0, f_1, g_1`$ and concatenates and creates two new instances $` (f_0, g_0 \vee g_1), (g_0, f_0 \vee f_1) `$.
+This implementation of the Fredman-Khachiyan Algorithm-A (FK-A) was jointly developed by **Saimon Islam** and **Lacey Liang**. The project includes enhancements and optimizations for superset removal, additional base case handling, and visual representation of the recursion tree.
+
+This work is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html). You are free to use, modify, and distribute this code under the terms of the GPL-3.0 license. Please ensure appropriate attribution to the authors when using this work.
+
+**Copyright © 2024 Saimon Islam and Lacey Liang.**
+---
+
+## Preprocessing Steps
+
+### Duplicate Hyperedges Removal
+
+The algorithm removes duplicate hyperedges in the input hypergraphs, ensuring that all hyperedges are unique. This process enforces the Sperner property, a prerequisite for the algorithm.
+
+### Superset Hyperedges Removal
+
+The FK-A algorithm eliminates hyperedges that are supersets of other hyperedges. A hyperedge $` A `$ is considered a superset of hyperedge $` B `$ if $` B \subseteq A `$. By ensuring this property, the algorithm guarantees that the input hypergraphs remain Sperner throughout the process.
+
+### Preconditions
+
+Before initiating recursive decomposition, FK-A checks the following conditions:
+1. The two hypergraphs must share the same set of variables (same number of vertices).
+2. The largest hyperedge size in $` G `$ must not exceed the number of hyperedges in $` H `$, and vice versa.
+3. Let $` r_s `$ be the size of each hyperedge in $` G `$ and $` H `$. Then, 
+   $` \sum_{r_s \in G} 2^{-|r_s|} + \sum_{r_s \in H} 2^{-|r_s|} \geq 1 `$. 
+   This guarantees the existence of a frequent variable.
+4. Every hyperedge in $` G `$ must intersect with at least one hyperedge in $` H `$. This ensures transversality conditions are satisfied.
+
+If any of these preconditions fail, the algorithm terminates and returns $` G \neq Tr(H) `$. 
+
+---
+
+## Recursive Decomposition
+
+### Splitting Process
+
+At each recursion step, the algorithm identifies the **Most Frequent Variable (MFV)**, which appears most often in the hyperedges of $` G `$ and $` H `$. This ensures an efficient reduction of the problem size.
+
+#### Decomposition Rules
+
+Using the MFV, the input hypergraphs are split as follows:
+- $` G_0, G_1 `$: Hyperedges of $` G `$ where the MFV is absent or present, respectively.
+- $` H_0, H_1 `$: Hyperedges of $` H `$ where the MFV is absent or present, respectively.
+
+The algorithm recursively solves the problem for the pairs:
+1. $` (G_1, H_0 \lor H_1) `$
+2. $` (H_1, G_0 \lor G_1) `$
+
+---
+
+### Base Cases
+
+The recursion terminates when:
+1. $` |G| = 1, |H| = 0 `$: $` G `$ is a single hyperedge containing no variables, and $` H `$ is empty.
+2. $` |G| = 1, |H| = 1 `$: $` G `$ and $` H `$ each contain one hyperedge with exactly one variable in common.
+3. $` |G| = 1, |H| = k, k \in \mathbb{N} `$: $` G `$ contains a single $` k `$-ary hyperedge, and $` H `$ is a $` k \times k `$ collection of singleton hyperedges forming the identity structure.
+
+These conditions allow the result to be computed directly without further recursion.
+
+---
+
+## Visualization
+
+### Recursion Tree Structure
+
+The recursion tree $` T `$ represents the hierarchical decomposition:
+- **Nodes:** Represent recursive calls with subsets of $` G `$ and $` H `$. Each node stores:
+  - The current hypergraphs $` G `$, $` H `$
+  - Hyperedges removed during preprocessing
+  - The splitting variable
+- **Edges:** Correspond to the splitting process into $` G_0, G_1 `$, and $` H_0, H_1 `$. 
+
+### Tree Properties
+
+1. **Left Branch (\textbf{L}):** Represents the recursive call $` (G_1, H_0 \lor H_1) `$.
+2. **Right Branch (\textbf{R}):** Represents the recursive call $` (H_1, G_0 \lor G_1) `$. 
+
+For each node $` v `$, its depth $` d_v(T) `$ is defined as the length of the path from the root to $` v `$. Tracking this provides insight into the recursive complexity.
+
+## Optimizations Over Native FK-A Implementation
+
+### Superset Removal Optimization
+
+In the native FK-A implementation, superset removal involves pairwise comparisons of hyperedges, resulting in a time complexity of $`O(n^2 \cdot m)`$ for an input hypergraph with $`n`$ hyperedges and $`m`$ variables. This naive approach compares each hyperedge against all others, checking whether one is a superset of another. 
+
+Our optimized implementation improves this process by leveraging sorting and structured comparisons:
+1. **Sorting by Hyperedge Size:** Hyperedges are sorted in descending order of size (sum of variables), ensuring larger hyperedges are processed first.
+2. **Zero-Column Indexing:** Columns with zero values in each hyperedge are identified, significantly reducing unnecessary comparisons.
+3. **Efficient Superset Detection:** By comparing the zero-indexed columns across hyperedges, supersets are detected and removed in a single pass, minimizing redundant operations.
+4. **Deletion and Output:** The reduced hypergraph is produced alongside a record of removed hyperedges for transparency.
+
+These steps reduce the computational overhead and improve the scalability of superset removal in sparse hypergraphs.
+
+---
+
+### Additional Base Case Optimization
+
+The original FK-A implementation defines a base case when $`|G| \cdot |H| \leq 1`$, allowing for termination in $`O(1)`$. However, certain special cases are computationally expensive to reach under this condition in the native approach.
+
+Our implementation introduces an additional pre-check for cases where:
+- $`|G| = 1, |H| = k, k \in \mathbb{N}`$: If $`G`$ contains a single $`k`$-ary hyperedge and $`H`$ is a $`k \times k`$ collection of singleton hyperedges forming an identity structure, the result is computed directly without recursion. 
+
+This enhancement avoids unnecessary recursive steps, simplifying the recursion tree and reducing its depth. For example:
+- In the native implementation, $`k-1`$ additional recursive calls are required to terminate at trivial base cases like $`|G| = 1, |H| = 1`$. 
+- In our optimized approach, these are resolved in $`O(k)`$, bypassing redundant operations.
+
+By reducing the depth of recursion and addressing these edge cases directly, the overall efficiency of the algorithm is significantly improved.
+
+
+---
+
+## Summary
+
+The FK-A algorithm balances preprocessing, recursive decomposition, and direct handling of base cases to ensure computational efficiency. This implementation achieves  clarity in visualizing hypergraph dualization and gives us additional insight into the algorithm's mechanism.
+
