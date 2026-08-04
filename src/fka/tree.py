@@ -1,22 +1,20 @@
-"""The recursion tree shared by FK-A and FK-B.
+"""The recursion tree, shared by FK-A and FK-B.
 
-Every recursive call becomes one :class:`RecursionNode`. The thesis treats this
-tree as the primary object of study -- "The performance of FK-A is determined by
-the number of subproblems it generates, and this is reflected in the number of
-nodes of the recursion tree" (thesis p.12) -- and Chapter 5 annotates each node
-with the automorphism group and hypergraph properties of its inputs.
+One :class:`RecursionNode` per recursive call. The thesis treats this tree as
+the primary object of study -- "The performance of FK-A is determined by the
+number of subproblems it generates, and this is reflected in the number of nodes
+of the recursion tree" (p.12) -- and Chapter 5 annotates each node with the
+automorphism group and properties of its inputs.
 
-The legacy implementation tracked this in module-level lists and dicts keyed by
-a global ``x`` that was never assigned, so every node overwrote the same entry.
-Here the tree is an explicit, serialisable structure: nodes carry their own
-state, ``to_json``/``from_json`` round-trip losslessly, and analysis passes
-(automorphism groups, primal-graph classes) attach to nodes afterwards rather
-than being interleaved with the recursion.
+Explicit and serialisable, unlike the legacy module-level dicts keyed by a
+global ``x`` that was never assigned, where every node overwrote the same entry.
+Analysis passes attach afterwards rather than being interleaved with the
+recursion.
 
-The model is algorithm-neutral. :mod:`fka.algorithm` builds binary ``L``/``R``
-trees; :mod:`fkb.algorithm` builds trees whose nodes may have many children.
-:attr:`RecursionTree.algorithm` records which one produced the tree, and the
-report and DOT writers label their output from it.
+Algorithm-neutral: :mod:`fka.algorithm` builds binary ``L``/``R`` trees,
+:mod:`fkb.algorithm` builds trees whose nodes may have many children, and
+:attr:`RecursionTree.algorithm` says which, so the report and DOT writers can
+label their output.
 """
 
 from __future__ import annotations
@@ -26,7 +24,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Iterator, Optional
 
-from .hypergraph import Hypergraph, bitset_to_vertices
+from .hypergraph import Hypergraph, verts
 
 __all__ = ["RecursionNode", "RecursionTree", "Verdict"]
 
@@ -35,32 +33,23 @@ __all__ = ["RecursionNode", "RecursionTree", "Verdict"]
 class Verdict:
     """Why a node concluded what it concluded.
 
-    ``reason`` is a stable machine-readable code so experiment output can be
-    grouped without string-matching prose. FK-A uses:
+    ``reason`` is a stable code, so experiment output groups without
+    string-matching prose. FK-A emits ``dual``, ``trivial`` (Alg. 1 Step 3's
+    ``|G|*|H| <= 1``), ``single_edge`` (the modified ``D_{1,k}``, §5.1.1),
+    ``cond_i_support`` / ``cond_ii_size`` / ``cond_iii_disjoint`` /
+    ``cond_iv_frequency`` for its four conditions, and ``child_failed``. FK-B's
+    are listed in :mod:`fkb.algorithm`; it numbers its conditions 1-3 in its own
+    order, so the two sets never collide.
 
-    ``"dual"``               subtree confirmed duality
-    ``"trivial"``            resolved by the ``|G|*|H| <= 1`` check (Alg. 1 Step 3)
-    ``"single_edge"``        resolved by the modified ``D_{1,k}`` check (thesis 5.1.1)
-    ``"cond_i_support"``     precondition (i) failed: ground sets differ
-    ``"cond_ii_size"``       precondition (ii) failed: an edge is larger than the other side
-    ``"cond_iii_disjoint"``  precondition (iii) failed: a disjoint edge pair exists
-    ``"cond_iv_frequency"``  precondition (iv) failed: the ``2^-|e|`` sum is below 1
-    ``"child_failed"``       a subproblem returned not-dual
+    ``certificate`` is a bitset ``S`` satisfying equation 2.1 -- meets every edge
+    of ``G``, contains none of ``H`` -- when one could be built soundly. A failed
+    condition keeps the thesis' structural ``witness_edges`` as well. ``None``
+    never means "no certificate exists", only that none was built in this
+    orientation.
 
-    FK-B's codes are listed in :mod:`fkb.algorithm`; it numbers its conditions
-    1-3 in its own order, so the two sets never collide.
-
-    ``certificate`` is a bitset ``S`` satisfying thesis equation 2.1 -- it hits
-    every edge of ``G`` and contains no edge of ``H`` -- when one could be
-    constructed soundly. Precondition failures retain the thesis' structural
-    witness (``witness_edges``) and also carry a set certificate when the exact
-    search finds one. Never treat ``None`` as "no certificate exists"; it means
-    none was built in this orientation.
-
-    ``certificates`` holds every certificate a node found when the caller asked
-    for all of them (FK-B's ``multiple`` variant, ported from ``MFK_B.m``). It
-    is empty when only one was sought, and ``certificates[0] == certificate``
-    otherwise.
+    ``certificates`` holds all of them when the caller asked for all (FK-B's
+    ``multiple`` variant, from ``MFK_B.m``); empty otherwise, and
+    ``certificates[0] == certificate`` when set.
     """
 
     dual: bool
@@ -78,16 +67,16 @@ class Verdict:
             "certificate": (
                 None
                 if self.certificate is None
-                else [v + 1 for v in bitset_to_vertices(self.certificate)]
+                else [v + 1 for v in verts(self.certificate)]
             ),
             "witness_edges": [
-                [v + 1 for v in bitset_to_vertices(e)] for e in self.witness_edges
+                [v + 1 for v in verts(e)] for e in self.witness_edges
             ],
         }
         # Omitted when unused so FK-A's serialised trees are unchanged.
         if self.certificates:
             out["certificates"] = [
-                [v + 1 for v in bitset_to_vertices(s)] for s in self.certificates
+                [v + 1 for v in verts(s)] for s in self.certificates
             ]
         return out
 
@@ -170,10 +159,10 @@ class RecursionNode:
             "H_in": self.H_in.to_sets(one_indexed=True),
             "n": self.G.n,
             "removed_G": [
-                [v + 1 for v in bitset_to_vertices(e)] for e in self.removed_G
+                [v + 1 for v in verts(e)] for e in self.removed_G
             ],
             "removed_H": [
-                [v + 1 for v in bitset_to_vertices(e)] for e in self.removed_H
+                [v + 1 for v in verts(e)] for e in self.removed_H
             ],
             "pivot": None if self.pivot is None else self.pivot + 1,
             "pivot_frequency": self.pivot_frequency,

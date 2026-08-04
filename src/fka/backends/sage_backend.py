@@ -16,7 +16,7 @@ from __future__ import annotations
 from typing import Any, Sequence
 
 from ..groups import GroupIdentification, PermutationGroup, cycle_notation
-from ..hypergraph import Hypergraph, bitset_to_vertices
+from ..hypergraph import Hypergraph, verts
 
 __all__ = [
     "name_group",
@@ -57,7 +57,7 @@ def to_incidence_structure(H: Hypergraph, *, include_isolated: bool = False):
 
     target, mapping = (H, list(range(H.n))) if include_isolated else H.compact()
     points = list(range(target.n))
-    blocks = [list(bitset_to_vertices(e)) for e in target.edges]
+    blocks = [list(verts(e)) for e in target.edges]
     if not blocks:
         # IncidenceStructure rejects an empty block list on some Sage versions.
         raise ValueError("hypergraph has no edges; Aut is the full symmetric group")

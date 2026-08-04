@@ -27,7 +27,7 @@ oracle on every instance and tabulates the three answers.
 
 from __future__ import annotations
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 from .algorithm import (
     SPLIT_RULES,

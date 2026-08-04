@@ -1,27 +1,19 @@
-"""Automorphism groups of hypergraphs.
+"""``Aut(H)``: the vertex permutations mapping the edge set onto itself.
 
-``Aut(H)`` is the group of vertex permutations that map the edge set onto
-itself (thesis Definition 3.1.3, p.18). Annotating every FK-A recursion node
-with it is the central experiment of Chapter 3.
+Thesis Definition 3.1.3 (p.18). Annotating every recursion node with it is the
+central experiment of Chapter 3.
 
-Isolated vertices
------------------
-FK-A contracts vertices out of hyperedges, so subhypergraphs deep in the
-recursion routinely have vertices in no edge. Such vertices are freely
-permutable and would multiply ``|Aut(H)|`` by ``k!``, drowning the structure
-being measured. The thesis is explicit that "isolated vertices are not
-permitted" (p.53), so the default here is to compute on the support only.
+Isolated vertices are excluded by default. Contraction removes vertices from
+edges, so subhypergraphs deep in a recursion routinely have vertices in no edge;
+those are freely permutable and would multiply ``|Aut(H)|`` by ``k!``, drowning
+the structure being measured. The thesis is explicit that "isolated vertices are
+not permitted" (p.53).
 
-The two legacy notebooks disagreed on this and would have produced different
-group orders for the same node:
-
-* ``Hypergraph and Primal Graph Property Tests.ipynb`` restricted the point set
-  to active vertices -- equivalent to ``include_isolated=False`` here;
-* ``sagemath code.ipynb`` appended a singleton block for each zero column,
-  which lets isolated vertices permute among themselves and inflates the group.
-
-``include_isolated=True`` reproduces the second convention if an old result
-needs reconciling, but it is not the default.
+The two legacy notebooks disagreed here and would report different orders for
+the same node: the property-tests notebook restricted to active vertices
+(``include_isolated=False``), while the Sage notebook appended a singleton block
+per zero column, inflating the group. ``include_isolated=True`` reproduces the
+second convention for reconciling an old result. It is not the default.
 """
 
 from __future__ import annotations
@@ -38,7 +30,7 @@ from .groups import (
     cycle_notation,
     identify,
 )
-from .hypergraph import Hypergraph, bitset_to_vertices, popcount
+from .hypergraph import Hypergraph, verts, popcount
 
 __all__ = ["AutomorphismResult", "automorphism_group", "hypergraph_automorphisms"]
 
@@ -51,7 +43,7 @@ def _initial_colours(H: Hypergraph) -> list[tuple]:
     sizes: list[list[int]] = [[] for _ in range(H.n)]
     for e in H.edges:
         k = popcount(e)
-        for v in bitset_to_vertices(e):
+        for v in verts(e):
             sizes[v].append(k)
     return [(len(sizes[v]), tuple(sorted(sizes[v]))) for v in range(H.n)]
 
@@ -65,7 +57,7 @@ def _refine_colours(H: Hypergraph, colours: list[tuple], rounds: int = 3) -> lis
     """
     incident: list[list[int]] = [[] for _ in range(H.n)]
     for e in H.edges:
-        for v in bitset_to_vertices(e):
+        for v in verts(e):
             incident[v].append(e)
     current = list(colours)
     for _ in range(rounds):
@@ -73,7 +65,7 @@ def _refine_colours(H: Hypergraph, colours: list[tuple], rounds: int = 3) -> lis
         for v in range(H.n):
             sig = []
             for e in incident[v]:
-                sig.append(tuple(sorted(current[u] for u in bitset_to_vertices(e) if u != v)))
+                sig.append(tuple(sorted(current[u] for u in verts(e) if u != v)))
             new.append((current[v], tuple(sorted(sig))))
         # Compress to small integers keyed by first appearance, so the tuples
         # do not grow without bound across rounds.
@@ -130,7 +122,7 @@ def hypergraph_automorphisms(
 
     incident: list[list[int]] = [[] for _ in range(n)]
     for e in edge_set:
-        for v in bitset_to_vertices(e):
+        for v in verts(e):
             incident[v].append(e)
 
     # Assign the most constrained vertices first: smallest colour class, then
@@ -148,7 +140,7 @@ def hypergraph_automorphisms(
         for e in incident[v]:
             partial = 0
             complete = True
-            for u in bitset_to_vertices(e):
+            for u in verts(e):
                 if img[u] < 0:
                     complete = False
                 else:

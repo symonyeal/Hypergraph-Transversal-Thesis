@@ -1,48 +1,44 @@
-"""``fka`` -- the Fredman-Khachiyan algorithm A, and hypergraph symmetry under it.
+"""``fka`` -- FK-A, and the model both algorithms share.
 
 Research code for *Tracing the Effects of Symmetry in Hypergraphs On the
 Fredman-Khachiyan Algorithm* (Saimon Y. Islam, MSc thesis, Simon Fraser
-University, 2024) and its continuation.
+University, 2024) and its continuation. FK-B is :mod:`fkb`, which builds on this
+package; the split is layout, not dependence.
 
-Layout
-------
-``hypergraph``   the bitset-backed :class:`Hypergraph` type
-``sperner``      Sperner reduction (FK-A Step 1)
-``algorithm``    FK-A itself, faithful and modified variants
-``tree``         the recursion tree, serialisable
-``transversal``  brute-force ``Tr(H)``, the independent oracle
+``hypergraph``   the bitset-backed :class:`Hypergraph`
+``sperner``      Sperner reduction -- FK-A Step 1, FK-B's ``Irredundant``
+``algorithm``    FK-A, faithful and modified
+``tree``         the recursion tree, serialisable, algorithm-neutral
+``transversal``  ``Tr(H)`` by Berge's method -- the independent oracle
 ``automorphism`` ``Aut(H)``
 ``groups``       permutation groups and small-group naming without SageMath
 ``graphs``       primal graphs and graph classes
 ``properties``   conformality, alpha-acyclicity, read-once
-``analysis``     annotating a recursion tree into the thesis' automorphism tree
-``report``       self-contained interactive HTML output
+``analysis``     annotating a tree into the thesis' automorphism tree
+``report``       self-contained interactive HTML
 ``dot``          Graphviz export
-``instances``    the problem-instance library in ``data/instances``
+``instances``    the library in ``data/instances``, and its generators
 ``backends``     SageMath when present, pure Python otherwise
 ``cli``          ``python -m fka``
 
-Quick start
------------
 ::
 
     from fka import Hypergraph, fk_a, load
 
     inst = load("fano")
-    tree = fk_a(inst.G, inst.H)
-    print(tree.summary())
+    print(fk_a(inst.G, inst.H).summary())
 
-Nothing here imports SageMath at module load, so ``import fka`` works on a
-plain CPython install; see :mod:`fka.backends`.
+Nothing imports SageMath at module load, so ``import fka`` works on plain
+CPython; see :mod:`fka.backends`.
 """
 
 from __future__ import annotations
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
-from .algorithm import epsilon, fk_a, is_dual
+from .algorithm import eps, fk_a, is_dual
 from .hypergraph import Hypergraph
-from .instances import Instance, list_ids, load, load_all
+from .instances import Instance, list_ids, load, load_all, load_archived
 from .transversal import is_dual_oracle, transversal
 from .tree import RecursionNode, RecursionTree, Verdict
 
@@ -53,12 +49,13 @@ __all__ = [
     "RecursionNode",
     "RecursionTree",
     "Verdict",
-    "epsilon",
+    "eps",
     "fk_a",
     "is_dual",
     "is_dual_oracle",
     "list_ids",
     "load",
     "load_all",
+    "load_archived",
     "transversal",
 ]

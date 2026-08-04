@@ -32,7 +32,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional
 
-from fka.hypergraph import Hypergraph, bitset_to_vertices
+from fka.hypergraph import Hypergraph, verts
 from fka.sperner import sperner_reduce
 
 from .algorithm import cnf_value, dnf_value, fk_b
@@ -54,7 +54,7 @@ def _greedy_cover(dnf: Hypergraph, allowed: int) -> Optional[int]:
     while left:
         counts: dict[int, int] = {}
         for m in left:
-            for v in bitset_to_vertices(m & allowed):
+            for v in verts(m & allowed):
                 counts[v] = counts.get(v, 0) + 1
         if not counts:
             return None
@@ -70,7 +70,7 @@ def _minimise(cover: int, dnf: Hypergraph) -> int:
     Highest index first, matching the MATLAB's descending loop, so the result is
     reproducible rather than merely minimal.
     """
-    for v in reversed(bitset_to_vertices(cover)):
+    for v in reversed(verts(cover)):
         without = cover & ~(1 << v)
         if all(m & without for m in dnf.edges):
             cover = without

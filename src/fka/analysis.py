@@ -1,22 +1,21 @@
-"""Annotating the recursion tree -- the thesis' "automorphism tree".
+"""Annotating a recursion tree -- the thesis' "automorphism tree".
 
-Chapter 3 and Chapter 5 study what happens to hypergraph symmetry as FK-A
-decomposes an instance. The artefact is a second tree with the same shape as
-the recursion tree, where each node carries the automorphism group and
-structural properties of the two hypergraphs at that node instead of the
-hypergraphs themselves (thesis Figures 5.1-5.4).
+Chapters 3 and 5 study what happens to symmetry as the instance is decomposed.
+The artefact is a second tree of the same shape, each node carrying the
+automorphism group and structural properties of its two hypergraphs rather than
+the hypergraphs themselves (Figures 5.1-5.4).
 
-Keeping this as a separate pass over a finished :class:`~fka.tree.RecursionTree`
-rather than interleaving it with the recursion has three consequences worth the
-separation: the algorithm stays a pure decision procedure that can be tested on
-its own; a tree can be re-annotated with a different backend without re-running
-FK-A; and the expensive analysis can be skipped or capped independently.
+A separate pass over a finished :class:`~fka.tree.RecursionTree`, not
+interleaved with the recursion: the algorithms stay pure decision procedures, a
+tree can be re-annotated with a different backend without re-running one, and
+the expensive part can be skipped or capped on its own. It applies unchanged to
+FK-B trees, which is what makes the two comparable.
 
 The thesis records one group per node, observing that "the input hypergraphs G
 and H (if they are transversals of each other) have the same automorphism
-group" (p.51). That does not hold in general -- 6-A as published has
-``Aut(G) = C2`` and ``Aut(H) = C2 x C2`` -- so both are computed and
-:attr:`NodeAnalysis.aut_agree` records whether they matched.
+group" (p.51). Both sides are computed anyway and
+:attr:`NodeAnalysis.aut_agree` records whether they matched -- measured over
+3455 nodes of both algorithms, they always do; see ``docs/fk-a-vs-fk-b.md`` §7.
 """
 
 from __future__ import annotations

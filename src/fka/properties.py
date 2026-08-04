@@ -1,24 +1,16 @@
-"""Hypergraph properties tracked across the FK-A recursion.
+"""Hypergraph properties tracked across the recursion.
 
-These are the annotations on the thesis' automorphism trees: conformality,
-alpha-acyclicity and the read-once property, alongside the primal graph's class
-(:mod:`fka.graphs`).
+The annotations on the thesis' automorphism trees: conformality,
+alpha-acyclicity, read-once, and the primal graph's class (:mod:`fka.graphs`).
 
-A note on "conformal" versus "normal"
--------------------------------------
-The legacy notebook computed both, defining
-
-* *conformal*: every **maximal** clique of the primal graph lies in a hyperedge;
-* *normal*: every clique of the primal graph lies in a hyperedge.
-
-These are the same condition. Every clique is contained in some maximal clique,
-and containment is transitive, so conformality implies the apparently stronger
-statement. The two tests could never disagree, and the "normal" pass -- which
-enumerated *all* cliques rather than the maximal ones, an exponentially larger
-set -- was pure cost. Only :func:`is_conformal` is kept;
-:func:`is_normal` remains as a documented alias because the read-once
-literature (Gurvich; Golumbic-Mintz-Rotics) states the criterion using the word
-"normal".
+"Conformal" and "normal" are the same predicate, though the legacy notebook
+computed both -- *conformal* as every **maximal** clique of the primal graph
+lying in a hyperedge, *normal* as every clique doing so. Every clique sits
+inside a maximal one and containment is transitive, so the two can never
+disagree, and the "normal" pass enumerated an exponentially larger set for
+nothing. Only :func:`is_conformal` is computed; :func:`is_normal` is a
+documented alias, because the read-once literature (Gurvich;
+Golumbic-Mintz-Rotics) states the criterion with that word.
 """
 
 from __future__ import annotations
@@ -27,7 +19,7 @@ from dataclasses import dataclass
 from typing import Any, Optional
 
 from .graphs import Graph, GraphClasses, classify_graph, is_cograph, primal_graph
-from .hypergraph import Hypergraph, bitset_to_vertices, popcount
+from .hypergraph import Hypergraph, bits, popcount, verts
 
 __all__ = [
     "is_conformal",
@@ -49,10 +41,8 @@ def nonconformal_clique(H: Hypergraph, g: Optional[Graph] = None) -> Optional[tu
     """
     g = primal_graph(H) if g is None else g
     for clique in g.maximal_cliques():
-        bits = 0
-        for v in clique:
-            bits |= 1 << v
-        if not any((bits & e) == bits for e in H.edges):
+        c = bits(clique)
+        if not any((c & e) == c for e in H.edges):
             return tuple(v + 1 for v in clique)
     return None
 
@@ -103,7 +93,7 @@ def is_alpha_acyclic(H: Hypergraph) -> bool:
         # (1) delete vertices lying in exactly one edge.
         counts: dict[int, int] = {}
         for e in edges:
-            for v in bitset_to_vertices(e):
+            for v in verts(e):
                 counts[v] = counts.get(v, 0) + 1
         lonely = 0
         for v, c in counts.items():

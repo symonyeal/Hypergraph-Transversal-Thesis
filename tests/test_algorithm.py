@@ -7,9 +7,9 @@ import pytest
 from fka.algorithm import (
     PIVOT_RULES,
     VARIANTS,
-    check_preconditions,
+    check_conditions,
     choose_pivot,
-    epsilon,
+    eps,
     fk_a,
     is_dual,
     verify_certificate,
@@ -57,7 +57,7 @@ def test_preconditions_handle_multi_vertex_edges():
     """
     G = Hypergraph.from_sets(4, [[0, 1], [2, 3]])
     H = transversal(G)
-    assert check_preconditions(G, H) is None
+    assert check_conditions(G, H) is None
 
 
 def test_condition_iv_is_exact_not_floating_point():
@@ -68,7 +68,7 @@ def test_condition_iv_is_exact_not_floating_point():
     """
     G = Hypergraph.from_sets(1, [[0]])
     H = transversal(G)
-    assert check_preconditions(G, H) is None
+    assert check_conditions(G, H) is None
     assert fk_a(G, H).dual is True
 
 
@@ -97,7 +97,7 @@ def test_epsilon_matches_the_thesis_values():
     for instance_id, want in expected.items():
         inst = load(instance_id)
         assert str(exact_epsilon(inst.G, inst.H)) == want, instance_id
-        assert epsilon(inst.G, inst.H) == pytest.approx(
+        assert eps(inst.G, inst.H) == pytest.approx(
             float(exact_epsilon(inst.G, inst.H))
         )
 

@@ -53,8 +53,8 @@ from __future__ import annotations
 import math
 from typing import Iterable, Optional
 
-from fka.algorithm import epsilon, vertex_frequency
-from fka.hypergraph import Hypergraph, bitset_to_vertices, popcount
+from fka.algorithm import eps, eps_v
+from fka.hypergraph import Hypergraph, verts, popcount
 from fka.sperner import sperner_reduce
 from fka.transversal import transversal
 from fka.tree import RecursionNode, RecursionTree, Verdict
@@ -190,7 +190,7 @@ def choose_split_var(
     if rule not in SPLIT_RULES:
         raise ValueError(f"unknown split rule {rule!r}; expected one of {SPLIT_RULES}")
 
-    live = bitset_to_vertices(cnf.support() | dnf.support())
+    live = verts(cnf.support() | dnf.support())
     if not live:
         return None
 
@@ -212,7 +212,7 @@ def choose_split_var(
 # conditions and easy cases
 # ----------------------------------------------------------------------
 def _label(e: int) -> str:
-    return "{" + ",".join(str(v + 1) for v in bitset_to_vertices(e)) + "}"
+    return "{" + ",".join(str(v + 1) for v in verts(e)) + "}"
 
 
 def _conflict(
@@ -530,7 +530,7 @@ def fk_b(
             H=D,
             removed_G=cut_c,
             removed_H=cut_d,
-            epsilon=epsilon(C, D),
+            epsilon=eps(C, D),
         )
         tree.add(node)
 
@@ -564,7 +564,7 @@ def fk_b(
                 f"{C.label()} / {D.label()}"
             )
         node.pivot = x
-        node.pivot_frequency = vertex_frequency(C, D, x)
+        node.pivot_frequency = eps_v(C, D, x)
         bit = 1 << x
 
         C_x_0, C_x_1 = phi_x_0(C, x), phi_x_1(C, x)

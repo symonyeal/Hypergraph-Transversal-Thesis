@@ -1,32 +1,24 @@
 """Backend selection: SageMath when available, plain Python otherwise.
 
 The research code originally ran only inside a SageMath 10.3 Jupyter kernel, so
-none of it could be executed, tested or version-controlled on a machine without
-Sage -- which on Windows means WSL or a conda environment. Everything in this
-package therefore has a pure-Python implementation that is exact and needs only
-``networkx``, and Sage is an *optional accelerator and cross-check*
-rather than a hard requirement.
+none of it could be executed, tested or version-controlled without Sage -- which
+on Windows means WSL or conda. Everything here therefore has an exact
+pure-Python implementation needing only ``networkx``, and Sage is an optional
+accelerator and cross-check, never a requirement.
 
-What Sage adds when it is present:
+Sage adds GAP's ``StructureDescription``, which names any finite group where
+:mod:`fka.groups`' catalogue covers a fixed list; ``IncidenceStructure
+.automorphism_group`` as an independent check on the built-in search; and
+polynomial-time graph-class recognisers where :mod:`fka.graphs` enumerates
+induced subgraphs under a vertex cap.
 
-* ``StructureDescription`` from GAP, which names any finite group, where the
-  pure-Python catalogue in :mod:`fka.groups` covers a fixed list and otherwise
-  reports ``order N (unidentified)``;
-* ``IncidenceStructure.automorphism_group`` as an independent check on the
-  built-in automorphism search;
-* polynomial-time graph-class recognisers, where :mod:`fka.graphs` enumerates
-  induced subgraphs and is capped at 20 vertices.
-
-Running under Sage
-------------------
-No code change is needed -- the same package, the same entry points::
+No code change is needed to run under it -- same package, same entry points::
 
     sage -python -m fka run f2g2        # Sage's Python
-    python -m fka run f2g2              # plain CPython
+    python -m fkb run f2g2              # plain CPython
 
-``fka.backends.describe()`` reports which backend is live, and every result
-object records the backend that produced it so archived output stays
-attributable.
+:func:`describe` reports which backend is live, and every result object records
+the one that produced it, so archived output stays attributable.
 """
 
 from __future__ import annotations

@@ -1,29 +1,17 @@
-"""Sperner reduction -- Step 1 of FK-A (thesis Algorithm 1, p.13).
+"""Sperner reduction -- FK-A Step 1 (thesis Algorithm 1, p.13).
 
-A hypergraph is *Sperner* when its edge set is an antichain. FK-A reduces both
-inputs to Sperner form at the top of every recursive call, because contraction
-(``H_0``) can create edges that contain one another even when the parent was
-Sperner (thesis Section 2.2.2, p.15).
+A hypergraph is *Sperner* when its edges form an antichain. FK-A reduces both
+sides at the top of every call, because contraction can create containments even
+when the parent had none (thesis §2.2.2, p.15). FK-B calls the same operation
+``Irredundant``.
 
-The thesis' implementation splits this into two filters (Section 5.1.1, p.46):
+Split into the thesis' two filters (§5.1.1, p.46) -- ``Unique(f, g)`` and
+``remove_superset(np_arr)`` -- so the visualiser can report exactly what each
+node discarded.
 
-* ``Unique(f, g)`` -- duplicate edge removal;
-* ``remove_superset(np_arr)`` -- drop any edge that contains another.
-
-Both are kept here as separate steps so the visualiser can report exactly which
-edges each node discarded, which is the point of the post-decomposition filter
-described in the thesis.
-
-Two implementations of superset removal are provided and are required by the
-test suite to agree on every instance:
-
-``superset_reduce_pairwise``
-    The direct definition: compare every ordered pair. This is the reference.
-
-``superset_reduce_sorted``
-    The optimisation described in the legacy README -- process edges in size
-    order so that each edge is only tested against strictly smaller candidates.
-    Same output, fewer comparisons.
+Two superset removals are provided and the tests require them to agree
+everywhere: ``remove_superset_pairwise`` is the definition, and
+``remove_superset_sorted`` is the size-ordered pass the legacy README describes.
 """
 
 from __future__ import annotations
@@ -34,20 +22,18 @@ from .hypergraph import Hypergraph, popcount
 
 __all__ = [
     "SpernerReduction",
-    "dedupe",
-    "superset_reduce_pairwise",
-    "superset_reduce_sorted",
+    "unique",
+    "remove_superset_pairwise",
+    "remove_superset_sorted",
     "sperner_reduce",
 ]
 
 
 @dataclass(frozen=True, slots=True)
 class SpernerReduction:
-    """Result of reducing a hypergraph to Sperner form.
+    """What a reduction kept and what it threw away.
 
-    ``removed_duplicate`` and ``removed_superset`` are the discarded edges, kept
-    for the recursion-tree visualisation ("Non Sperner Edges" in the thesis'
-    node dumps). ``removed`` is their concatenation.
+    The discarded edges are the "Non Sperner Edges" of the thesis' node dumps.
     """
 
     reduced: Hypergraph
@@ -63,11 +49,8 @@ class SpernerReduction:
         return bool(self.removed)
 
 
-def dedupe(edges: tuple[int, ...]) -> tuple[tuple[int, ...], tuple[int, ...]]:
-    """Split ``edges`` into (unique edges, duplicates dropped).
-
-    Order-stable so the dropped list is reproducible.
-    """
+def unique(edges: tuple[int, ...]) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    """Split into (kept, duplicates dropped), order-stable (``Unique(f, g)``)."""
     seen: set[int] = set()
     kept: list[int] = []
     dropped: list[int] = []
@@ -80,12 +63,14 @@ def dedupe(edges: tuple[int, ...]) -> tuple[tuple[int, ...], tuple[int, ...]]:
     return tuple(kept), tuple(dropped)
 
 
-def superset_reduce_pairwise(edges: tuple[int, ...]) -> tuple[tuple[int, ...], tuple[int, ...]]:
-    """Reference superset removal: drop ``a`` whenever some distinct ``b`` has ``b subseteq a``.
+def remove_superset_pairwise(
+    edges: tuple[int, ...],
+) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    """The definition: drop ``a`` when some distinct ``b`` has ``b subseteq a``.
 
-    Assumes ``edges`` is already deduplicated -- otherwise two equal edges would
-    each be a (non-strict) superset of the other and *both* would be dropped.
-    ``sperner_reduce`` guarantees this ordering.
+    Assumes ``edges`` is already deduplicated -- two equal edges are each a
+    non-strict superset of the other, so both would be dropped.
+    :func:`sperner_reduce` guarantees the ordering.
     """
     kept: list[int] = []
     dropped: list[int] = []
@@ -97,18 +82,19 @@ def superset_reduce_pairwise(edges: tuple[int, ...]) -> tuple[tuple[int, ...], t
     return tuple(kept), tuple(dropped)
 
 
-def superset_reduce_sorted(edges: tuple[int, ...]) -> tuple[tuple[int, ...], tuple[int, ...]]:
+def remove_superset_sorted(
+    edges: tuple[int, ...],
+) -> tuple[tuple[int, ...], tuple[int, ...]]:
     """Superset removal in ascending size order.
 
-    An edge can only contain a *strictly smaller* one (equal-size containment
-    would mean equality, excluded by deduplication), so processing smallest
-    first means each edge is tested only against the minimal edges already
-    kept. That is the sorting optimisation the legacy README describes, with
-    the ordering reversed: keeping the survivors as the comparison set is what
-    makes the pass single, rather than sorting descending and scanning columns.
+    An edge can only contain a *strictly* smaller one -- equal-size containment
+    is equality, excluded by deduplication -- so smallest-first means each edge
+    is tested only against the minimal edges already kept. That is the legacy
+    README's sorting optimisation with the order reversed: keeping the survivors
+    as the comparison set is what makes it a single pass.
 
-    Returns the same *set* as ``superset_reduce_pairwise``; the kept edges come
-    back in the caller's original order so the two are directly comparable.
+    Same *set* as :func:`remove_superset_pairwise`; kept edges come back in the
+    caller's order so the two are directly comparable.
     """
     order = sorted(range(len(edges)), key=lambda i: (popcount(edges[i]), edges[i]))
     minimal: list[int] = []
@@ -125,19 +111,18 @@ def superset_reduce_sorted(edges: tuple[int, ...]) -> tuple[tuple[int, ...], tup
 
 
 def sperner_reduce(H: Hypergraph, *, method: str = "sorted") -> SpernerReduction:
-    """Reduce ``H`` to its minimal edges, reporting what was removed.
+    """Reduce ``H`` to its minimal edges, reporting what went.
 
-    ``method`` selects the superset-removal implementation: ``"sorted"``
-    (default, the optimised pass) or ``"pairwise"`` (the reference). They
-    produce identical output; the switch exists so the test suite can assert
-    that, and so a future optimisation can be benchmarked against the
-    definition rather than against itself.
+    ``method`` picks the superset removal: ``"sorted"`` (the optimised pass) or
+    ``"pairwise"`` (the definition). Identical output; the switch exists so the
+    tests can assert that, and so a future optimisation is benchmarked against
+    the definition rather than against itself.
     """
-    unique, dup = dedupe(H.edges)
+    kept, dup = unique(H.edges)
     if method == "sorted":
-        kept, sup = superset_reduce_sorted(unique)
+        kept, sup = remove_superset_sorted(kept)
     elif method == "pairwise":
-        kept, sup = superset_reduce_pairwise(unique)
+        kept, sup = remove_superset_pairwise(kept)
     else:
         raise ValueError(f"unknown superset removal method {method!r}")
     return SpernerReduction(

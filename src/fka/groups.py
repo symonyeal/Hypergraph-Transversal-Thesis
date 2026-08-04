@@ -1,32 +1,23 @@
 """Permutation groups, without SageMath.
 
-The thesis annotates every node of the FK-A recursion tree with the structure of
-the input hypergraph's automorphism group -- ``C2``, ``D4``, ``S4``,
-``C2 x S4``, ``PSL(3,2)``, ``(((C2 x C2 x C2 x C2) : C2) : C2) : C2`` and so on
-(Figures 5.1-5.4). In the legacy notebooks those names came from GAP via
-SageMath, which is not available on every machine the project runs on.
+The thesis names every node's automorphism group -- ``C2``, ``D4``, ``S4``,
+``C2 x S4``, ``PSL(3,2)``, ``(((C2 x C2 x C2 x C2) : C2) : C2) : C2``
+(Figures 5.1-5.4). The legacy notebooks got those from GAP via SageMath, which
+is not on every machine this runs on. This is the pure-Python fallback; where
+Sage is present :mod:`fka.backends.sage_backend` defers to GAP's
+``StructureDescription``, which is authoritative.
 
-This module provides enough group theory to recover those names in plain
-Python. Where SageMath *is* present, :mod:`fka.backends.sage_backend` defers to
-GAP's ``StructureDescription``, which is authoritative; this is the fallback.
+Naming is by *invariant fingerprint*, not a proof of isomorphism. A group is
+matched against a catalogue of cyclic, dihedral, symmetric, alternating and
+quaternion groups and their direct products, on order, the multiset of element
+orders, abelian-ness and centre order, derived subgroup order, and the multiset
+of conjugacy class sizes. Two non-isomorphic groups agreeing on all five would
+be misnamed -- it does not happen for anything in the thesis' figures, and the
+catalogue is small enough to check, but the limitation is real. :func:`identify`
+reports how it matched and returns an ``order N`` placeholder rather than a
+guess when nothing fits.
 
-Naming is done by *invariant fingerprint*, not by a proof of isomorphism: a
-group is matched against a catalogue built from cyclic, dihedral, symmetric,
-alternating and quaternion groups and their direct products, comparing
-
-* order,
-* the multiset of element orders,
-* whether it is abelian, and the order of the centre,
-* the order of the derived subgroup,
-* the sorted multiset of conjugacy class sizes.
-
-Two non-isomorphic groups sharing all five would be misnamed. That does not
-happen for any group in the thesis' figures, and the catalogue is small enough
-to check, but the limitation is real: :func:`identify` reports how it matched,
-and returns an ``order N`` placeholder rather than a guess when nothing fits.
-
-Permutations are tuples of images on ``0 .. n-1``: ``p[i]`` is the image of
-``i``.
+Permutations are tuples of images on ``0 .. n-1``: ``p[i]`` is the image of ``i``.
 """
 
 from __future__ import annotations

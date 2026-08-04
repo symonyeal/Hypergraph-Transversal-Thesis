@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import pytest
 
-from fka.hypergraph import Hypergraph, bitset_to_vertices, popcount
+from fka.hypergraph import Hypergraph, verts, popcount
 from fka.sperner import (
     sperner_reduce,
-    superset_reduce_pairwise,
-    superset_reduce_sorted,
+    remove_superset_pairwise,
+    remove_superset_sorted,
 )
 from fka.transversal import find_certificate, is_dual_oracle, minimal_elements, transversal
 
@@ -79,7 +79,7 @@ def test_isolated_vertices_and_compact():
 def test_popcount_and_bitset_helpers():
     e = 0b101101
     assert popcount(e) == 4
-    assert bitset_to_vertices(e) == (0, 2, 3, 5)
+    assert verts(e) == (0, 2, 3, 5)
 
 
 # ----------------------------------------------------------------------
@@ -135,8 +135,8 @@ def test_both_superset_implementations_agree(rng):
                 }
             )
         )
-        a_keep, a_drop = superset_reduce_pairwise(edges)
-        b_keep, b_drop = superset_reduce_sorted(edges)
+        a_keep, a_drop = remove_superset_pairwise(edges)
+        b_keep, b_drop = remove_superset_sorted(edges)
         assert set(a_keep) == set(b_keep)
         assert set(a_drop) == set(b_drop)
 

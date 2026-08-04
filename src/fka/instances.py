@@ -1,43 +1,21 @@
-"""The problem-instance library.
+"""The problem-instance library, and the generators that build families of it.
 
-Each instance lives in one JSON file under ``data/instances/``. Keeping them as
-data rather than as literals pasted into notebook cells means an instance is
-defined once, is diffable, carries its provenance, and can be read by SageMath,
-MATLAB or anything else without importing this package.
+One JSON file per instance under ``data/instances/``. Data rather than literals
+in notebook cells: defined once, diffable, carrying its provenance, and readable
+by SageMath or MATLAB without importing this package. The format is documented
+in ``data/README.md``.
 
-File format::
+The ``expected`` block is not hand-written. :func:`refresh_expected` recomputes
+it -- duality from the oracle, ``epsilon`` as an exact fraction, node counts for
+both algorithms and every variant -- and the tests assert the committed values
+still hold. So it is a regression baseline, not a claim: a moved node count
+shows up as a diff.
 
-    {
-      "id":          "f2g2",
-      "name":        "f2 / g2",
-      "family":      "read-once (GK-family)",
-      "source":      "Islam (2024) MSc thesis, Section 5.2.1, p.48",
-      "provenance":  "verbatim" | "corrected" | "derived",
-      "n_vertices":  8,
-      "G":           [[1, 3], [1, 4], ...],       1-indexed vertex lists
-      "H":           [[1, 2, 7, 8], ...],
-      "notes":       "free text",
-      "expected":    { ... }                       machine-maintained, see below
-    }
-
-The ``expected`` block is *not* hand-written. ``fka instances refresh``
-recomputes it from the instance itself -- duality against the brute-force
-oracle, the frequency ``epsilon`` as an exact fraction, and the FK-A node counts
-for each variant -- and the test suite then asserts the committed values still
-hold. That makes it a regression baseline rather than a claim: if a change to
-the algorithm moves a node count, the diff says so.
-
-Provenance
-----------
-``verbatim``
-    Transcribed exactly as published, even where that is demonstrably wrong.
-``corrected``
-    A published instance with a stated, minimal repair. Two exist, both because
-    the pair as printed is not a transversal pair at all; each carries the
-    correction and the evidence for it in ``notes``. The verbatim form is kept
-    alongside, so nothing is silently rewritten.
-``derived``
-    Constructed here (from a generator, or recovered from a run log).
+Provenance is ``verbatim`` (transcribed as published, even where demonstrably
+wrong), ``corrected`` (a stated, minimal repair, with the evidence in ``notes``)
+or ``derived`` (built here, from a generator or a run log). Nothing is silently
+rewritten: a withdrawn instance goes to ``_archive/`` and is still readable
+through :func:`load_archived`.
 """
 
 from __future__ import annotations
@@ -288,7 +266,7 @@ def threshold(v: int) -> Hypergraph:
 def exact_epsilon(G: Hypergraph, H: Hypergraph) -> Fraction:
     """``epsilon(G, H)`` as an exact fraction, for comparing with the thesis.
 
-    :func:`fka.algorithm.epsilon` returns a float, which is what the algorithm
+    :func:`fka.algorithm.eps` returns a float, which is what the algorithm
     needs; the thesis quotes values like ``5/11`` and ``3/7``, so the instance
     baselines store the fraction.
     """

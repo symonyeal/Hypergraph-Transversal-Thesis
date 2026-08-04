@@ -1,32 +1,23 @@
 """Interactive HTML reports for FK-A and FK-B recursion trees.
 
+One self-contained file -- no external CSS, JS, fonts or images -- so it opens
+from disk and survives being emailed or archived. Layout happens here in Python,
+deterministic and testable; the page ships the node data as embedded JSON, so
+switching views is instant and every node is inspectable.
+
 Replaces the legacy visualiser, which drove Graphviz through ``pydot`` to write
-a PNG per recursion step and stitched them into an animated GIF. That pipeline
-needed the ``dot`` binary on ``PATH``, produced a static image with no way to
-inspect a node, and re-rendered the whole tree for every frame.
+a PNG per recursion step and stitch them into a GIF: it needed ``dot`` on
+``PATH``, produced a static image no node could be inspected in, and re-rendered
+the whole tree per frame.
 
-What this produces instead is a single self-contained HTML file -- no external
-CSS, JS, fonts or images, so it opens from disk and survives being emailed or
-archived. The tree is laid out here in Python (deterministic and testable) and
-the page ships the node data as embedded JSON, so switching between views is
-instant and every node is inspectable.
+Three views over one tree: ``structure`` (subproblem sizes and split vertex),
+``automorphism`` (the thesis' Figures 5.1-5.4, needs
+:func:`fka.analysis.annotate`), and ``properties`` (conformality,
+alpha-acyclicity, read-once, primal graph class).
 
-Three views over the same tree:
-
-``structure``
-    The recursion tree: subproblem sizes and the split vertex per node.
-``automorphism``
-    The thesis' automorphism tree -- ``Aut(G)`` and ``Aut(H)`` per node
-    (Figures 5.1-5.4). Requires :func:`fka.analysis.annotate`.
-``properties``
-    Conformality, alpha-acyclicity, read-once and the primal graph's class.
-
-One page design serves both algorithms. What changes is the labelling, which
-:data:`ALGORITHM_STYLE` holds in one place: FK-A's sides are the hypergraphs
-``G`` and ``H``, FK-B's are the clause set ``C`` and the monomial set ``D`` of
-the same pair, and each gets its own legend for the branch labels it emits.
-
-:func:`fka.dot.to_dot` still emits Graphviz DOT for anyone who wants it.
+One page design serves both algorithms; only the labelling differs, and
+:data:`ALGORITHM_STYLE` holds all of it -- FK-A's sides are ``G`` and ``H``,
+FK-B's are the clause set ``C`` and monomial set ``D`` of the same pair.
 """
 
 from __future__ import annotations
@@ -36,7 +27,7 @@ import json
 from pathlib import Path
 from typing import Any, Optional
 
-from .hypergraph import bitset_to_vertices
+from .hypergraph import verts
 from .instances import Instance
 from .tree import RecursionTree
 
@@ -105,7 +96,7 @@ def layout(tree: RecursionTree) -> dict[int, tuple[float, float]]:
 
 def _set_text(s: int) -> str:
     """A vertex set in the thesis' 1-indexed brace notation."""
-    return "{" + ",".join(str(v + 1) for v in bitset_to_vertices(s)) + "}"
+    return "{" + ",".join(str(v + 1) for v in verts(s)) + "}"
 
 
 def _path_text(path: tuple[str, ...]) -> str:
@@ -120,7 +111,7 @@ def _edges_text(edges: tuple[int, ...], limit: int = 24) -> str:
     if not edges:
         return "(empty)"
     parts = [
-        "{" + ",".join(str(v + 1) for v in bitset_to_vertices(e)) + "}" for e in edges
+        "{" + ",".join(str(v + 1) for v in verts(e)) + "}" for e in edges
     ]
     if len(parts) > limit:
         return " ".join(parts[:limit]) + f" ... (+{len(parts) - limit} more)"

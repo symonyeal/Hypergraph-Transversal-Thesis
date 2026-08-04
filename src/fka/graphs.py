@@ -1,19 +1,17 @@
 """Primal graphs and the graph classes the thesis tracks.
 
-Chapter 5 annotates recursion-tree nodes with the class of the input
-hypergraph's primal graph -- cograph, chordal, split, bipartite, chordal
-bipartite, perfect -- because those classes are subclasses of
-distance-hereditary graphs and therefore carry twin-vertex structure
-(thesis Section 5.2, p.48).
+Chapter 5 annotates nodes with the class of the primal graph -- cograph,
+chordal, split, bipartite, chordal bipartite, perfect -- because those are
+subclasses of distance-hereditary graphs and so carry twin-vertex structure
+(§5.2, p.48).
 
-Everything here is exact and runs in plain Python. Several tests enumerate
-induced subgraphs, which is exponential in the vertex count; that is fine for
-the instances in the thesis (at most 14 vertices) but is guarded by
-:data:`MAX_ENUMERATION_VERTICES` so a larger instance fails loudly rather than
-hanging. SageMath has polynomial-time versions of some of these; see
+Exact, in plain Python. Several recognisers enumerate induced subgraphs, which
+is exponential in the vertex count: fine for the thesis instances (at most 14
+vertices), and guarded by :data:`MAX_ENUMERATION_VERTICES` so a larger one fails
+loudly rather than hanging. Sage has polynomial-time versions of some; see
 :mod:`fka.backends.sage_backend`.
 
-Vertices are 0-indexed integers, matching :mod:`fka.hypergraph`.
+Vertices are 0-indexed, matching :mod:`fka.hypergraph`.
 """
 
 from __future__ import annotations
@@ -24,7 +22,7 @@ from typing import Iterable, Iterator, Optional
 
 import networkx as nx
 
-from .hypergraph import Hypergraph, bitset_to_vertices
+from .hypergraph import Hypergraph, verts
 
 __all__ = ["Graph", "primal_graph", "GraphClasses", "classify_graph"]
 
@@ -54,7 +52,7 @@ class Graph:
         return [
             (u, v)
             for u in range(self.n)
-            for v in bitset_to_vertices(self.adj[u])
+            for v in verts(self.adj[u])
             if u < v
         ]
 
@@ -87,7 +85,7 @@ class Graph:
         idx = {v: i for i, v in enumerate(vs)}
         adj = [0] * len(vs)
         for i, u in enumerate(vs):
-            for v in bitset_to_vertices(self.adj[u]):
+            for v in verts(self.adj[u]):
                 if v in idx:
                     adj[i] |= 1 << idx[v]
         return Graph(len(vs), tuple(adj))
@@ -102,7 +100,7 @@ class Graph:
         frontier = [0]
         while frontier:
             v = frontier.pop()
-            for u in bitset_to_vertices(self.adj[v] & ~seen):
+            for u in verts(self.adj[v] & ~seen):
                 seen |= 1 << u
                 frontier.append(u)
         return seen == (1 << self.n) - 1
@@ -117,7 +115,7 @@ def primal_graph(H: Hypergraph) -> Graph:
     """
     adj = [0] * H.n
     for e in H.edges:
-        vs = bitset_to_vertices(e)
+        vs = verts(e)
         for u in vs:
             adj[u] |= e & ~(1 << u)
     return Graph(H.n, tuple(adj))

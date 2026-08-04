@@ -1,16 +1,14 @@
-"""Graphviz DOT export for recursion trees.
+"""Graphviz DOT export.
 
-The HTML report in :mod:`fka.report` is the primary output and needs nothing
-installed. DOT is kept for the cases it is genuinely better at: dropping a
-vector figure into the LaTeX source of a paper, and feeding the tree to other
-Graphviz-aware tooling.
+:mod:`fka.report` is the primary output and needs nothing installed. DOT is kept
+for what it is genuinely better at: a vector figure for the LaTeX source of a
+paper, and feeding the tree to other Graphviz-aware tooling.
 
-Writing the DOT text is pure Python. Rendering it to PNG/PDF/SVG needs the
-``dot`` binary, which this module does not require and does not shell out to --
-:func:`to_dot` returns the source and it is the caller's business what to do
-with it::
+Writing the text is pure Python; rendering it needs the ``dot`` binary, which
+this module neither requires nor shells out to. :func:`to_dot` returns the
+source and what happens next is the caller's business::
 
-    dot -Tpdf results/fano.dot -o results/fano.pdf
+    dot -Tpdf results/fano.fk-a.modified.dot -o fano.pdf
 """
 
 from __future__ import annotations
