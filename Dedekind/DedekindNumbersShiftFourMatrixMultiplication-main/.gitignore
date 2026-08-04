@@ -1,0 +1,19 @@
+# build files
+CPU/build/
+GPU/build/
+build/
+*.o
+CPU/src/DataDir.h
+
+# executable
+GPU/dedekind
+
+# IDE files
+.vscode/
+
+# ignore .git folder
+.git/
+
+# ignore cmake cache
+.cache
+CPU/.cache

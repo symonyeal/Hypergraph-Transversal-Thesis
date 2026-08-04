@@ -9,3 +9,8 @@
 Dockerfile text eol=lf
 *.pdf binary
 *.ipynb text eol=lf
+
+# Third-party snapshot: stored byte-exact, with no line-ending conversion in
+# either direction, so "unmodified" stays a checkable claim and its Makefile
+# and CMake files reach a Linux build the way upstream shipped them.
+Dedekind/** -text
