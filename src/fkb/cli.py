@@ -1,7 +1,7 @@
 """Command-line interface: ``python -m fkb <command>``.
 
     python -m fkb run fano                  FK-B + annotation + HTML report
-    python -m fkb run --all --no-annotate   every instance, structure only
+    python -m fkb run --all --all-variants  every instance, every variant
     python -m fkb verify                    check FK-B against the oracle
     python -m fkb compare --all             FK-A vs FK-B vs the oracle
     python -m fkb benchmark                 both algorithms on the scaling families
@@ -105,8 +105,11 @@ def cmd_run(args: argparse.Namespace) -> int:
         return 2
     outdir = _results_dir(args.out)
     outdir.mkdir(parents=True, exist_ok=True)
+    variants = VARIANTS if args.all_variants else (args.variant,)
     for inst in targets:
-        _run_one(inst, args, outdir)
+        for variant in variants:
+            args.variant = variant
+            _run_one(inst, args, outdir)
     return 0
 
 
@@ -316,6 +319,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     s = sub.add_parser("run", help="run FK-B and write a report")
     add_algorithm_options(s)
+    s.add_argument(
+        "--all-variants",
+        action="store_true",
+        help=f"write one set of artifacts per variant ({', '.join(VARIANTS)})",
+    )
     s.add_argument("--backend", choices=("python", "sage"), default=None)
     s.add_argument("--out", default=None, help="output directory (default: results/)")
     s.add_argument("--no-annotate", action="store_true", help="skip automorphism analysis")

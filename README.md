@@ -9,9 +9,21 @@ mathematical reference is [Saimon Islam Manuscript MSc Thesis (1).pdf](Saimon%20
 The definitive repository is
 [symonyeal/Hypergraph-Transversal-Thesis](https://github.com/symonyeal/Hypergraph-Transversal-Thesis).
 
-Both algorithms decide the same question — is `G = Tr(H)`? — and both are
-implemented here against one shared hypergraph model, one instance library, and
-one visualiser, so their recursion trees are directly comparable:
+Both algorithms decide the same question and are implemented against one shared
+hypergraph model, one instance library, and one visualiser, so their recursion
+trees are directly comparable. They decide it in different languages, and the
+identification is the point:
+
+```
+G = Tr(H)          hypergraph dualization        FK-A's statement
+f^d = g            monotone Boolean duality
+C ≡ D              a CNF and a DNF agree         FK-B's statement
+```
+
+A monotone Boolean function **is** a hypergraph, and its dual **is** the
+transversal hypergraph. `G` is the CNF side, `H` the DNF side, and
+`fk_a(G, H)` and `fk_b(G, H)` take the same arguments and return the same
+answer. [docs/glossary.md](docs/glossary.md) is the full correspondence.
 
 | | package | source | what it returns |
 | --- | --- | --- | --- |
@@ -101,9 +113,9 @@ Open the HTML directly; it has no network, font, JavaScript, or image dependency
 | --- | --- |
 | `src/fka/` | FK-A, and the shared model: hypergraph, tree, analysis, report, instances |
 | `src/fkb/` | FK-B, and dualization by repeated equivalence testing |
-| `data/instances/` | Canonical research inputs and expected baselines |
+| `data/` | Every research input: `instances/`, the MATLAB `reference/` vectors, thesis `baselines/` |
 | `tests/` | Unit, randomized, thesis-reproduction, MATLAB-conformance, output, and Sage checks |
-| `results/` | Regenerable JSON, HTML, and DOT artifacts, and the cross-algorithm report |
+| `results/` | Every run of both algorithms and every variant, plus the cross-algorithm report |
 | `experiments/` | Explicit migration or one-off research programs |
 | `docs/` | Architecture, the FK-A/FK-B findings, Sage setup, and assessment notes |
 | `Reading/` | Local-only third-party reference library; PDFs are not redistributed |

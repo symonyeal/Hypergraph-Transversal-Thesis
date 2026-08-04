@@ -8,7 +8,7 @@ which notebook cells to run in which order.
     python -m fka list                      the instance library
     python -m fka show fano                 one instance, with its baseline
     python -m fka run fano                  FK-A + annotation + HTML report
-    python -m fka run --all --no-annotate   every instance, structure only
+    python -m fka run --all --all-variants  every instance, every variant
     python -m fka verify                    check FK-A against the oracle
     python -m fka refresh                   recompute instance baselines
 
@@ -155,8 +155,11 @@ def cmd_run(args: argparse.Namespace) -> int:
     else:
         print("give an instance id, or --all. Available: " + ", ".join(list_ids()))
         return 2
+    variants = VARIANTS if args.all_variants else (args.variant,)
     for inst in targets:
-        _run_one(inst, args, outdir)
+        for variant in variants:
+            args.variant = variant
+            _run_one(inst, args, outdir)
     return 0
 
 
@@ -226,6 +229,11 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("instance", nargs="*", help="instance ids (or use --all)")
     s.add_argument("--all", action="store_true", help="run every instance")
     s.add_argument("--variant", choices=VARIANTS, default="modified")
+    s.add_argument(
+        "--all-variants",
+        action="store_true",
+        help=f"write one set of artifacts per variant ({', '.join(VARIANTS)})",
+    )
     s.add_argument("--pivot-rule", choices=PIVOT_RULES, default="degree_sum")
     s.add_argument("--backend", choices=("python", "sage"), default=None)
     s.add_argument("--out", default=None, help="output directory (default: results/)")

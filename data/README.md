@@ -1,8 +1,25 @@
 # Data
 
-`instances/` is the canonical instance library, shared by FK-A and FK-B. Each
-JSON file contains the input pair in 1-indexed vertex notation, provenance, a
-source citation, research notes, and independently refreshable expected values.
+Every research input, in one place. Nothing that either algorithm or the test
+suite reads lives anywhere else.
+
+| Folder | Holds | Read by |
+| --- | --- | --- |
+| `instances/` | the `(G, H)` library — 12 named problem instances | `fka.instances.load`, `load_all` |
+| `reference/` | the MATLAB FK-B authors' own recorded test vectors | `tests/test_fkb_reference.py` |
+| `baselines/` | node counts and split sequences printed in the thesis | `tests/test_thesis_reproduction.py` |
+
+Read any of it with `fka.instances.load_data("baselines", "published-trees.json")`.
+Superseded inputs are not deleted; they move to `../_archive/<date>-<slug>/`
+with a note, and come back through `fka.instances.load_archived`.
+
+`G` is the CNF side, `H` the DNF side, and they are the same two hypergraphs
+whichever algorithm reads them — see [`../docs/glossary.md`](../docs/glossary.md).
+
+## `instances/`
+
+Each JSON file contains the input pair in 1-indexed vertex notation, provenance,
+a source citation, research notes, and independently refreshable expected values.
 
 ```json
 {

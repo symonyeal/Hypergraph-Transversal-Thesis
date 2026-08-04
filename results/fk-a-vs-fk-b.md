@@ -43,7 +43,7 @@ computed. A node above `skip_group_above` edges is not counted.
 | `sdfp-sd-1` | `C2`×28, `S3`×8, `PSL(3,2)`×4, `S4`×4 | `C2`×16, `C2 x C2`×8, `S4`×4, `PSL(3,2)`×2 |
 | `sdfp-sd-2` | `C2`×266, `S4`×212, `C1`×186, `S3`×162 | `D4`×101, `S3`×78, `C2`×14, `C2 x D4`×7 |
 | `trivial-aut-1` | `C2`×22, `S3`×6, `C1`×5, `S4`×3 | `C2`×15, `C1`×5, `S4`×3, `C2 x C2`×3 |
-| `sdfp-sd-3` | not annotated | `D4`×1017, `S3`×631, `C2`×5, `C2 x D4`×3 |
+| `sdfp-sd-3` | not annotated | not annotated |
 
 ## FK-B split branches
 

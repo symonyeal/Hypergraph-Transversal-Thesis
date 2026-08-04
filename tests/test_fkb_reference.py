@@ -4,7 +4,8 @@ The reference implementation cannot be executed here, but it ships its own
 recorded expectations: ``Unit_Tests_Equivalency.m`` and
 ``Unit_tests_Check_Conditions.m`` each state an input and, in a trailing
 comment, the answer the authors observed. Those comments are the only direct
-evidence of what the original returns, so they are transcribed here verbatim.
+evidence of what the original returns, so they are transcribed into
+``data/reference/`` and read from there rather than embedded here.
 
 Two things are checked per vector, and they are deliberately different claims:
 
@@ -25,7 +26,7 @@ from __future__ import annotations
 import pytest
 
 from fka.hypergraph import Hypergraph
-from fka.instances import matching, self_dual_fano, threshold
+from fka.instances import load_data, matching, self_dual_fano, threshold
 from fka.transversal import is_dual_oracle, transversal
 from fkb.algorithm import check_conditions, fk_b, is_conflict
 
@@ -41,53 +42,11 @@ def bits(vector):
 # ----------------------------------------------------------------------
 # Unit_Tests_Equivalency.m
 # ----------------------------------------------------------------------
-#: (name, cnf, dnf, the CA the MATLAB comment records; None means it returned []).
+#: Inputs and recorded answers, from data/reference/. ``conflicting_assignment``
+#: is null where the reference returned ``[]`` (equivalent).
+_EQUIV = load_data("reference", "fkb-equivalency-vectors.json")["vectors"]
 EQUIVALENCY_VECTORS = [
-    (
-        "case 1",
-        [[0,0,0,0,1,0,1,1,0,0],[0,0,0,0,1,0,1,0,0,1],[1,0,0,0,1,0,1,0,0,0],
-         [1,1,0,0,1,0,0,1,0,0],[0,1,1,1,0,0,0,1,0,0],[1,1,0,1,0,0,0,0,0,0],
-         [0,1,0,0,1,0,0,0,0,1],[0,1,0,1,0,0,1,0,0,1],[0,0,1,0,0,0,1,0,0,0],
-         [1,0,1,0,0,0,0,0,0,0],[0,1,1,0,0,0,0,1,0,0],[0,1,1,0,1,0,0,0,0,0],
-         [0,0,1,0,0,1,0,1,0,0],[0,0,1,0,1,1,0,0,0,0]],
-        [[1,1,0,0,0,1,1,0,0,0],[0,0,1,1,1,0,0,0,0,0],[1,0,1,0,0,0,0,1,0,1],
-         [1,0,0,0,1,0,1,1,0,0],[0,1,1,0,1,0,0,0,1,0],[0,1,1,0,1,0,0,0,0,0],
-         [0,1,1,0,0,0,1,0,0,0]],
-        [0,0,1,1,0,0,1,1,0,1],
-    ),
-    (
-        "case 2",
-        [[1,1,0,1,0],[1,1,1,0,0],[0,0,1,0,1],[1,0,0,0,1],[0,1,0,0,1]],
-        [[1,1,0,0,0],[0,0,1,1,1],[1,0,0,0,1],[0,1,0,0,1]],
-        [1,1,0,0,0],
-    ),
-    (
-        "case 3",
-        [[1,1,0,1,0,0,0],[1,1,1,0,0,0,0],[0,0,0,0,1,0,1],[0,1,0,0,1,0,0],
-         [1,0,1,0,1,0,0],[0,0,1,0,1,1,0]],
-        [[1,1,0,0,0,1,1],[0,0,1,1,1,0,0],[1,0,0,0,1,0,1],[0,1,0,0,1,0,0],
-         [0,1,1,0,0,0,1]],
-        [1,0,0,0,1,0,0],
-    ),
-    (
-        "case 4",
-        [[0,1,1,0,0,1],[1,1,1,0,0,0],[0,1,0,1,0,1],[1,1,0,1,0,0],[0,0,0,0,1,1],
-         [0,1,0,0,1,0]],
-        [[1,1,0,0,0,1],[0,0,1,1,1,0],[1,0,0,0,1,1],[0,1,0,0,1,0]],
-        [0,1,0,0,0,1],
-    ),
-    (
-        "case 5",
-        [[1,1,0,0,0,1,1,0,0,0],[0,0,1,1,1,0,0,0,0,0],[1,0,1,0,0,0,0,1,0,1],
-         [1,0,0,0,1,0,1,1,0,0],[0,1,1,1,1,0,0,0,0,0],[0,1,1,0,1,0,0,0,1,0],
-         [0,1,1,0,1,0,0,0,0,0],[0,1,1,0,0,0,1,0,0,0]],
-        [[0,0,0,0,1,0,1,1,0,0],[0,0,0,0,1,0,1,0,0,1],[1,1,0,0,1,0,0,0,0,0],
-         [1,0,0,0,1,0,1,0,0,0],[0,1,0,0,1,0,0,1,0,0],[0,1,0,1,0,0,0,1,0,0],
-         [1,1,0,1,0,0,0,0,0,0],[0,1,0,0,1,0,0,0,0,1],[0,1,0,1,0,0,1,0,0,1],
-         [0,0,1,0,0,0,1,0,0,0],[1,0,1,0,0,0,0,0,0,0],[0,1,1,0,0,0,0,1,0,0],
-         [0,1,1,0,1,0,0,0,0,0],[0,0,1,0,0,1,0,1,0,0],[0,0,1,0,1,1,0,0,0,0]],
-        None,
-    ),
+    (v["name"], v["cnf"], v["dnf"], v["conflicting_assignment"]) for v in _EQUIV
 ]
 
 
@@ -139,37 +98,17 @@ def test_reference_vectors_5_and_6_are_the_same_pair_transposed():
 # ----------------------------------------------------------------------
 # Unit_tests_Check_Conditions.m
 # ----------------------------------------------------------------------
-#: (cnf, dnf, the variables the MATLAB comment records, 1-indexed).
-#:
 #: ``Unit_tests_Check_Conditions.m`` is a scratch script: it calls the function
 #: and records what the author saw in a trailing comment, with no assertion. For
-#: these seven the comment reads as a variable list and that list is a genuine
-#: conflicting assignment.
+#: these the comment reads as a 1-indexed variable list and that list is a
+#: genuine conflicting assignment; the file's last two carry a bare "% 1" that is
+#: not one in either direction, and are exercised without a reference witness.
+_COND = load_data("reference", "fkb-condition-vectors.json")
 CONDITION_VECTORS = [
-    ([[1,0,1,1,0,0],[0,0,1,1,1,0]],
-     [[1,1,1,0,0,0],[0,1,0,1,1,0],[0,0,1,0,0,1]], [1, 3]),
-    ([[0,0,0,0,1],[1,1,0,0,0],[1,0,1,0,0],[1,0,0,1,0],[0,1,1,0,0],[0,1,0,1,0],
-      [0,0,1,1,0]],
-     [[1,1,1,0,1]], [2, 3, 4, 5]),
-    ([[0,1,0,1,0,1,0],[0,0,1,1,0,1,0],[0,1,0,1,0,0,1],[0,0,1,1,0,0,1],
-      [1,1,0,0,1,1,0]],
-     [[0,1,1,0,0,0,0],[0,0,0,1,1,0,0],[0,0,0,0,0,1,1]], [1, 3, 4, 7]),
-    ([[1,1,1,0,0,0,0,0],[0,0,0,1,1,1,0,0],[0,0,0,0,0,0,1,1]],
-     [[1,1,0,1,0,0,0,0],[1,0,1,0,1,0,0,0]], [1, 3, 4, 7]),
-    ([[1,1,0],[1,0,1]], [[1,0,0]], [2, 3]),
-    ([[1,1,0],[1,0,1]], [[0,0,1]], [3]),
-    ([[1,0]], [[1,1]], [1]),
+    (v["cnf"], v["dnf"], v["conflicting_assignment"]) for v in _COND["vectors"]
 ]
-
-#: The file's last two cases, whose recorded comment is bare ``% 1``. On both,
-#: ``{v1}`` leaves the CNF and the DNF *both* false, so it is not a conflicting
-#: assignment in either direction and cannot be what the function returned. The
-#: note is stale or abbreviated; the inputs are still worth keeping, so they are
-#: exercised without a reference witness.
 CONDITION_VECTORS_WITHOUT_A_USABLE_WITNESS = [
-    ([[1,1,0,0,0],[0,1,1,1,0],[1,0,1,0,0]],
-     [[1,0,1,0,0],[1,0,0,1,1],[0,1,1,0,1]]),
-    ([[0,1,1,0,0,0],[0,1,0,1,0,0]], [[0,0,0,0,1,0]]),
+    (v["cnf"], v["dnf"]) for v in _COND["vectors_without_a_usable_witness"]
 ]
 
 

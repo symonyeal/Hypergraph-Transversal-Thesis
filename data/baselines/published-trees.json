@@ -1,0 +1,46 @@
+{
+  "source": "Islam (2024) MSc thesis, figures as cited per entry",
+  "note": "Node counts and split-vertex sequences printed in the thesis. splits is null where the figure numbers nodes but does not label them. All entries are for FK-A variant=modified, pivot_rule=degree_sum, which is what the original implementation ran and therefore what produced the figures.",
+  "trees": {
+    "f2g2": {
+      "nodes": 25,
+      "splits": "v1 v2 v5 v6 - - - v3 - v4 v5 v6 - - - - v3 - v4 v5 v6 - - - -",
+      "reference": "Figure 5.1 (p.52)"
+    },
+    "fano": {
+      "nodes": 35,
+      "splits": "v1 v2 v3 - v4 v6 - - - v3 v5 - v6 - - v6 - - v2 v3 - v4 v6 - - - v3 v5 - v6 - - v6 - -",
+      "reference": "Figure 5.2 (p.54)"
+    },
+    "6a": {
+      "nodes": 11,
+      "splits": null,
+      "reference": "Figure 5.4a (p.57)"
+    },
+    "6b": {
+      "nodes": 13,
+      "splits": null,
+      "reference": "Figure 5.4b (p.57)"
+    },
+    "6c": {
+      "nodes": 5,
+      "splits": null,
+      "reference": "Figure 5.4c (p.57)"
+    },
+    "6d": {
+      "nodes": 9,
+      "splits": null,
+      "reference": "Figure 5.4d (p.57)"
+    },
+    "7ver": {
+      "nodes": 21,
+      "splits": null,
+      "reference": "Figure 5 (p.63)"
+    },
+    "8ver": {
+      "nodes": 21,
+      "splits": null,
+      "reference": "Figure 6 (p.64)"
+    }
+  }
+}

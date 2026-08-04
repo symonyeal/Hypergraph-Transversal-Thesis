@@ -334,10 +334,22 @@ class RecursionTree:
             "nodes": [n.to_json() for n in self],
         }
 
-    def save(self, path: str | Path) -> Path:
+    def save(self, path: str | Path, *, indent: Optional[int] = None) -> Path:
+        """Write the tree as JSON.
+
+        Compact by default. A tree is a machine artifact regenerated wholesale,
+        never hand-edited, and pretty-printing one costs about 2.7x the bytes --
+        7.4 MB against 2.7 MB for ``sdfp-sd-2`` under FK-A. Pass ``indent=2``
+        when a specific small tree is going to be read by eye.
+        """
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps(self.to_json(), indent=2), encoding="utf-8")
+        text = json.dumps(
+            self.to_json(),
+            indent=indent,
+            separators=None if indent else (",", ":"),
+        )
+        path.write_text(text, encoding="utf-8")
         return path
 
     @classmethod

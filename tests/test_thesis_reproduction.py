@@ -19,35 +19,19 @@ from __future__ import annotations
 import pytest
 
 from fka.algorithm import fk_a
-from fka.instances import load
+from fka.instances import load, load_data
 from fkb.algorithm import fk_b
 
-#: instance id -> (node count, split vertices in node order, thesis reference)
-#: "-" marks a node that terminated without splitting.
-PUBLISHED_TREES = {
-    "f2g2": (
-        25,
-        "v1 v2 v5 v6 - - - v3 - v4 v5 v6 - - - - v3 - v4 v5 v6 - - - -",
-        "Figure 5.1 (p.52)",
-    ),
-    "fano": (
-        35,
-        "v1 v2 v3 - v4 v6 - - - v3 v5 - v6 - - v6 - - "
-        "v2 v3 - v4 v6 - - - v3 v5 - v6 - - v6 - -",
-        "Figure 5.2 (p.54)",
-    ),
-    "6a": (11, None, "Figure 5.4a (p.57)"),
-    "6b": (13, None, "Figure 5.4b (p.57)"),
-    "6c": (5, None, "Figure 5.4c (p.57)"),
-    "6d": (9, None, "Figure 5.4d (p.57)"),
-    "7ver": (21, None, "Figure 5 (p.63)"),
-    "8ver": (21, None, "Figure 6 (p.64)"),
-}
+#: instance id -> {nodes, splits, reference}, from data/baselines/.
+#: "-" marks a node that terminated without splitting; ``splits`` is null where
+#: the thesis figure numbers its nodes but does not label them.
+PUBLISHED_TREES = load_data("baselines", "published-trees.json")["trees"]
 
 
 @pytest.mark.parametrize("instance_id", sorted(PUBLISHED_TREES))
 def test_node_count_matches_thesis_figure(instance_id):
-    nodes, _, reference = PUBLISHED_TREES[instance_id]
+    nodes = PUBLISHED_TREES[instance_id]["nodes"]
+    reference = PUBLISHED_TREES[instance_id]["reference"]
     inst = load(instance_id)
     tree = fk_a(inst.G, inst.H, variant="modified", pivot_rule="degree_sum")
     assert len(tree) == nodes, (
@@ -58,10 +42,11 @@ def test_node_count_matches_thesis_figure(instance_id):
 
 @pytest.mark.parametrize(
     "instance_id",
-    [k for k, v in PUBLISHED_TREES.items() if v[1] is not None],
+    sorted(k for k, v in PUBLISHED_TREES.items() if v["splits"] is not None),
 )
 def test_split_vertices_match_thesis_figure(instance_id):
-    _, splits, reference = PUBLISHED_TREES[instance_id]
+    splits = PUBLISHED_TREES[instance_id]["splits"]
+    reference = PUBLISHED_TREES[instance_id]["reference"]
     inst = load(instance_id)
     tree = fk_a(inst.G, inst.H, variant="modified", pivot_rule="degree_sum")
     got = " ".join(node.pivot_label() or "-" for node in tree)

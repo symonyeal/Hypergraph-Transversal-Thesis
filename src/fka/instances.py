@@ -32,6 +32,8 @@ from .hypergraph import Hypergraph
 __all__ = [
     "Instance",
     "instance_dir",
+    "data_dir",
+    "load_data",
     "archive_root",
     "load",
     "load_all",
@@ -114,6 +116,26 @@ class Instance:
         target.write_text(json.dumps(self.to_json(), indent=2) + "\n", encoding="utf-8")
         self.path = target
         return target
+
+
+def data_dir() -> Path:
+    """The one folder all research inputs live under.
+
+    ``instances/`` the ``(G, H)`` library, ``reference/`` the MATLAB FK-B
+    authors' own recorded test vectors, ``baselines/`` the node counts and split
+    sequences printed in the thesis. Superseded inputs move to ``_archive/`` and
+    are read back through :func:`load_archived`.
+    """
+    return Path(__file__).resolve().parents[2] / "data"
+
+
+def load_data(*parts: str) -> Any:
+    """Read one JSON file from :func:`data_dir`, e.g. ``load_data("baselines",
+    "published-trees.json")``."""
+    path = data_dir().joinpath(*parts)
+    if not path.exists():
+        raise FileNotFoundError(f"no data file at {path}")
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def archive_root() -> Path:
