@@ -75,19 +75,19 @@ def test_trivial_aut_matches_the_archived_run_log():
     instance with 31 and 35 hyperedges -- far past the point where agreement
     could be coincidence.
     """
-    import ast
     import re
     from pathlib import Path
 
-    root = Path(__file__).resolve().parents[1]
-    candidates = [
-        root / "_archive" / "20260804-legacy-code" / "#Trivial Aut 1 fk-A Decomposition.txt",
-        root / "Legacy Code" / "#Trivial Aut 1 fk-A Decomposition.txt",
-    ]
-    log_path = next((p for p in candidates if p.exists()), None)
-    if log_path is None:
-        pytest.skip("archived decomposition log not present")
-
+    log_path = (
+        Path(__file__).resolve().parents[1]
+        / "_archive"
+        / "20260804-legacy-code"
+        / "#Trivial Aut 1 fk-A Decomposition.txt"
+    )
+    assert log_path.exists(), (
+        f"the archived decomposition log is missing from {log_path.parent}; "
+        "it is the only evidence tying this implementation to the original"
+    )
     text = log_path.read_text(encoding="utf-8", errors="replace")
     logged: dict[int, str] = {}
     for block in re.split(r"Node Number: ", text)[1:]:

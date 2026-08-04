@@ -1,4 +1,4 @@
-# Binder image for the definitive FK-A repository.
+# Binder image for the definitive repository: FK-A, FK-B, and the shared model.
 # Based on the official SageMath Binder environment.
 FROM ghcr.io/sagemath/sage-binder-env:10.9
 

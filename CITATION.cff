@@ -1,6 +1,6 @@
 cff-version: 1.2.0
-message: "Please cite the thesis and this software if you use the FK-A implementation or its research data."
-title: "Hypergraph Transversal Thesis: FK-A Research Package"
+message: "Please cite the thesis and this software if you use the FK-A or FK-B implementation or its research data."
+title: "Hypergraph Transversal Thesis: FK-A and FK-B Research Package"
 type: software
 authors:
   - family-names: Islam
@@ -9,7 +9,16 @@ authors:
     given-names: Lacey
 repository-code: "https://github.com/symonyeal/Hypergraph-Transversal-Thesis"
 license: GPL-3.0-or-later
-version: 1.0.0
+version: 1.1.0
+references:
+  - type: software
+    title: "DedekindNumbersShiftFourMatrixMultiplication"
+    scope: "Third-party MIT snapshot vendored under Dedekind/; not covered by this project's licence."
+    license: MIT
+    year: 2023
+    authors:
+      - family-names: "Jäkel"
+        given-names: Christian
 preferred-citation:
   type: thesis
   title: "Tracing the Effects of Symmetry in Hypergraphs on the Fredman-Khachiyan Algorithm"

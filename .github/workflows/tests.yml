@@ -26,6 +26,10 @@ jobs:
       - run: python -m pip install -e ".[dev]"
       - run: python -m pytest
       - run: python -m fka verify
+      - run: python -m fkb verify
+      # The cross-check that neither algorithm can make on its own: both
+      # against each other and against the oracle, on every instance.
+      - run: python -m fkb compare --all
 
   sage:
     name: SageMath 10.9
@@ -44,4 +48,5 @@ jobs:
             ghcr.io/sagemath/sage-binder-env:10.9 \
             -lc '/sage/sage -python -m pip install --user -e ".[dev]" &&
                  /sage/sage -python -m pytest &&
-                 /sage/sage -python -m fka verify'
+                 /sage/sage -python -m fka verify &&
+                 /sage/sage -python -m fkb verify'

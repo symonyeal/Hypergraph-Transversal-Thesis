@@ -300,19 +300,14 @@ def _load_trivial_aut() -> tuple[list[list[int]], list[list[int]]]:
     import ast
     import re
 
-    root = Path(__file__).resolve().parents[1]
-    candidates = [
-        root / "_archive" / "20260804-legacy-code" / "#Trivial Aut 1 fk-A Decomposition.txt",
-        root / "Legacy Code" / "#Trivial Aut 1 fk-A Decomposition.txt",
-    ]
-    for path in candidates:
-        if path.exists():
-            break
-    else:
-        raise FileNotFoundError(
-            "could not find the Trivial-Aut decomposition log in "
-            + " or ".join(str(c) for c in candidates)
-        )
+    path = (
+        Path(__file__).resolve().parents[1]
+        / "_archive"
+        / "20260804-legacy-code"
+        / "#Trivial Aut 1 fk-A Decomposition.txt"
+    )
+    if not path.exists():
+        raise FileNotFoundError(f"the Trivial-Aut decomposition log is not at {path}")
     text = path.read_text(encoding="utf-8", errors="replace")
     from fka.hypergraph import Hypergraph
 
