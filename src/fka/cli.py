@@ -68,9 +68,12 @@ def cmd_list(args: argparse.Namespace) -> int:
                 str(e.get("epsilon", "?")),
                 f"{e.get('n_edges_G','?')}/{e.get('n_edges_H','?')}",
                 str((e.get("fka", {}).get("modified", {}) or {}).get("nodes", "?")),
+                str((e.get("fkb", {}).get("faithful", {}) or {}).get("nodes", "?")),
             )
         )
-    head = ("id", "name", "provenance", "dual", "eps", "|G|/|H|", "nodes")
+    head = (
+        "id", "name", "provenance", "dual", "eps", "|G|/|H|", "fk-a nodes", "fk-b nodes"
+    )
     widths = [max(len(str(r[i])) for r in (*rows, head)) for i in range(len(head))]
     line = "  ".join(h.ljust(w) for h, w in zip(head, widths))
     print(line)
@@ -116,7 +119,7 @@ def _run_one(inst: Instance, args: argparse.Namespace, outdir: Path) -> dict:
             ),
         )
 
-    stem = f"{inst.id}.{args.variant}"
+    stem = f"{inst.id}.fk-a.{args.variant}"
     json_path = tree.save(outdir / f"{stem}.json")
     html_path = write_report(tree, outdir / f"{stem}.html", title=inst.name, instance=inst)
     outputs = [json_path, html_path]

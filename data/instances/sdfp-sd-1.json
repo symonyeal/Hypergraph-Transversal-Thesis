@@ -1,0 +1,215 @@
+{
+  "id": "sdfp-sd-1",
+  "name": "SDFP(1) \u2014 self-dualised Fano plane",
+  "family": "self-dual dualisation benchmark",
+  "source": "Self-dualisation of thesis Definition 5.2.1's k disjoint Fano planes. Matches the shape of SDFP16_CNF_DNF.mat (k=2) and SDFP23_CNF_DNF.mat (k=3) in the FK-B MATLAB reference",
+  "provenance": "derived",
+  "n_vertices": 9,
+  "G": [
+    [
+      1,
+      2,
+      4,
+      8
+    ],
+    [
+      1,
+      2,
+      4,
+      9
+    ],
+    [
+      1,
+      3,
+      7,
+      8
+    ],
+    [
+      1,
+      3,
+      7,
+      9
+    ],
+    [
+      1,
+      5,
+      6,
+      8
+    ],
+    [
+      1,
+      5,
+      6,
+      9
+    ],
+    [
+      2,
+      3,
+      5,
+      8
+    ],
+    [
+      2,
+      3,
+      5,
+      9
+    ],
+    [
+      2,
+      6,
+      7,
+      8
+    ],
+    [
+      2,
+      6,
+      7,
+      9
+    ],
+    [
+      3,
+      4,
+      6,
+      8
+    ],
+    [
+      3,
+      4,
+      6,
+      9
+    ],
+    [
+      4,
+      5,
+      7,
+      8
+    ],
+    [
+      4,
+      5,
+      7,
+      9
+    ],
+    [
+      8,
+      9
+    ]
+  ],
+  "H": [
+    [
+      1,
+      2,
+      4,
+      8
+    ],
+    [
+      1,
+      2,
+      4,
+      9
+    ],
+    [
+      1,
+      3,
+      7,
+      8
+    ],
+    [
+      1,
+      3,
+      7,
+      9
+    ],
+    [
+      1,
+      5,
+      6,
+      8
+    ],
+    [
+      1,
+      5,
+      6,
+      9
+    ],
+    [
+      2,
+      3,
+      5,
+      8
+    ],
+    [
+      2,
+      3,
+      5,
+      9
+    ],
+    [
+      2,
+      6,
+      7,
+      8
+    ],
+    [
+      2,
+      6,
+      7,
+      9
+    ],
+    [
+      3,
+      4,
+      6,
+      8
+    ],
+    [
+      3,
+      4,
+      6,
+      9
+    ],
+    [
+      4,
+      5,
+      7,
+      8
+    ],
+    [
+      4,
+      5,
+      7,
+      9
+    ],
+    [
+      8,
+      9
+    ]
+  ],
+  "notes": "On 7k+2 = 9 vertices with k = 1. Writing a and b for the two extra vertices, the edges are {a,b}; every Fano line plus b; and every choice of one line per copy plus a. That is 7^k + 7k + 1 = 15 edges. Self-transversal: Tr(E) = E, verified against the Berge oracle, so (E, E) is a transversal pair by construction and the answer is always TRUE. This is the shape that separates the two algorithms most sharply -- see docs/fk-a-vs-fk-b.md. Vertices use this project's FANO_LINES labelling, which is isomorphic to but not identical with the MATLAB snapshot's, so node counts may differ from a MATLAB run by the amount vertex numbering moves the split choice.",
+  "expected": {
+    "dual": true,
+    "epsilon": "8/15",
+    "n_edges_G": 15,
+    "n_edges_H": 15,
+    "fka": {
+      "faithful": {
+        "nodes": 123,
+        "depth": 8
+      },
+      "modified": {
+        "nodes": 75,
+        "depth": 7
+      }
+    },
+    "fkb": {
+      "faithful": {
+        "nodes": 37,
+        "depth": 5
+      },
+      "multiple": {
+        "nodes": 37,
+        "depth": 5
+      }
+    }
+  }
+}

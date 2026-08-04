@@ -348,7 +348,9 @@ def fk_a(
             "both sides must share a ground set"
         )
 
-    tree = RecursionTree(instance=instance, variant=variant, pivot_rule=pivot_rule)
+    tree = RecursionTree(
+        instance=instance, algorithm="FK-A", variant=variant, pivot_rule=pivot_rule
+    )
     counter = {"next_id": 1}
 
     def recurse(

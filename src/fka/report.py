@@ -1,4 +1,4 @@
-"""Interactive HTML reports for FK-A recursion trees.
+"""Interactive HTML reports for FK-A and FK-B recursion trees.
 
 Replaces the legacy visualiser, which drove Graphviz through ``pydot`` to write
 a PNG per recursion step and stitched them into an animated GIF. That pipeline
@@ -14,12 +14,17 @@ instant and every node is inspectable.
 Three views over the same tree:
 
 ``structure``
-    The FK-A recursion tree: subproblem sizes and the split vertex per node.
+    The recursion tree: subproblem sizes and the split vertex per node.
 ``automorphism``
     The thesis' automorphism tree -- ``Aut(G)`` and ``Aut(H)`` per node
     (Figures 5.1-5.4). Requires :func:`fka.analysis.annotate`.
 ``properties``
     Conformality, alpha-acyclicity, read-once and the primal graph's class.
+
+One page design serves both algorithms. What changes is the labelling, which
+:data:`ALGORITHM_STYLE` holds in one place: FK-A's sides are the hypergraphs
+``G`` and ``H``, FK-B's are the clause set ``C`` and the monomial set ``D`` of
+the same pair, and each gets its own legend for the branch labels it emits.
 
 :func:`fka.dot.to_dot` still emits Graphviz DOT for anyone who wants it.
 """
@@ -35,11 +40,39 @@ from .hypergraph import bitset_to_vertices
 from .instances import Instance
 from .tree import RecursionTree
 
-__all__ = ["layout", "render_html", "write_report"]
+__all__ = ["ALGORITHM_STYLE", "layout", "render_html", "write_report"]
 
 #: Layout geometry, in SVG user units.
 COL_W = 168
 ROW_H = 132
+
+#: Per-algorithm labelling: side names, page subtitle, and branch legend.
+ALGORITHM_STYLE: dict[str, dict[str, str]] = {
+    "FK-A": {
+        "sides": "G,H",
+        "subtitle": "Fredman-Khachiyan algorithm A — recursion tree",
+        "legend": (
+            '<b>L</b> (solid) is the subproblem <span class="mono">(G<sub>1</sub>, '
+            "H<sub>0</sub>&nbsp;&or;&nbsp;H<sub>1</sub>)</span>; <b>R</b> (dashed) is "
+            '<span class="mono">(H<sub>1</sub>, G<sub>0</sub>&nbsp;&or;&nbsp;'
+            "G<sub>1</sub>)</span>. Node numbering follows the recursion order, "
+            "matching the thesis figures."
+        ),
+    },
+    "FK-B": {
+        "sides": "C,D",
+        "subtitle": "Fredman-Khachiyan algorithm B — recursion tree",
+        "legend": (
+            "<b>x=0</b> (solid) and <b>x=1</b> (dashed) are the two restrictions of "
+            "the split variable. <b>c<i>i</i></b> and <b>m<i>i</i></b> (dotted) are "
+            "FK-B's per-clause and per-monomial subproblems, taken only when the "
+            "split variable is at most μ-frequent on one side; a node with many "
+            "children is in one of those branches. <b>CA</b> is a conflicting "
+            "assignment: an <span class=\"mono\">S</span> with "
+            '<span class="mono">C(S) &ne; D(S)</span>.'
+        ),
+    },
+}
 
 
 def layout(tree: RecursionTree) -> dict[int, tuple[float, float]]:
@@ -70,6 +103,18 @@ def layout(tree: RecursionTree) -> dict[int, tuple[float, float]]:
     return positions
 
 
+def _set_text(s: int) -> str:
+    """A vertex set in the thesis' 1-indexed brace notation."""
+    return "{" + ",".join(str(v + 1) for v in bitset_to_vertices(s)) + "}"
+
+
+def _path_text(path: tuple[str, ...]) -> str:
+    """The route from the root, e.g. FK-A's ``LRL`` or FK-B's ``x=0 c2``."""
+    if not path:
+        return "root"
+    return ("" if all(len(p) == 1 for p in path) else " ").join(path)
+
+
 def _edges_text(edges: tuple[int, ...], limit: int = 24) -> str:
     """Render a hyperedge list, truncating very long ones."""
     if not edges:
@@ -95,10 +140,12 @@ def _node_payload(tree: RecursionTree, positions: dict[int, tuple[float, float]]
             "y": y,
             "depth": node.depth,
             "branch": node.branch,
-            "path": "".join(node.path) or "root",
+            "style": node.branch_style(),
+            "path": _path_text(node.path),
             "gs": len(node.G),
             "hs": len(node.H),
             "pivot": node.pivot_label(),
+            "rule": node.split_branch,
             "eps": None if node.epsilon is None else round(node.epsilon, 4),
             "dual": None if verdict is None else verdict.dual,
             "reason": "" if verdict is None else verdict.reason,
@@ -111,9 +158,11 @@ def _node_payload(tree: RecursionTree, positions: dict[int, tuple[float, float]]
             "autAgree": a.get("aut_agree"),
         }
         if verdict is not None and verdict.certificate is not None:
-            payload["certificate"] = "{" + ",".join(
-                str(v + 1) for v in bitset_to_vertices(verdict.certificate)
-            ) + "}"
+            payload["certificate"] = _set_text(verdict.certificate)
+        if verdict is not None and len(verdict.certificates) > 1:
+            payload["certificates"] = " ".join(
+                _set_text(s) for s in verdict.certificates
+            )
         for side in ("G", "H"):
             aut = a.get(f"aut_{side}")
             props = a.get(f"props_{side}")
@@ -199,7 +248,8 @@ button[aria-pressed="true"] {
 #canvas.drag { cursor: grabbing; }
 svg { display: block; width: 100%; height: 100%; touch-action: none; }
 .link { fill: none; stroke: var(--line); stroke-width: 1.6px; }
-.link.R { stroke-dasharray: 4 3; }
+.link.dashed { stroke-dasharray: 4 3; }
+.link.dotted { stroke-dasharray: 1.5 3.5; }
 .nodebox { fill: var(--node); stroke: var(--line); stroke-width: 1.4px; rx: 9px; }
 .nodebox.sel { stroke: var(--accent); stroke-width: 2.4px; }
 g[role="button"]:focus { outline: none; }
@@ -264,14 +314,18 @@ aside .path { color: var(--muted); font-size: 12.5px; margin-bottom: 14px; }
 </div>
 
 <div class="legend">
-  <b>L</b> (solid) is the subproblem <span class="mono">(G<sub>1</sub>, H<sub>0</sub>&nbsp;&or;&nbsp;H<sub>1</sub>)</span>;
-  <b>R</b> (dashed) is <span class="mono">(H<sub>1</sub>, G<sub>0</sub>&nbsp;&or;&nbsp;G<sub>1</sub>)</span>.
-  Node numbering follows the recursion order, matching the thesis figures.
+  __LEGEND__
   Drag to pan, scroll to zoom.
 </div>
 
 <script>
 const NODES = __NODES__;
+const LBL = __LABELS__;
+const BRANCH_TEXT = {
+  mu_D: "x is at most \\u03bc-frequent in D \\u2014 one subproblem per clause",
+  mu_C: "x is at most \\u03bc-frequent in C \\u2014 one subproblem per monomial",
+  split: "neither side is \\u03bc-sparse \\u2014 plain two-way split"
+};
 const BY_ID = new Map(NODES.map(n => [n.id, n]));
 const NODE_W = 146, NODE_H = 62;
 let view = "structure", sel = null;
@@ -308,7 +362,7 @@ function lines(n) {
     tags.push(p.conformal ? "conf." : "non-conf.");
     return [tags.join(" \\u00b7 "), (p.classes || []).slice(0, 2).join(", ") || "\\u2014"];
   }
-  const main = "|G|=" + n.gs + "  |H|=" + n.hs;
+  const main = "|" + LBL.a + "|=" + n.gs + "  |" + LBL.b + "|=" + n.hs;
   const sub = n.pivot ? ("split " + n.pivot) : (n.reason || "leaf");
   return [main, sub];
 }
@@ -321,11 +375,11 @@ function draw() {
     const x1 = p.x, y1 = p.y + NODE_H / 2, x2 = n.x, y2 = n.y - NODE_H / 2;
     const my = (y1 + y2) / 2;
     scene.appendChild(el("path", {
-      class: "link " + n.branch,
+      class: "link " + n.style,
       d: `M ${x1} ${y1} C ${x1} ${my}, ${x2} ${my}, ${x2} ${y2}`
     }));
     scene.appendChild(el("text", {
-      class: "edgelabel", x: (x1 + x2) / 2 + (n.branch === "L" ? -9 : 9),
+      class: "edgelabel", x: (x1 + x2) / 2 + (n.style === "solid" ? -9 : 9),
       y: my + 4, "text-anchor": "middle"
     }, n.branch));
   }
@@ -368,16 +422,19 @@ function select(id) {
   const n = BY_ID.get(id);
   let h = "<h2>Node " + n.id + "</h2>";
   h += '<div class="path">depth ' + n.depth + " \\u00b7 path " + esc(n.path) + "</div>";
-  h += field("Subproblem sizes", "|G| = " + n.gs + ", |H| = " + n.hs);
+  h += field("Subproblem sizes", "|" + LBL.a + "| = " + n.gs + ", |" + LBL.b + "| = " + n.hs);
   if (n.pivot) h += field("Split vertex", esc(n.pivot) + (n.eps != null ? "  (\\u03b5 = " + n.eps + ")" : ""));
+  if (n.rule) h += field("Split branch", esc(BRANCH_TEXT[n.rule] || n.rule));
   h += field("Outcome", (n.dual === true ? "TRUE \\u2014 " : n.dual === false ? "NOT DUAL \\u2014 " : "") + esc(n.detail || n.reason));
-  if (n.certificate) h += field("Certificate S (eq. 2.1)", esc(n.certificate), true);
-  h += field("G", esc(n.G), true);
-  h += field("H", esc(n.H), true);
-  if (n.removedG) h += field("Removed from G (non-Sperner)", esc(n.removedG), true);
-  if (n.removedH) h += field("Removed from H (non-Sperner)", esc(n.removedH), true);
-  for (const side of ["G", "H"]) {
-    const a = n["aut" + side];
+  if (n.certificate) h += field(LBL.cert, esc(n.certificate), true);
+  if (n.certificates) h += field(LBL.cert + " (all found here)", esc(n.certificates), true);
+  h += field(LBL.a, esc(n.G), true);
+  h += field(LBL.b, esc(n.H), true);
+  if (n.removedG) h += field("Removed from " + LBL.a + " (non-Sperner)", esc(n.removedG), true);
+  if (n.removedH) h += field("Removed from " + LBL.b + " (non-Sperner)", esc(n.removedH), true);
+  // The analysis keys stay G/H whatever the algorithm calls its two sides.
+  for (const [key, side] of [["G", LBL.a], ["H", LBL.b]]) {
+    const a = n["aut" + key];
     if (a) {
       h += field("Aut(" + side + ")", esc(a.name) + " \\u00b7 order " + a.order);
       if (a.generators && a.generators.length)
@@ -386,14 +443,14 @@ function select(id) {
         h += field("Orbits of Aut(" + side + ")",
           esc(a.orbits.map(o => "{" + o.join(",") + "}").join(" ")), true);
     }
-    const p = n["props" + side];
+    const p = n["props" + key];
     if (p) {
       h += field("Properties of " + side, tags(p.labels));
       h += field("Primal graph of " + side, tags(p.classes));
     }
   }
   if (n.autAgree === false)
-    h += field("Note", "Aut(G) and Aut(H) differ at this node.");
+    h += field("Note", "Aut(" + LBL.a + ") and Aut(" + LBL.b + ") differ at this node.");
   document.getElementById("panel").innerHTML = h;
   draw();
 }
@@ -480,27 +537,41 @@ def render_html(
     payload = _node_payload(tree, positions)
     summary = tree.summary()
 
-    name = title or (instance.name if instance else tree.instance or "FK-A recursion tree")
-    subtitle = instance.source if instance and instance.source else (
-        "Fredman-Khachiyan algorithm A — recursion tree"
+    algorithm = tree.algorithm or "FK-A"
+    style = ALGORITHM_STYLE.get(algorithm, ALGORITHM_STYLE["FK-A"])
+    a, b = style["sides"].split(",")
+    labels = {
+        "a": a,
+        "b": b,
+        "cert": (
+            "Certificate S (eq. 2.1)"
+            if algorithm == "FK-A"
+            else "Conflicting assignment S"
+        ),
+    }
+
+    name = title or (
+        instance.name if instance else tree.instance or f"{algorithm} recursion tree"
     )
+    subtitle = instance.source if instance and instance.source else style["subtitle"]
 
     chips = [
+        _chip("Algorithm", algorithm),
         _chip(
             "Result",
-            "G = Tr(H)" if tree.dual else "G ≠ Tr(H)",
+            f"{a} = Tr({b})" if tree.dual else f"{a} ≠ Tr({b})",
             "ok" if tree.dual else "bad",
         ),
         _chip("Nodes", str(summary["nodes"])),
         _chip("Leaves", str(summary["leaves"])),
         _chip("Depth", str(summary["depth"])),
         _chip("Variant", tree.variant or "-"),
-        _chip("Pivot rule", tree.pivot_rule or "-"),
+        _chip("Split rule", tree.pivot_rule or "-"),
     ]
     if instance is not None:
         eps = instance.expected.get("epsilon")
         if eps:
-            chips.append(_chip("ε(G,H)", str(eps)))
+            chips.append(_chip(f"ε({a},{b})", str(eps)))
         chips.append(_chip("Provenance", instance.provenance))
     annotated = any(n.analysis for n in tree)
     chips.append(_chip("Annotated", "yes" if annotated else "no (structure only)"))
@@ -509,6 +580,8 @@ def render_html(
         _TEMPLATE.replace("__TITLE__", html.escape(name))
         .replace("__SUBTITLE__", html.escape(subtitle))
         .replace("__CHIPS__", "".join(chips))
+        .replace("__LEGEND__", style["legend"])
+        .replace("__LABELS__", json.dumps(labels, separators=(",", ":")))
         # json.dumps escapes nothing that can close a <script>; guard anyway so a
         # stray "</script>" in an instance name cannot break out of the block.
         .replace(
@@ -529,10 +602,12 @@ def write_report(
     target = Path(path)
     target.parent.mkdir(parents=True, exist_ok=True)
     body = render_html(tree, title=title, instance=instance)
+    algorithm = tree.algorithm or "FK-A"
+    tab = f"{title or tree.instance or 'recursion tree'} — {algorithm}"
     page = (
         "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\">"
         "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">"
-        f"<title>{html.escape(title or tree.instance or 'FK-A recursion tree')}</title>"
+        f"<title>{html.escape(tab)}</title>"
         "</head><body>" + body + "</body></html>\n"
     )
     target.write_text(page, encoding="utf-8")

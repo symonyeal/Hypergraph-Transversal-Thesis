@@ -229,13 +229,17 @@ def test_cli_show(capsys):
 
 
 def test_cli_run_writes_outputs(tmp_path, capsys):
+    """Artifacts are named ``<instance>.<algorithm>.<variant>.<ext>``.
+
+    The algorithm is in the stem so FK-A and FK-B runs of the same instance and
+    variant do not overwrite each other.
+    """
     from fka.cli import main
 
     rc = main(["run", "k3", "--out", str(tmp_path), "--no-annotate", "--dot"])
     assert rc == 0
-    assert (tmp_path / "k3.modified.html").exists()
-    assert (tmp_path / "k3.modified.json").exists()
-    assert (tmp_path / "k3.modified.dot").exists()
+    for ext in ("html", "json", "dot"):
+        assert (tmp_path / f"k3.fk-a.modified.{ext}").exists()
 
 
 def test_cli_run_without_target_explains(capsys):

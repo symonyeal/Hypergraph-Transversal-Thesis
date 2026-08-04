@@ -34,17 +34,27 @@ The original source, notebooks, GAP notes, and decomposition log are preserved
 under `_archive/20260804-legacy-code/`. They were moved, not deleted or
 rewritten. `LEGACY README.md` is the original project notice.
 
-The separate MATLAB FK-B code remains under `FK- B/` as a reference project; it
-was not mixed into the FK-A Python package.
+The MATLAB FK-B code under `FK- B/` remains a local, git-ignored reference
+snapshot. It was never mixed into the Python source: `src/fkb/` is an
+independent implementation, and `FK- B/README.md` records exactly what crossed
+over and in what form.
 
 ## Data corrections
 
-Two thesis instances as printed are not transversal pairs. The canonical data
-library keeps both layers:
+Two thesis instances as printed are not transversal pairs. Both layers are kept:
 
-- `6a-verbatim` and `8ver-verbatim` reproduce the printed inputs;
-- `6a` and `8ver` are separately marked `corrected`, with the repair and
-  supporting epsilon/transversality evidence recorded in their JSON notes.
+- `6a` and `8ver` are marked `corrected` in `data/instances/`, with the repair
+  and supporting epsilon/transversality evidence in their JSON notes;
+- the printed inputs are preserved under
+  `_archive/20260804-verbatim-nontransversal/`.
+
+The as-printed forms were originally kept in `data/instances/` as
+`6a-verbatim` and `8ver-verbatim`. They were **withdrawn to the archive on
+2026-08-04**: every run against them answers "not dual", which is a fact about
+the transcription rather than about either algorithm, and their presence in the
+live library invited that answer being read as a result. They are still loaded
+by `fka.instances.load_archived` and re-derived on every test run, so the
+finding is not lost.
 
 This distinction prevents a future cleanup from silently rewriting the source
 evidence to fit the expected result.

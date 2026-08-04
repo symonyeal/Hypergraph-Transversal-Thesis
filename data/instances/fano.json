@@ -94,6 +94,16 @@
         "nodes": 35,
         "depth": 5
       }
+    },
+    "fkb": {
+      "faithful": {
+        "nodes": 11,
+        "depth": 3
+      },
+      "multiple": {
+        "nodes": 11,
+        "depth": 3
+      }
     }
   }
 }

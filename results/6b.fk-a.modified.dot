@@ -1,0 +1,31 @@
+digraph FKA {
+  rankdir=TB;
+  graph [fontname="Helvetica", labelloc="t", label="6b  (FK-A, structure view)"];
+  node [shape=box, style="rounded,filled", fillcolor="#ffffff", fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9, color="#888888"];
+  n1 [label="Node 1\n|G|=8  |H|=3\nsplit v1", fillcolor="#ffffff"];
+  n2 [label="Node 2\n|G|=4  |H|=3\nsplit v4", fillcolor="#ffffff"];
+  n3 [label="Node 3\n|G|=0  |H|=1\ntrivial", fillcolor="#eaf3ef"];
+  n4 [label="Node 4\n|G|=2  |H|=4\nsplit v2", fillcolor="#ffffff"];
+  n5 [label="Node 5\n|G|=1  |H|=2\nsingle_edge", fillcolor="#eaf3ef"];
+  n6 [label="Node 6\n|G|=2  |H|=2\nsplit v5", fillcolor="#ffffff"];
+  n7 [label="Node 7\n|G|=0  |H|=1\ntrivial", fillcolor="#eaf3ef"];
+  n8 [label="Node 8\n|G|=1  |H|=2\nsingle_edge", fillcolor="#eaf3ef"];
+  n9 [label="Node 9\n|G|=2  |H|=4\nsplit v2", fillcolor="#ffffff"];
+  n10 [label="Node 10\n|G|=1  |H|=2\nsingle_edge", fillcolor="#eaf3ef"];
+  n11 [label="Node 11\n|G|=2  |H|=2\nsplit v5", fillcolor="#ffffff"];
+  n12 [label="Node 12\n|G|=0  |H|=1\ntrivial", fillcolor="#eaf3ef"];
+  n13 [label="Node 13\n|G|=1  |H|=2\nsingle_edge", fillcolor="#eaf3ef"];
+  n1 -> n2 [label="L", style=solid];
+  n1 -> n9 [label="R", style=dashed];
+  n2 -> n3 [label="L", style=solid];
+  n2 -> n4 [label="R", style=dashed];
+  n4 -> n5 [label="L", style=solid];
+  n4 -> n6 [label="R", style=dashed];
+  n6 -> n7 [label="L", style=solid];
+  n6 -> n8 [label="R", style=dashed];
+  n9 -> n10 [label="L", style=solid];
+  n9 -> n11 [label="R", style=dashed];
+  n11 -> n12 [label="L", style=solid];
+  n11 -> n13 [label="R", style=dashed];
+}

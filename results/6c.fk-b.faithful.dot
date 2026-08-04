@@ -1,0 +1,7 @@
+digraph FKB {
+  rankdir=TB;
+  graph [fontname="Helvetica", labelloc="t", label="6c  (FK-B, structure view)"];
+  node [shape=box, style="rounded,filled", fillcolor="#ffffff", fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9, color="#888888"];
+  n1 [label="Node 1\n|C|=8  |D|=2\neasy_case", fillcolor="#eaf3ef"];
+}

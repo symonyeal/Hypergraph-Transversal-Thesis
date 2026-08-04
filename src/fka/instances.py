@@ -42,6 +42,7 @@ Provenance
 
 from __future__ import annotations
 
+import itertools
 import json
 from dataclasses import dataclass, field
 from fractions import Fraction
@@ -50,7 +51,20 @@ from typing import Any, Iterator, Optional
 
 from .hypergraph import Hypergraph
 
-__all__ = ["Instance", "instance_dir", "load", "load_all", "list_ids", "sdfp", "refresh_expected"]
+__all__ = [
+    "Instance",
+    "instance_dir",
+    "archive_root",
+    "load",
+    "load_all",
+    "load_archived",
+    "list_ids",
+    "sdfp",
+    "self_dual_fano",
+    "matching",
+    "threshold",
+    "refresh_expected",
+]
 
 
 def instance_dir() -> Path:
@@ -124,6 +138,33 @@ class Instance:
         return target
 
 
+def archive_root() -> Path:
+    """Where withdrawn instances live, one dated subdirectory per withdrawal."""
+    return Path(__file__).resolve().parents[2] / "_archive"
+
+
+def load_archived(instance_id: str) -> Instance:
+    """Load an instance that has been withdrawn from the live library.
+
+    Withdrawn instances are kept for traceability -- principally the two thesis
+    instances that are not transversal pairs as printed -- and are deliberately
+    absent from :func:`list_ids`, so no experiment or baseline runs against one
+    by accident. Reading one is an explicit act, and the withdrawal's own
+    ``README.md`` states what it was and why.
+    """
+    matches = sorted(archive_root().glob(f"*/{instance_id}.json"))
+    if not matches:
+        available = ", ".join(
+            sorted(p.stem for p in archive_root().glob("*/*.json"))
+        ) or "(none)"
+        raise FileNotFoundError(
+            f"no archived instance {instance_id!r} under {archive_root()}. "
+            f"Available: {available}"
+        )
+    path = matches[0]
+    return Instance.from_json(json.loads(path.read_text(encoding="utf-8")), path)
+
+
 def list_ids() -> list[str]:
     return sorted(p.stem for p in instance_dir().glob("*.json"))
 
@@ -173,6 +214,74 @@ def sdfp(k: int = 1) -> Hypergraph:
     return Hypergraph.from_sets(n, edges, one_indexed=True)
 
 
+def self_dual_fano(k: int = 2) -> Hypergraph:
+    """``SDFP(k)``: the self-dualisation of ``k`` disjoint Fano planes.
+
+    The scaling benchmark the FK-B reference ships as ``SDFP16_CNF_DNF.mat``
+    (``k = 2``) and ``SDFP23_CNF_DNF.mat`` (``k = 3``). On ``7k + 2`` vertices,
+    writing ``a`` and ``b`` for the two extra ones, the edges are
+
+    * ``{a, b}``;
+    * ``line + {b}`` for each of the ``7k`` lines; and
+    * ``line_1 + ... + line_k + {a}``, one line from each copy: ``7^k`` of them.
+
+    ``|E| = 7^k + 7k + 1``, and the result is *self-transversal*:
+    ``Tr(E) = E``, so ``(E, E)`` is a transversal pair with no free parameters.
+    That is what makes it a benchmark -- it is the hardest shape for a
+    dualisation algorithm, an instance where the answer is yes and every branch
+    must be explored to establish it.
+
+    The thesis' own :func:`sdfp` is the ``k`` disjoint copies *before* this
+    construction is applied; the two are different objects and only ``k = 1`` of
+    :func:`sdfp` is itself self-transversal.
+
+    Vertices are numbered with this project's :data:`FANO_LINES` labelling
+    rather than the reference snapshot's. The two are isomorphic -- same edge
+    sizes, same counts, same group -- so node counts can differ from the MATLAB
+    run by the amount vertex numbering moves the split choice.
+    """
+    if k < 1:
+        raise ValueError(f"k must be at least 1, got {k}")
+    n = 7 * k + 2
+    a, b = n - 1, n  # 1-indexed
+    edges = [[a, b]]
+    for copy in range(k):
+        for line in FANO_LINES:
+            edges.append(sorted(v + 7 * copy for v in line) + [b])
+    for combo in itertools.product(FANO_LINES, repeat=k):
+        picked = sorted(v + 7 * c for c, line in enumerate(combo) for v in line)
+        edges.append(picked + [a])
+    return Hypergraph.from_sets(n, edges, one_indexed=True)
+
+
+def matching(v: int) -> Hypergraph:
+    """``M(v)``: the perfect matching on ``v`` vertices (StandardProblems.m).
+
+    ``v/2`` disjoint pairs ``{1,2}, {3,4}, ...``. Its transversal is the
+    ``2^(v/2)`` sets that pick one endpoint per pair, so it is the standard
+    example of output-exponential dualisation.
+    """
+    if v < 2 or v % 2:
+        raise ValueError(f"v must be even and at least 2, got {v}")
+    return Hypergraph.from_sets(
+        v, [[i, i + 1] for i in range(1, v, 2)], one_indexed=True
+    )
+
+
+def threshold(v: int) -> Hypergraph:
+    """``TH(v)``: the threshold graph on ``v`` vertices (StandardProblems.m).
+
+    All pairs ``{i, j}`` with ``i < j`` and ``j`` even.
+    """
+    if v < 2 or v % 2:
+        raise ValueError(f"v must be even and at least 2, got {v}")
+    return Hypergraph.from_sets(
+        v,
+        [[i, j] for j in range(2, v + 1, 2) for i in range(1, j)],
+        one_indexed=True,
+    )
+
+
 # ----------------------------------------------------------------------
 # expected-value maintenance
 # ----------------------------------------------------------------------
@@ -196,11 +305,17 @@ def exact_epsilon(G: Hypergraph, H: Hypergraph) -> Fraction:
 def refresh_expected(inst: Instance, *, node_counts: bool = True) -> dict[str, Any]:
     """Recompute the ``expected`` block for ``inst``.
 
-    Duality comes from the brute-force oracle, never from FK-A -- the whole
-    point of the baseline is to check FK-A against something independent.
+    Duality comes from the brute-force oracle, never from either algorithm --
+    the whole point of the baseline is to check them against something
+    independent. Node counts are recorded per algorithm and per variant, at
+    each one's default split rule.
     """
     from .algorithm import fk_a
     from .transversal import is_dual_oracle
+
+    # ``fkb`` ships alongside this package and imports the model from it. The
+    # import is function-local so the two never form an import cycle.
+    from fkb.algorithm import fk_b
 
     G, H = inst.G, inst.H
     expected: dict[str, Any] = {
@@ -210,10 +325,17 @@ def refresh_expected(inst: Instance, *, node_counts: bool = True) -> dict[str, A
         "n_edges_H": len(H),
     }
     if node_counts:
-        counts: dict[str, dict[str, int]] = {}
-        for variant in ("faithful", "modified"):
-            tree = fk_a(G, H, variant=variant, instance=inst.id)
-            counts[variant] = {"nodes": len(tree), "depth": tree.depth}
-        expected["fka"] = counts
+        expected["fka"] = {
+            variant: _tree_shape(fk_a(G, H, variant=variant, instance=inst.id))
+            for variant in ("faithful", "modified")
+        }
+        expected["fkb"] = {
+            variant: _tree_shape(fk_b(G, H, variant=variant, instance=inst.id))
+            for variant in ("faithful", "multiple")
+        }
     inst.expected = expected
     return expected
+
+
+def _tree_shape(tree: Any) -> dict[str, int]:
+    return {"nodes": len(tree), "depth": tree.depth}

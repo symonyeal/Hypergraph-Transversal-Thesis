@@ -1,0 +1,8483 @@
+{
+  "instance": "fano",
+  "algorithm": "FK-A",
+  "variant": "modified",
+  "pivot_rule": "degree_sum",
+  "dual": true,
+  "verdict": {
+    "dual": true,
+    "reason": "dual",
+    "detail": "both subproblems returned TRUE",
+    "certificate": null,
+    "witness_edges": []
+  },
+  "root_id": 1,
+  "summary": {
+    "instance": "fano",
+    "algorithm": "FK-A",
+    "variant": "modified",
+    "pivot_rule": "degree_sum",
+    "dual": true,
+    "nodes": 35,
+    "leaves": 18,
+    "depth": 5,
+    "root_epsilon": 0.42857142857142855,
+    "verdicts": {
+      "dual": 17,
+      "single_edge": 8,
+      "trivial": 10
+    }
+  },
+  "nodes": [
+    {
+      "node_id": 1,
+      "parent_id": null,
+      "path": [],
+      "depth": 0,
+      "G": [
+        [
+          1,
+          2,
+          4
+        ],
+        [
+          1,
+          3,
+          7
+        ],
+        [
+          1,
+          5,
+          6
+        ],
+        [
+          2,
+          3,
+          5
+        ],
+        [
+          2,
+          6,
+          7
+        ],
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H": [
+        [
+          1,
+          2,
+          4
+        ],
+        [
+          1,
+          3,
+          7
+        ],
+        [
+          1,
+          5,
+          6
+        ],
+        [
+          2,
+          3,
+          5
+        ],
+        [
+          2,
+          6,
+          7
+        ],
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          1,
+          2,
+          4
+        ],
+        [
+          1,
+          3,
+          7
+        ],
+        [
+          1,
+          5,
+          6
+        ],
+        [
+          2,
+          3,
+          5
+        ],
+        [
+          2,
+          6,
+          7
+        ],
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          1,
+          2,
+          4
+        ],
+        [
+          1,
+          3,
+          7
+        ],
+        [
+          1,
+          5,
+          6
+        ],
+        [
+          2,
+          3,
+          5
+        ],
+        [
+          2,
+          6,
+          7
+        ],
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": 1,
+      "pivot_frequency": 0.42857142857142855,
+      "epsilon": 0.42857142857142855,
+      "split_branch": "",
+      "children": [
+        2,
+        19
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 168,
+          "name": "PSL(3,2)",
+          "generators": [
+            "(1,2,3,4,5,6,7)",
+            "(1,2,3,7,6,4,5)"
+          ],
+          "orbits": [
+            [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ]
+          ],
+          "active_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "special"
+        },
+        "aut_H": {
+          "order": 168,
+          "name": "PSL(3,2)",
+          "generators": [
+            "(1,2,3,4,5,6,7)",
+            "(1,2,3,7,6,4,5)"
+          ],
+          "orbits": [
+            [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ]
+          ],
+          "active_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "special"
+        },
+        "aut_agree": true,
+        "aut_label": "PSL(3,2)",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 7,
+          "edge_sizes": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "degrees": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "alpha_acyclic": false,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 21,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": false,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [],
+          "labels": [
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 7,
+          "edge_sizes": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "degrees": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "alpha_acyclic": false,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 21,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": false,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [],
+          "labels": [
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 2,
+      "parent_id": 1,
+      "path": [
+        "L"
+      ],
+      "depth": 1,
+      "G": [
+        [
+          2,
+          3,
+          5
+        ],
+        [
+          2,
+          6,
+          7
+        ],
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H": [
+        [
+          2,
+          3,
+          5
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          6,
+          7
+        ],
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "G_in": [
+        [
+          2,
+          3,
+          5
+        ],
+        [
+          2,
+          6,
+          7
+        ],
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          2,
+          3,
+          5
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          6,
+          7
+        ],
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": 2,
+      "pivot_frequency": 0.5,
+      "epsilon": 0.5,
+      "split_branch": "",
+      "children": [
+        3,
+        10
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 24,
+          "name": "S4",
+          "generators": [
+            "(2,3,4,7)(5,6)",
+            "(2,4)(3,5,7,6)"
+          ],
+          "orbits": [
+            [
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ]
+          ],
+          "active_vertices": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1
+          ],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 24,
+          "name": "S4",
+          "generators": [
+            "(2,3,4,7)(5,6)",
+            "(2,4)(3,5,7,6)"
+          ],
+          "orbits": [
+            [
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ]
+          ],
+          "active_vertices": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1
+          ],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "S4",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 4,
+          "edge_sizes": [
+            3,
+            3,
+            3,
+            3
+          ],
+          "degrees": [
+            0,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": false,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 12,
+            "cograph": true,
+            "chordal": false,
+            "bipartite": false,
+            "split": false,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1
+          ],
+          "labels": [
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 7,
+          "edge_sizes": [
+            3,
+            2,
+            3,
+            3,
+            2,
+            3,
+            2
+          ],
+          "degrees": [
+            0,
+            3,
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": false,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 15,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": false,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1
+          ],
+          "labels": [
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 3,
+      "parent_id": 2,
+      "path": [
+        "L",
+        "L"
+      ],
+      "depth": 2,
+      "G": [
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H": [
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4
+        ],
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "pivot": 3,
+      "pivot_frequency": 0.5,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [
+        4,
+        5
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 8,
+          "name": "D4",
+          "generators": [
+            "(3,5,6,7)",
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              3,
+              5,
+              6,
+              7
+            ],
+            [
+              4
+            ]
+          ],
+          "active_vertices": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2
+          ],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 8,
+          "name": "D4",
+          "generators": [
+            "(3,5,6,7)",
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              3,
+              5,
+              6,
+              7
+            ],
+            [
+              4
+            ]
+          ],
+          "active_vertices": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2
+          ],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "D4",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            3,
+            3
+          ],
+          "degrees": [
+            0,
+            0,
+            1,
+            2,
+            1,
+            1,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 6,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": false,
+            "split": false,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 5,
+          "edge_sizes": [
+            2,
+            2,
+            1,
+            2,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            2,
+            1,
+            2,
+            2,
+            2
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": false,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 4,
+            "cograph": true,
+            "chordal": false,
+            "bipartite": true,
+            "split": false,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2
+          ],
+          "labels": [
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 4,
+      "parent_id": 3,
+      "path": [
+        "L",
+        "L",
+        "L"
+      ],
+      "depth": 3,
+      "G": [
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H": [
+        [
+          4
+        ],
+        [
+          5
+        ],
+        [
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          4
+        ],
+        [
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "single_edge",
+        "detail": "|G| = 1 with an edge of size 3; H is its 3 singletons",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 6,
+          "name": "S3",
+          "generators": [
+            "(4,5,7)",
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              5,
+              7
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 6,
+          "name": "S3",
+          "generators": [
+            "(4,5,7)",
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              5,
+              7
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "S3",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            3
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 3,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": false,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 3,
+          "edge_sizes": [
+            1,
+            1,
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 5,
+      "parent_id": 3,
+      "path": [
+        "L",
+        "L",
+        "R"
+      ],
+      "depth": 3,
+      "G": [
+        [
+          4
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "H": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          4,
+          6
+        ]
+      ],
+      "G_in": [
+        [
+          4
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          4,
+          6
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": 4,
+      "pivot_frequency": 1.0,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [
+        6,
+        9
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              4
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              6
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              4
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              6
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "C2",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 3,
+          "edge_sizes": [
+            1,
+            2,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            2,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 2,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            3,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            2,
+            1,
+            1,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 4,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": false,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 6,
+      "parent_id": 5,
+      "path": [
+        "L",
+        "L",
+        "R",
+        "L"
+      ],
+      "depth": 4,
+      "G": [
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "H": [
+        [
+          5,
+          7
+        ],
+        [
+          6
+        ]
+      ],
+      "G_in": [
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          5,
+          7
+        ],
+        [
+          6
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": 6,
+      "pivot_frequency": 1.0,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [
+        7,
+        8
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              5,
+              7
+            ],
+            [
+              6
+            ]
+          ],
+          "active_vertices": [
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              5,
+              7
+            ],
+            [
+              6
+            ]
+          ],
+          "active_vertices": [
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "C2",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            2,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            2,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 2,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            2,
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 1,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 7,
+      "parent_id": 6,
+      "path": [
+        "L",
+        "L",
+        "R",
+        "L",
+        "L"
+      ],
+      "depth": 5,
+      "G": [],
+      "H": [
+        []
+      ],
+      "G_in": [],
+      "H_in": [
+        [],
+        [
+          5,
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          5,
+          7
+        ]
+      ],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 0.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "trivial",
+        "detail": "|G|*|H| = 0 <= 1",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": null,
+        "aut_H": {
+          "order": 1,
+          "name": "C1",
+          "generators": [],
+          "orbits": [],
+          "active_vertices": [],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "trivial"
+        },
+        "aut_agree": null,
+        "aut_label": "",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 0,
+          "edge_sizes": [],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": true,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "labels": [
+            "ROH",
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            0
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 8,
+      "parent_id": 6,
+      "path": [
+        "L",
+        "L",
+        "R",
+        "L",
+        "R"
+      ],
+      "depth": 5,
+      "G": [
+        [
+          5,
+          7
+        ]
+      ],
+      "H": [
+        [
+          5
+        ],
+        [
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          5,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          5
+        ],
+        [
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "single_edge",
+        "detail": "|G| = 1 with an edge of size 2; H is its 2 singletons",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              5,
+              7
+            ]
+          ],
+          "active_vertices": [
+            5,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            6
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              5,
+              7
+            ]
+          ],
+          "active_vertices": [
+            5,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            6
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "C2",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 1,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            1,
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 9,
+      "parent_id": 5,
+      "path": [
+        "L",
+        "L",
+        "R",
+        "R"
+      ],
+      "depth": 4,
+      "G": [],
+      "H": [
+        []
+      ],
+      "G_in": [],
+      "H_in": [
+        [],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 0.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "trivial",
+        "detail": "|G|*|H| = 0 <= 1",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": null,
+        "aut_H": {
+          "order": 1,
+          "name": "C1",
+          "generators": [],
+          "orbits": [],
+          "active_vertices": [],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "trivial"
+        },
+        "aut_agree": null,
+        "aut_label": "",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 0,
+          "edge_sizes": [],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": true,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "labels": [
+            "ROH",
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            0
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 10,
+      "parent_id": 2,
+      "path": [
+        "L",
+        "R"
+      ],
+      "depth": 2,
+      "G": [
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "H": [
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "H_in": [
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": 3,
+      "pivot_frequency": 0.5,
+      "epsilon": 0.5,
+      "split_branch": "",
+      "children": [
+        11,
+        16
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 4,
+          "name": "C2 x C2",
+          "generators": [
+            "(3,5)(6,7)",
+            "(3,6)(5,7)"
+          ],
+          "orbits": [
+            [
+              3,
+              5,
+              6,
+              7
+            ],
+            [
+              4
+            ]
+          ],
+          "active_vertices": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 4,
+          "name": "C2 x C2",
+          "generators": [
+            "(3,5)(6,7)",
+            "(3,6)(5,7)"
+          ],
+          "orbits": [
+            [
+              3,
+              5,
+              6,
+              7
+            ],
+            [
+              4
+            ]
+          ],
+          "active_vertices": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "C2 x C2",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 4,
+          "edge_sizes": [
+            3,
+            2,
+            3,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": false,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 8,
+            "cograph": true,
+            "chordal": false,
+            "bipartite": false,
+            "split": false,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2
+          ],
+          "labels": [
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 4,
+          "edge_sizes": [
+            3,
+            2,
+            3,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": false,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 8,
+            "cograph": true,
+            "chordal": false,
+            "bipartite": false,
+            "split": false,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2
+          ],
+          "labels": [
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 11,
+      "parent_id": 10,
+      "path": [
+        "L",
+        "R",
+        "L"
+      ],
+      "depth": 3,
+      "G": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "H": [
+        [
+          4,
+          6
+        ],
+        [
+          5
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "H_in": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "pivot": 5,
+      "pivot_frequency": 1.0,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [
+        12,
+        13
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(4,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              7
+            ],
+            [
+              5
+            ],
+            [
+              6
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(4,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              7
+            ],
+            [
+              5
+            ],
+            [
+              6
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "C2",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            3,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            2,
+            1,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 4,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": false,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 3,
+          "edge_sizes": [
+            2,
+            1,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            2,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 2,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 12,
+      "parent_id": 11,
+      "path": [
+        "L",
+        "R",
+        "L",
+        "L"
+      ],
+      "depth": 4,
+      "G": [],
+      "H": [
+        []
+      ],
+      "G_in": [],
+      "H_in": [
+        [],
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 0.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "trivial",
+        "detail": "|G|*|H| = 0 <= 1",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": null,
+        "aut_H": {
+          "order": 1,
+          "name": "C1",
+          "generators": [],
+          "orbits": [],
+          "active_vertices": [],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "trivial"
+        },
+        "aut_agree": null,
+        "aut_label": "",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 0,
+          "edge_sizes": [],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": true,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "labels": [
+            "ROH",
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            0
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 13,
+      "parent_id": 11,
+      "path": [
+        "L",
+        "R",
+        "L",
+        "R"
+      ],
+      "depth": 4,
+      "G": [
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "H": [
+        [
+          4,
+          7
+        ],
+        [
+          6
+        ]
+      ],
+      "G_in": [
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          4,
+          7
+        ],
+        [
+          6
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": 6,
+      "pivot_frequency": 1.0,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [
+        14,
+        15
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(4,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              7
+            ],
+            [
+              6
+            ]
+          ],
+          "active_vertices": [
+            4,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            5
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(4,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              7
+            ],
+            [
+              6
+            ]
+          ],
+          "active_vertices": [
+            4,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            5
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "C2",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            2,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            2,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 2,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            5
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            2,
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 1,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            5
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 14,
+      "parent_id": 13,
+      "path": [
+        "L",
+        "R",
+        "L",
+        "R",
+        "L"
+      ],
+      "depth": 5,
+      "G": [],
+      "H": [
+        []
+      ],
+      "G_in": [],
+      "H_in": [
+        [],
+        [
+          4,
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          4,
+          7
+        ]
+      ],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 0.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "trivial",
+        "detail": "|G|*|H| = 0 <= 1",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": null,
+        "aut_H": {
+          "order": 1,
+          "name": "C1",
+          "generators": [],
+          "orbits": [],
+          "active_vertices": [],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "trivial"
+        },
+        "aut_agree": null,
+        "aut_label": "",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 0,
+          "edge_sizes": [],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": true,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "labels": [
+            "ROH",
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            0
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 15,
+      "parent_id": 13,
+      "path": [
+        "L",
+        "R",
+        "L",
+        "R",
+        "R"
+      ],
+      "depth": 5,
+      "G": [
+        [
+          4,
+          7
+        ]
+      ],
+      "H": [
+        [
+          4
+        ],
+        [
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          4,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          4
+        ],
+        [
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "single_edge",
+        "detail": "|G| = 1 with an edge of size 2; H is its 2 singletons",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(4,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              7
+            ]
+          ],
+          "active_vertices": [
+            4,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(4,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              7
+            ]
+          ],
+          "active_vertices": [
+            4,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "C2",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 1,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            1,
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 16,
+      "parent_id": 10,
+      "path": [
+        "L",
+        "R",
+        "R"
+      ],
+      "depth": 3,
+      "G": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "H": [
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "pivot": 6,
+      "pivot_frequency": 0.6666666666666666,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [
+        17,
+        18
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(4,5)"
+          ],
+          "orbits": [
+            [
+              4,
+              5
+            ],
+            [
+              6
+            ],
+            [
+              7
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(4,5)"
+          ],
+          "orbits": [
+            [
+              4,
+              5
+            ],
+            [
+              6
+            ],
+            [
+              7
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "C2",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            3,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            2
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 4,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": false,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 3,
+          "edge_sizes": [
+            2,
+            2,
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            2,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 2,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 17,
+      "parent_id": 16,
+      "path": [
+        "L",
+        "R",
+        "R",
+        "L"
+      ],
+      "depth": 4,
+      "G": [
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H": [
+        [
+          4
+        ],
+        [
+          5
+        ],
+        [
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          4
+        ],
+        [
+          5
+        ],
+        [
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "single_edge",
+        "detail": "|G| = 1 with an edge of size 3; H is its 3 singletons",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 6,
+          "name": "S3",
+          "generators": [
+            "(4,5,7)",
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              5,
+              7
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 6,
+          "name": "S3",
+          "generators": [
+            "(4,5,7)",
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              5,
+              7
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "S3",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            3
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 3,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": false,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 3,
+          "edge_sizes": [
+            1,
+            1,
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 18,
+      "parent_id": 16,
+      "path": [
+        "L",
+        "R",
+        "R",
+        "R"
+      ],
+      "depth": 4,
+      "G": [
+        [
+          7
+        ]
+      ],
+      "H": [
+        [
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "trivial",
+        "detail": "|G|*|H| = 1 <= 1",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 1,
+          "name": "C1",
+          "generators": [],
+          "orbits": [
+            [
+              7
+            ]
+          ],
+          "active_vertices": [
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "trivial"
+        },
+        "aut_H": {
+          "order": 1,
+          "name": "C1",
+          "generators": [],
+          "orbits": [
+            [
+              7
+            ]
+          ],
+          "active_vertices": [
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "trivial"
+        },
+        "aut_agree": true,
+        "aut_label": "C1",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 19,
+      "parent_id": 1,
+      "path": [
+        "R"
+      ],
+      "depth": 1,
+      "G": [
+        [
+          2,
+          3,
+          5
+        ],
+        [
+          2,
+          6,
+          7
+        ],
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H": [
+        [
+          2,
+          3,
+          5
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          6,
+          7
+        ],
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "G_in": [
+        [
+          2,
+          3,
+          5
+        ],
+        [
+          2,
+          6,
+          7
+        ],
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          2,
+          3,
+          5
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          6,
+          7
+        ],
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": 2,
+      "pivot_frequency": 0.5,
+      "epsilon": 0.5,
+      "split_branch": "",
+      "children": [
+        20,
+        27
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 24,
+          "name": "S4",
+          "generators": [
+            "(2,3,4,7)(5,6)",
+            "(2,4)(3,5,7,6)"
+          ],
+          "orbits": [
+            [
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ]
+          ],
+          "active_vertices": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1
+          ],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 24,
+          "name": "S4",
+          "generators": [
+            "(2,3,4,7)(5,6)",
+            "(2,4)(3,5,7,6)"
+          ],
+          "orbits": [
+            [
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ]
+          ],
+          "active_vertices": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1
+          ],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "S4",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 4,
+          "edge_sizes": [
+            3,
+            3,
+            3,
+            3
+          ],
+          "degrees": [
+            0,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": false,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 12,
+            "cograph": true,
+            "chordal": false,
+            "bipartite": false,
+            "split": false,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1
+          ],
+          "labels": [
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 7,
+          "edge_sizes": [
+            3,
+            2,
+            3,
+            3,
+            2,
+            3,
+            2
+          ],
+          "degrees": [
+            0,
+            3,
+            3,
+            3,
+            3,
+            3,
+            3
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": false,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 15,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": false,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1
+          ],
+          "labels": [
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 20,
+      "parent_id": 19,
+      "path": [
+        "R",
+        "L"
+      ],
+      "depth": 2,
+      "G": [
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H": [
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4
+        ],
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "pivot": 3,
+      "pivot_frequency": 0.5,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [
+        21,
+        22
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 8,
+          "name": "D4",
+          "generators": [
+            "(3,5,6,7)",
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              3,
+              5,
+              6,
+              7
+            ],
+            [
+              4
+            ]
+          ],
+          "active_vertices": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2
+          ],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 8,
+          "name": "D4",
+          "generators": [
+            "(3,5,6,7)",
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              3,
+              5,
+              6,
+              7
+            ],
+            [
+              4
+            ]
+          ],
+          "active_vertices": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2
+          ],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "D4",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            3,
+            3
+          ],
+          "degrees": [
+            0,
+            0,
+            1,
+            2,
+            1,
+            1,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 6,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": false,
+            "split": false,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 5,
+          "edge_sizes": [
+            2,
+            2,
+            1,
+            2,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            2,
+            1,
+            2,
+            2,
+            2
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": false,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 4,
+            "cograph": true,
+            "chordal": false,
+            "bipartite": true,
+            "split": false,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2
+          ],
+          "labels": [
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 21,
+      "parent_id": 20,
+      "path": [
+        "R",
+        "L",
+        "L"
+      ],
+      "depth": 3,
+      "G": [
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H": [
+        [
+          4
+        ],
+        [
+          5
+        ],
+        [
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          4
+        ],
+        [
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "single_edge",
+        "detail": "|G| = 1 with an edge of size 3; H is its 3 singletons",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 6,
+          "name": "S3",
+          "generators": [
+            "(4,5,7)",
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              5,
+              7
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 6,
+          "name": "S3",
+          "generators": [
+            "(4,5,7)",
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              5,
+              7
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "S3",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            3
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 3,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": false,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 3,
+          "edge_sizes": [
+            1,
+            1,
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 22,
+      "parent_id": 20,
+      "path": [
+        "R",
+        "L",
+        "R"
+      ],
+      "depth": 3,
+      "G": [
+        [
+          4
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "H": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          4,
+          6
+        ]
+      ],
+      "G_in": [
+        [
+          4
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          4,
+          6
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": 4,
+      "pivot_frequency": 1.0,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [
+        23,
+        26
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              4
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              6
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              4
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              6
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "C2",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 3,
+          "edge_sizes": [
+            1,
+            2,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            2,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 2,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            3,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            2,
+            1,
+            1,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 4,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": false,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 23,
+      "parent_id": 22,
+      "path": [
+        "R",
+        "L",
+        "R",
+        "L"
+      ],
+      "depth": 4,
+      "G": [
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "H": [
+        [
+          5,
+          7
+        ],
+        [
+          6
+        ]
+      ],
+      "G_in": [
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          5,
+          7
+        ],
+        [
+          6
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": 6,
+      "pivot_frequency": 1.0,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [
+        24,
+        25
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              5,
+              7
+            ],
+            [
+              6
+            ]
+          ],
+          "active_vertices": [
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              5,
+              7
+            ],
+            [
+              6
+            ]
+          ],
+          "active_vertices": [
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "C2",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            2,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            2,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 2,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            2,
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 1,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 24,
+      "parent_id": 23,
+      "path": [
+        "R",
+        "L",
+        "R",
+        "L",
+        "L"
+      ],
+      "depth": 5,
+      "G": [],
+      "H": [
+        []
+      ],
+      "G_in": [],
+      "H_in": [
+        [],
+        [
+          5,
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          5,
+          7
+        ]
+      ],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 0.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "trivial",
+        "detail": "|G|*|H| = 0 <= 1",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": null,
+        "aut_H": {
+          "order": 1,
+          "name": "C1",
+          "generators": [],
+          "orbits": [],
+          "active_vertices": [],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "trivial"
+        },
+        "aut_agree": null,
+        "aut_label": "",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 0,
+          "edge_sizes": [],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": true,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "labels": [
+            "ROH",
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            0
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 25,
+      "parent_id": 23,
+      "path": [
+        "R",
+        "L",
+        "R",
+        "L",
+        "R"
+      ],
+      "depth": 5,
+      "G": [
+        [
+          5,
+          7
+        ]
+      ],
+      "H": [
+        [
+          5
+        ],
+        [
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          5,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          5
+        ],
+        [
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "single_edge",
+        "detail": "|G| = 1 with an edge of size 2; H is its 2 singletons",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              5,
+              7
+            ]
+          ],
+          "active_vertices": [
+            5,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            6
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              5,
+              7
+            ]
+          ],
+          "active_vertices": [
+            5,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            6
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "C2",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 1,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            1,
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 26,
+      "parent_id": 22,
+      "path": [
+        "R",
+        "L",
+        "R",
+        "R"
+      ],
+      "depth": 4,
+      "G": [],
+      "H": [
+        []
+      ],
+      "G_in": [],
+      "H_in": [
+        [],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 0.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "trivial",
+        "detail": "|G|*|H| = 0 <= 1",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": null,
+        "aut_H": {
+          "order": 1,
+          "name": "C1",
+          "generators": [],
+          "orbits": [],
+          "active_vertices": [],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "trivial"
+        },
+        "aut_agree": null,
+        "aut_label": "",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 0,
+          "edge_sizes": [],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": true,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "labels": [
+            "ROH",
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            0
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 27,
+      "parent_id": 19,
+      "path": [
+        "R",
+        "R"
+      ],
+      "depth": 2,
+      "G": [
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "H": [
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "H_in": [
+        [
+          3,
+          4,
+          6
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": 3,
+      "pivot_frequency": 0.5,
+      "epsilon": 0.5,
+      "split_branch": "",
+      "children": [
+        28,
+        33
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 4,
+          "name": "C2 x C2",
+          "generators": [
+            "(3,5)(6,7)",
+            "(3,6)(5,7)"
+          ],
+          "orbits": [
+            [
+              3,
+              5,
+              6,
+              7
+            ],
+            [
+              4
+            ]
+          ],
+          "active_vertices": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 4,
+          "name": "C2 x C2",
+          "generators": [
+            "(3,5)(6,7)",
+            "(3,6)(5,7)"
+          ],
+          "orbits": [
+            [
+              3,
+              5,
+              6,
+              7
+            ],
+            [
+              4
+            ]
+          ],
+          "active_vertices": [
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "C2 x C2",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 4,
+          "edge_sizes": [
+            3,
+            2,
+            3,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": false,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 8,
+            "cograph": true,
+            "chordal": false,
+            "bipartite": false,
+            "split": false,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2
+          ],
+          "labels": [
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 4,
+          "edge_sizes": [
+            3,
+            2,
+            3,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": false,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 8,
+            "cograph": true,
+            "chordal": false,
+            "bipartite": false,
+            "split": false,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2
+          ],
+          "labels": [
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 28,
+      "parent_id": 27,
+      "path": [
+        "R",
+        "R",
+        "L"
+      ],
+      "depth": 3,
+      "G": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "H": [
+        [
+          4,
+          6
+        ],
+        [
+          5
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "H_in": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "pivot": 5,
+      "pivot_frequency": 1.0,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [
+        29,
+        30
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(4,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              7
+            ],
+            [
+              5
+            ],
+            [
+              6
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(4,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              7
+            ],
+            [
+              5
+            ],
+            [
+              6
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "C2",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            3,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            2,
+            1,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 4,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": false,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 3,
+          "edge_sizes": [
+            2,
+            1,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            2,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 2,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 29,
+      "parent_id": 28,
+      "path": [
+        "R",
+        "R",
+        "L",
+        "L"
+      ],
+      "depth": 4,
+      "G": [],
+      "H": [
+        []
+      ],
+      "G_in": [],
+      "H_in": [
+        [],
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 0.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "trivial",
+        "detail": "|G|*|H| = 0 <= 1",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": null,
+        "aut_H": {
+          "order": 1,
+          "name": "C1",
+          "generators": [],
+          "orbits": [],
+          "active_vertices": [],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "trivial"
+        },
+        "aut_agree": null,
+        "aut_label": "",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 0,
+          "edge_sizes": [],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": true,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "labels": [
+            "ROH",
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            0
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 30,
+      "parent_id": 28,
+      "path": [
+        "R",
+        "R",
+        "L",
+        "R"
+      ],
+      "depth": 4,
+      "G": [
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "H": [
+        [
+          4,
+          7
+        ],
+        [
+          6
+        ]
+      ],
+      "G_in": [
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          4,
+          7
+        ],
+        [
+          6
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": 6,
+      "pivot_frequency": 1.0,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [
+        31,
+        32
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(4,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              7
+            ],
+            [
+              6
+            ]
+          ],
+          "active_vertices": [
+            4,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            5
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(4,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              7
+            ],
+            [
+              6
+            ]
+          ],
+          "active_vertices": [
+            4,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            5
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "C2",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            2,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            2,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 2,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            5
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            2,
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 1,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            5
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 31,
+      "parent_id": 30,
+      "path": [
+        "R",
+        "R",
+        "L",
+        "R",
+        "L"
+      ],
+      "depth": 5,
+      "G": [],
+      "H": [
+        []
+      ],
+      "G_in": [],
+      "H_in": [
+        [],
+        [
+          4,
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          4,
+          7
+        ]
+      ],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 0.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "trivial",
+        "detail": "|G|*|H| = 0 <= 1",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": null,
+        "aut_H": {
+          "order": 1,
+          "name": "C1",
+          "generators": [],
+          "orbits": [],
+          "active_vertices": [],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "trivial"
+        },
+        "aut_agree": null,
+        "aut_label": "",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 0,
+          "edge_sizes": [],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": true,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "labels": [
+            "ROH",
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            0
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 32,
+      "parent_id": 30,
+      "path": [
+        "R",
+        "R",
+        "L",
+        "R",
+        "R"
+      ],
+      "depth": 5,
+      "G": [
+        [
+          4,
+          7
+        ]
+      ],
+      "H": [
+        [
+          4
+        ],
+        [
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          4,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          4
+        ],
+        [
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "single_edge",
+        "detail": "|G| = 1 with an edge of size 2; H is its 2 singletons",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(4,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              7
+            ]
+          ],
+          "active_vertices": [
+            4,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(4,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              7
+            ]
+          ],
+          "active_vertices": [
+            4,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "C2",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 1,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            1,
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 33,
+      "parent_id": 27,
+      "path": [
+        "R",
+        "R",
+        "R"
+      ],
+      "depth": 3,
+      "G": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "H": [
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "pivot": 6,
+      "pivot_frequency": 0.6666666666666666,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [
+        34,
+        35
+      ],
+      "verdict": {
+        "dual": true,
+        "reason": "dual",
+        "detail": "both subproblems returned TRUE",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(4,5)"
+          ],
+          "orbits": [
+            [
+              4,
+              5
+            ],
+            [
+              6
+            ],
+            [
+              7
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 2,
+          "name": "C2",
+          "generators": [
+            "(4,5)"
+          ],
+          "orbits": [
+            [
+              4,
+              5
+            ],
+            [
+              6
+            ],
+            [
+              7
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "C2",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 2,
+          "edge_sizes": [
+            3,
+            2
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            2
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 4,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": false,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 3,
+          "edge_sizes": [
+            2,
+            2,
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            2,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 2,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 34,
+      "parent_id": 33,
+      "path": [
+        "R",
+        "R",
+        "R",
+        "L"
+      ],
+      "depth": 4,
+      "G": [
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H": [
+        [
+          4
+        ],
+        [
+          5
+        ],
+        [
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          4
+        ],
+        [
+          5
+        ],
+        [
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "single_edge",
+        "detail": "|G| = 1 with an edge of size 3; H is its 3 singletons",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 6,
+          "name": "S3",
+          "generators": [
+            "(4,5,7)",
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              5,
+              7
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_H": {
+          "order": 6,
+          "name": "S3",
+          "generators": [
+            "(4,5,7)",
+            "(5,7)"
+          ],
+          "orbits": [
+            [
+              4,
+              5,
+              7
+            ]
+          ],
+          "active_vertices": [
+            4,
+            5,
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "abelian": false,
+          "backend": "python",
+          "naming_method": "catalogue"
+        },
+        "aut_agree": true,
+        "aut_label": "S3",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            3
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 3,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": false,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": false,
+            "triangle_free": false,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Weakly chordal",
+              "Perfect"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 3,
+          "edge_sizes": [
+            1,
+            1,
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    },
+    {
+      "node_id": 35,
+      "parent_id": 33,
+      "path": [
+        "R",
+        "R",
+        "R",
+        "R"
+      ],
+      "depth": 4,
+      "G": [
+        [
+          7
+        ]
+      ],
+      "H": [
+        [
+          7
+        ]
+      ],
+      "G_in": [
+        [
+          7
+        ]
+      ],
+      "H_in": [
+        [
+          4,
+          5,
+          7
+        ],
+        [
+          7
+        ]
+      ],
+      "n": 7,
+      "removed_G": [],
+      "removed_H": [
+        [
+          4,
+          5,
+          7
+        ]
+      ],
+      "pivot": null,
+      "pivot_frequency": null,
+      "epsilon": 1.0,
+      "split_branch": "",
+      "children": [],
+      "verdict": {
+        "dual": true,
+        "reason": "trivial",
+        "detail": "|G|*|H| = 1 <= 1",
+        "certificate": null,
+        "witness_edges": []
+      },
+      "analysis": {
+        "aut_G": {
+          "order": 1,
+          "name": "C1",
+          "generators": [],
+          "orbits": [
+            [
+              7
+            ]
+          ],
+          "active_vertices": [
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "trivial"
+        },
+        "aut_H": {
+          "order": 1,
+          "name": "C1",
+          "generators": [],
+          "orbits": [
+            [
+              7
+            ]
+          ],
+          "active_vertices": [
+            7
+          ],
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "abelian": true,
+          "backend": "python",
+          "naming_method": "trivial"
+        },
+        "aut_agree": true,
+        "aut_label": "C1",
+        "props_G": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        },
+        "props_H": {
+          "n_vertices": 7,
+          "n_edges": 1,
+          "edge_sizes": [
+            1
+          ],
+          "degrees": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "sperner": true,
+          "conformal": false,
+          "nonconformal_clique": [
+            1
+          ],
+          "alpha_acyclic": true,
+          "read_once": false,
+          "graph_classes": {
+            "n": 7,
+            "m": 0,
+            "cograph": true,
+            "chordal": true,
+            "bipartite": true,
+            "split": true,
+            "weakly_chordal": true,
+            "perfect": true,
+            "chordal_bipartite": true,
+            "triangle_free": true,
+            "names": [
+              "Cograph",
+              "Chordal",
+              "Split",
+              "Bipartite",
+              "Chordal bipartite",
+              "Weakly chordal",
+              "Perfect",
+              "Triangle-free"
+            ]
+          },
+          "isolated_vertices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "labels": [
+            "alpha-acyclic",
+            "Not conformal"
+          ]
+        }
+      }
+    }
+  ]
+}

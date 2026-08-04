@@ -1,0 +1,160 @@
+{
+  "id": "8ver-verbatim",
+  "name": "8-Ver (as published)",
+  "family": "reinforcement-learning search results of [SS24]",
+  "source": "Islam, 'Tracing the Effects of Symmetry in Hypergraphs On the Fredman-Khachiyan Algorithm', MSc thesis, SFU 2024, Section 5.2.1, p.50",
+  "provenance": "verbatim",
+  "n_vertices": 8,
+  "G": [
+    [
+      2,
+      6,
+      7,
+      8
+    ],
+    [
+      3,
+      7,
+      8
+    ],
+    [
+      1,
+      4,
+      5
+    ],
+    [
+      2,
+      5,
+      6
+    ],
+    [
+      1,
+      3,
+      4
+    ]
+  ],
+  "H": [
+    [
+      3,
+      4,
+      6
+    ],
+    [
+      2,
+      3,
+      5
+    ],
+    [
+      8,
+      1,
+      2
+    ],
+    [
+      8,
+      3,
+      5
+    ],
+    [
+      4,
+      5,
+      7
+    ],
+    [
+      2,
+      4,
+      7
+    ],
+    [
+      1,
+      5,
+      7
+    ],
+    [
+      1,
+      2,
+      7
+    ],
+    [
+      3,
+      5,
+      7
+    ],
+    [
+      1,
+      3,
+      7
+    ],
+    [
+      8,
+      1,
+      6
+    ],
+    [
+      8,
+      4,
+      6
+    ],
+    [
+      3,
+      5,
+      6
+    ],
+    [
+      8,
+      2,
+      4
+    ],
+    [
+      8,
+      1,
+      5
+    ],
+    [
+      2,
+      3,
+      4
+    ],
+    [
+      4,
+      6,
+      7
+    ],
+    [
+      1,
+      3,
+      6
+    ],
+    [
+      8,
+      4,
+      5
+    ]
+  ],
+  "notes": "NOT a transversal pair as printed. H lists 19 edges; Tr(G) has 20. H omits {1,2,3} and {1,6,7}, and includes {1,3,7}, which is not a transversal of G at all -- it misses the edge {2,5,6}. Kept verbatim; see instance '8ver' for the repair.",
+  "expected": {
+    "dual": false,
+    "epsilon": "8/19",
+    "n_edges_G": 5,
+    "n_edges_H": 19,
+    "fka": {
+      "faithful": {
+        "nodes": 1,
+        "depth": 0
+      },
+      "modified": {
+        "nodes": 1,
+        "depth": 0
+      }
+    },
+    "fkb": {
+      "faithful": {
+        "nodes": 1,
+        "depth": 0
+      },
+      "multiple": {
+        "nodes": 1,
+        "depth": 0
+      }
+    }
+  }
+}

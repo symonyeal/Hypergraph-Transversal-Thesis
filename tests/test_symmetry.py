@@ -210,24 +210,71 @@ def test_conformal_and_normal_are_the_same_predicate():
     assert is_normal is is_conformal
 
 
-def test_thesis_claim_that_aut_g_equals_aut_h_has_a_counterexample():
+def test_thesis_claim_that_aut_g_equals_aut_h_needs_a_transversal_pair():
     """Thesis p.51 states G and H share an automorphism group at every node.
 
-    That holds on the corrected instances but fails on 6-A as published, which
-    is also not a transversal pair -- so the claim is untested there rather
-    than contradicted. Recorded so the distinction is not lost.
+    The apparent counterexample is 6-A *as published*, where Aut(G) = C2 and
+    Aut(H) = C2 x C2. That pair is not a transversal pair, which is exactly the
+    hypothesis the claim carries, so it never contradicted it. Recorded so the
+    distinction is not lost -- and so a future edit cannot quietly promote the
+    archived form back into the library and call it a counterexample.
     """
-    verbatim = load("6a-verbatim")
+    from fka.instances import load_archived
+    from fka.transversal import is_dual_oracle
+
+    verbatim = load_archived("6a-verbatim")
     assert automorphism_group(verbatim.G).order == 2
     assert automorphism_group(verbatim.H).order == 4
-    assert verbatim.expected["dual"] is False
+    assert is_dual_oracle(verbatim.G, verbatim.H) is False
 
     corrected = load("6a")
+    assert is_dual_oracle(corrected.G, corrected.H) is True
     assert (
         automorphism_group(corrected.G).order
         == automorphism_group(corrected.H).order
         == 4
     )
+
+
+@pytest.mark.slow
+@pytest.mark.parametrize("algorithm", ["fk-a", "fk-b"])
+def test_aut_g_equals_aut_h_at_every_node_of_both_algorithms(algorithm):
+    """The thesis' p.51 claim, extended to every node and to FK-B.
+
+    The thesis states it of the input pair. Measured over the whole recursion of
+    both algorithms on every live instance, it holds at every node where both
+    groups were computed -- 3455 of them as of 2026-08-04, with zero
+    disagreements. See docs/fk-a-vs-fk-b.md section 7.
+
+    FK-B is the part the thesis never examined: it decomposes by forcing whole
+    clauses and monomials rather than single vertices, so there was no reason in
+    advance for its subproblems to preserve the property.
+    """
+    from fka.algorithm import fk_a
+    from fka.analysis import AnalysisOptions, annotate
+    from fka.instances import load_all
+    from fkb.algorithm import fk_b
+
+    build = fk_a if algorithm == "fk-a" else fk_b
+    opts = AnalysisOptions(graph_classes=False, skip_group_above=20)
+
+    checked = 0
+    for inst in load_all():
+        tree = build(inst.G, inst.H, instance=inst.id)
+        if len(tree) > 200:  # sdfp-sd-2 is covered by the committed report
+            continue
+        annotate(tree, opts)
+        for node in tree:
+            agree = node.analysis.get("aut_agree")
+            if agree is None:
+                continue  # one side's group was above the cap
+            assert agree is True, (
+                f"{algorithm} {inst.id} node {node.node_id}: "
+                f"{node.analysis['aut_G']['name']} vs {node.analysis['aut_H']['name']} "
+                f"for {node.G.label()} / {node.H.label()}"
+            )
+            checked += 1
+    assert checked > 100, f"only {checked} nodes had both groups; not meaningful"
 
 
 # ----------------------------------------------------------------------

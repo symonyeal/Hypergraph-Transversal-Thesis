@@ -28,6 +28,15 @@ def _escape(s: str) -> str:
     return s.replace("\\", "\\\\").replace('"', '\\"')
 
 
+def _sides(tree: RecursionTree) -> tuple[str, str]:
+    """The two side names this algorithm uses, e.g. ``("G", "H")``."""
+    from .report import ALGORITHM_STYLE
+
+    style = ALGORITHM_STYLE.get(tree.algorithm or "FK-A", ALGORITHM_STYLE["FK-A"])
+    a, b = style["sides"].split(",")
+    return a, b
+
+
 def _node_label(tree: RecursionTree, node_id: int, view: str) -> str:
     node = tree[node_id]
     a = node.analysis or {}
@@ -45,7 +54,8 @@ def _node_label(tree: RecursionTree, node_id: int, view: str) -> str:
             if classes:
                 lines.append(", ".join(classes[:2]))
     else:
-        lines.append(f"|G|={len(node.G)}  |H|={len(node.H)}")
+        left, right = _sides(tree)
+        lines.append(f"|{left}|={len(node.G)}  |{right}|={len(node.H)}")
         if node.pivot is not None:
             lines.append(f"split {node.pivot_label()}")
         elif node.verdict is not None:
@@ -57,17 +67,19 @@ def to_dot(tree: RecursionTree, *, view: str = "structure", rankdir: str = "TB")
     """Render ``tree`` as Graphviz DOT source.
 
     ``view`` selects the node labels, matching the HTML report's three views.
-    Left (``L``) edges are solid and right (``R``) edges dashed, as in the
-    report and the thesis figures.
+    Edge styles come from :meth:`RecursionNode.branch_style`, so FK-A's ``L``
+    is solid and ``R`` dashed as in the thesis figures, and FK-B's extra
+    per-clause and per-monomial subproblems are dotted.
     """
     if view not in _VIEWS:
         raise ValueError(f"unknown view {view!r}; expected one of {_VIEWS}")
 
+    algorithm = tree.algorithm or "FK-A"
     out = [
-        "digraph FKA {",
+        f"digraph {algorithm.replace('-', '')} {{",
         f"  rankdir={rankdir};",
         '  graph [fontname="Helvetica", labelloc="t", '
-        f'label="{_escape(tree.instance or "FK-A")}  ({view} view)"];',
+        f'label="{_escape(tree.instance or algorithm)}  ({algorithm}, {view} view)"];',
         '  node [shape=box, style="rounded,filled", fillcolor="#ffffff", '
         'fontname="Helvetica", fontsize=10];',
         '  edge [fontname="Helvetica", fontsize=9, color="#888888"];',
@@ -83,10 +95,9 @@ def to_dot(tree: RecursionTree, *, view: str = "structure", rankdir: str = "TB")
     for node in tree:
         for child_id in node.children:
             child = tree[child_id]
-            style = "solid" if child.branch == "L" else "dashed"
             out.append(
                 f'  n{node.node_id} -> n{child_id} '
-                f'[label="{child.branch}", style={style}];'
+                f'[label="{_escape(child.branch)}", style={child.branch_style()}];'
             )
     out.append("}")
     return "\n".join(out) + "\n"

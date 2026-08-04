@@ -66,6 +66,16 @@
         "nodes": 5,
         "depth": 2
       }
+    },
+    "fkb": {
+      "faithful": {
+        "nodes": 1,
+        "depth": 0
+      },
+      "multiple": {
+        "nodes": 1,
+        "depth": 0
+      }
     }
   }
 }

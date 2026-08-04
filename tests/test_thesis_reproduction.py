@@ -20,6 +20,7 @@ import pytest
 
 from fka.algorithm import fk_a
 from fka.instances import load
+from fkb.algorithm import fk_b
 
 #: instance id -> (node count, split vertices in node order, thesis reference)
 #: "-" marks a node that terminated without splitting.
@@ -102,32 +103,60 @@ def test_trivial_aut_matches_the_archived_run_log():
     assert got == logged
 
 
-def test_thesis_instances_that_are_not_transversal_pairs():
+def test_archived_verbatim_instances_are_not_transversal_pairs():
     """Two published instances are not dual as printed; both repairs are recorded.
 
-    Kept as a test so the finding is not lost: if a future edit "fixes" the
-    verbatim instances in place, this fails and says why.
+    The verbatim forms were archived on 2026-08-04 out of ``data/instances/``,
+    because every run against them answers "not dual" -- a fact about the
+    transcription, not about either algorithm. They are re-derived here from the
+    archive so the finding stays executable: if a future edit "fixes" them in
+    place, or drops them, this fails and says why.
     """
+    from fka.instances import load_archived
+    from fka.transversal import is_dual_oracle
+
     for verbatim_id, corrected_id in (
         ("6a-verbatim", "6a"),
         ("8ver-verbatim", "8ver"),
     ):
-        verbatim, corrected = load(verbatim_id), load(corrected_id)
-        assert verbatim.expected["dual"] is False, verbatim_id
-        assert corrected.expected["dual"] is True, corrected_id
+        verbatim = load_archived(verbatim_id)
+        corrected = load(corrected_id)
+        assert (verbatim.path.parent / "README.md").exists(), (
+            "an archive must state what was withdrawn and why"
+        )
+
+        # Re-derived, not read from the stored baseline.
+        assert is_dual_oracle(verbatim.G, verbatim.H) is False, verbatim_id
+        assert is_dual_oracle(corrected.G, corrected.H) is True, corrected_id
         assert corrected.provenance == "corrected"
         assert corrected.notes.strip(), "a correction must state its evidence"
+
+        # Both algorithms must agree with the oracle on the archived form too.
+        assert fk_a(verbatim.G, verbatim.H).dual is False
+        assert fk_b(verbatim.G, verbatim.H).dual is False
+
+
+def test_archived_verbatim_instances_are_out_of_the_live_library():
+    from fka.instances import list_ids
+
+    assert "6a-verbatim" not in list_ids()
+    assert "8ver-verbatim" not in list_ids()
 
 
 def test_corrected_instances_reproduce_the_thesis_reported_epsilon():
     """The repairs are justified by matching the thesis' own reported values.
 
     6-A is quoted at epsilon = 1/2 and 8-Ver at 2/5 (thesis p.55). The verbatim
-    8-Ver gives 8/19; only the repair gives 2/5.
+    8-Ver gives 8/19; only the repair gives 2/5. That is the evidence for the
+    correction, so it is recomputed here rather than read from a baseline.
     """
+    from fka.instances import exact_epsilon, load_archived
+
     assert load("6a").expected["epsilon"] == "1/2"
     assert load("8ver").expected["epsilon"] == "2/5"
-    assert load("8ver-verbatim").expected["epsilon"] == "8/19"
+
+    archived = load_archived("8ver-verbatim")
+    assert str(exact_epsilon(archived.G, archived.H)) == "8/19"
 
 
 def test_committed_baselines_still_hold():

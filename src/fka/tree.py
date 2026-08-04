@@ -1,11 +1,10 @@
-"""The FK-A recursion tree.
+"""The recursion tree shared by FK-A and FK-B.
 
-Every recursive call of FK-A becomes one :class:`RecursionNode`. The thesis
-treats this tree as the primary object of study -- "The performance of FK-A is
-determined by the number of subproblems it generates, and this is reflected in
-the number of nodes of the recursion tree" (thesis p.12) -- and Chapter 5
-annotates each node with the automorphism group and hypergraph properties of
-its inputs.
+Every recursive call becomes one :class:`RecursionNode`. The thesis treats this
+tree as the primary object of study -- "The performance of FK-A is determined by
+the number of subproblems it generates, and this is reflected in the number of
+nodes of the recursion tree" (thesis p.12) -- and Chapter 5 annotates each node
+with the automorphism group and hypergraph properties of its inputs.
 
 The legacy implementation tracked this in module-level lists and dicts keyed by
 a global ``x`` that was never assigned, so every node overwrote the same entry.
@@ -13,6 +12,11 @@ Here the tree is an explicit, serialisable structure: nodes carry their own
 state, ``to_json``/``from_json`` round-trip losslessly, and analysis passes
 (automorphism groups, primal-graph classes) attach to nodes afterwards rather
 than being interleaved with the recursion.
+
+The model is algorithm-neutral. :mod:`fka.algorithm` builds binary ``L``/``R``
+trees; :mod:`fkb.algorithm` builds trees whose nodes may have many children.
+:attr:`RecursionTree.algorithm` records which one produced the tree, and the
+report and DOT writers label their output from it.
 """
 
 from __future__ import annotations
@@ -32,7 +36,7 @@ class Verdict:
     """Why a node concluded what it concluded.
 
     ``reason`` is a stable machine-readable code so experiment output can be
-    grouped without string-matching prose:
+    grouped without string-matching prose. FK-A uses:
 
     ``"dual"``               subtree confirmed duality
     ``"trivial"``            resolved by the ``|G|*|H| <= 1`` check (Alg. 1 Step 3)
@@ -43,12 +47,20 @@ class Verdict:
     ``"cond_iv_frequency"``  precondition (iv) failed: the ``2^-|e|`` sum is below 1
     ``"child_failed"``       a subproblem returned not-dual
 
+    FK-B's codes are listed in :mod:`fkb.algorithm`; it numbers its conditions
+    1-3 in its own order, so the two sets never collide.
+
     ``certificate`` is a bitset ``S`` satisfying thesis equation 2.1 -- it hits
     every edge of ``G`` and contains no edge of ``H`` -- when one could be
     constructed soundly. Precondition failures retain the thesis' structural
     witness (``witness_edges``) and also carry a set certificate when the exact
     search finds one. Never treat ``None`` as "no certificate exists"; it means
     none was built in this orientation.
+
+    ``certificates`` holds every certificate a node found when the caller asked
+    for all of them (FK-B's ``multiple`` variant, ported from ``MFK_B.m``). It
+    is empty when only one was sought, and ``certificates[0] == certificate``
+    otherwise.
     """
 
     dual: bool
@@ -56,9 +68,10 @@ class Verdict:
     detail: str = ""
     certificate: Optional[int] = None
     witness_edges: tuple[int, ...] = ()
+    certificates: tuple[int, ...] = ()
 
     def to_json(self) -> dict[str, Any]:
-        return {
+        out = {
             "dual": self.dual,
             "reason": self.reason,
             "detail": self.detail,
@@ -71,6 +84,12 @@ class Verdict:
                 [v + 1 for v in bitset_to_vertices(e)] for e in self.witness_edges
             ],
         }
+        # Omitted when unused so FK-A's serialised trees are unchanged.
+        if self.certificates:
+            out["certificates"] = [
+                [v + 1 for v in bitset_to_vertices(s)] for s in self.certificates
+            ]
+        return out
 
 
 @dataclass(slots=True)
@@ -94,6 +113,10 @@ class RecursionNode:
     pivot: Optional[int] = None
     pivot_frequency: Optional[float] = None
     epsilon: Optional[float] = None
+    #: Which of the algorithm's split branches this node took. FK-A has only
+    #: one and leaves it empty; FK-B records ``"mu_D"``, ``"mu_C"`` or
+    #: ``"split"``, which is what decides how many children the node has.
+    split_branch: str = ""
     children: list[int] = field(default_factory=list)
     verdict: Optional[Verdict] = None
     # Filled in by analysis passes (automorphism groups, property checks).
@@ -109,8 +132,27 @@ class RecursionNode:
 
     @property
     def branch(self) -> str:
-        """``"L"``, ``"R"``, or ``"root"``."""
+        """The step that produced this node, or ``"root"``.
+
+        FK-A uses ``"L"`` and ``"R"``. FK-B labels its subproblems ``"x=0"``,
+        ``"x=1"``, ``"c1"``.. and ``"m1"``.., so treat this as a display label
+        and use :meth:`branch_style` when a renderer needs a fixed vocabulary.
+        """
         return self.path[-1] if self.path else "root"
+
+    def branch_style(self) -> str:
+        """``"solid"``, ``"dashed"`` or ``"dotted"`` for this node's incoming edge.
+
+        The first subproblem of a split is solid and the second dashed, in both
+        algorithms; FK-B's per-clause and per-monomial subproblems -- the ones
+        with no FK-A counterpart -- are dotted.
+        """
+        b = self.branch
+        if b in ("L", "x=0"):
+            return "solid"
+        if b in ("R", "x=1"):
+            return "dashed"
+        return "dotted"
 
     def pivot_label(self) -> str:
         """The split vertex in the thesis' 1-indexed ``v_i`` notation."""
@@ -136,6 +178,7 @@ class RecursionNode:
             "pivot": None if self.pivot is None else self.pivot + 1,
             "pivot_frequency": self.pivot_frequency,
             "epsilon": self.epsilon,
+            "split_branch": self.split_branch,
             "children": list(self.children),
             "verdict": None if self.verdict is None else self.verdict.to_json(),
             "analysis": self.analysis,
@@ -170,6 +213,9 @@ class RecursionNode:
                 witness_edges=tuple(
                     sum(1 << (x - 1) for x in e) for e in v.get("witness_edges", [])
                 ),
+                certificates=tuple(
+                    sum(1 << (x - 1) for x in s) for s in v.get("certificates", [])
+                ),
             )
         return cls(
             node_id=d["node_id"],
@@ -184,6 +230,7 @@ class RecursionNode:
             pivot=None if d["pivot"] is None else d["pivot"] - 1,
             pivot_frequency=d.get("pivot_frequency"),
             epsilon=d.get("epsilon"),
+            split_branch=d.get("split_branch", ""),
             children=list(d.get("children", [])),
             verdict=verdict,
             analysis=d.get("analysis", {}),
@@ -192,11 +239,17 @@ class RecursionNode:
 
 @dataclass(slots=True)
 class RecursionTree:
-    """The full trace of one FK-A run."""
+    """The full trace of one FK-A or FK-B run.
+
+    ``algorithm`` is the label the reports and DOT output carry, and the key
+    experiments group by. ``pivot_rule`` holds FK-B's split rule as well, since
+    the two play the same role.
+    """
 
     nodes: dict[int, RecursionNode] = field(default_factory=dict)
     root_id: Optional[int] = None
     instance: str = ""
+    algorithm: str = "FK-A"
     variant: str = ""
     pivot_rule: str = ""
     dual: Optional[bool] = None
@@ -254,11 +307,15 @@ class RecursionTree:
     def summary(self) -> dict[str, Any]:
         """Aggregate statistics -- the numbers the experiments compare."""
         by_reason: dict[str, int] = {}
+        by_branch: dict[str, int] = {}
         for node in self:
             if node.verdict is not None:
                 by_reason[node.verdict.reason] = by_reason.get(node.verdict.reason, 0) + 1
-        return {
+            if node.split_branch:
+                by_branch[node.split_branch] = by_branch.get(node.split_branch, 0) + 1
+        out = {
             "instance": self.instance,
+            "algorithm": self.algorithm,
             "variant": self.variant,
             "pivot_rule": self.pivot_rule,
             "dual": self.dual,
@@ -268,11 +325,17 @@ class RecursionTree:
             "root_epsilon": self.root.epsilon if self.nodes else None,
             "verdicts": by_reason,
         }
+        # Only FK-B has more than one split branch, so this stays out of FK-A's
+        # summaries rather than sitting there permanently empty.
+        if by_branch:
+            out["branches"] = by_branch
+        return out
 
     # ------------------------------------------------------------------
     def to_json(self) -> dict[str, Any]:
         return {
             "instance": self.instance,
+            "algorithm": self.algorithm,
             "variant": self.variant,
             "pivot_rule": self.pivot_rule,
             "dual": self.dual,
@@ -292,6 +355,7 @@ class RecursionTree:
     def from_json(cls, d: dict[str, Any]) -> "RecursionTree":
         tree = cls(
             instance=d.get("instance", ""),
+            algorithm=d.get("algorithm", "FK-A"),
             variant=d.get("variant", ""),
             pivot_rule=d.get("pivot_rule", ""),
             dual=d.get("dual"),

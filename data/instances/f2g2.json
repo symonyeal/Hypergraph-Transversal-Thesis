@@ -80,6 +80,16 @@
         "nodes": 25,
         "depth": 6
       }
+    },
+    "fkb": {
+      "faithful": {
+        "nodes": 7,
+        "depth": 2
+      },
+      "multiple": {
+        "nodes": 7,
+        "depth": 2
+      }
     }
   }
 }

@@ -19,7 +19,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from fka.instances import FANO_LINES, Instance, instance_dir, refresh_expected  # noqa: E402
+from fka.instances import (  # noqa: E402
+    FANO_LINES,
+    Instance,
+    archive_root,
+    instance_dir,
+    refresh_expected,
+)
 
 THESIS = "Islam, 'Tracing the Effects of Symmetry in Hypergraphs On the Fredman-Khachiyan Algorithm', MSc thesis, SFU 2024"
 
@@ -244,6 +250,51 @@ DEFINITIONS: list[dict] = [
 ]
 
 
+def _self_dual_fano_spec(k: int) -> dict:
+    """The ``SDFP(k)`` benchmark as a ``(E, E)`` instance.
+
+    Self-transversal, so both sides are the same hypergraph and the pair has no
+    free parameters. Generated from :func:`fka.instances.self_dual_fano` rather
+    than copied from the FK-B snapshot's ``.mat`` files: the construction is
+    stated in full there, the generated form reproduces the published shape
+    exactly, and generating it keeps the repository free of third-party data
+    whose redistribution terms are not established.
+    """
+    from fka.instances import self_dual_fano
+
+    edges = self_dual_fano(k).to_sets(one_indexed=True)
+    return {
+        "id": f"sdfp-sd-{k}",
+        "name": f"SDFP({k}) — self-dualised Fano plane",
+        "family": "self-dual dualisation benchmark",
+        "source": (
+            "Self-dualisation of thesis Definition 5.2.1's k disjoint Fano "
+            "planes. Matches the shape of SDFP16_CNF_DNF.mat (k=2) and "
+            "SDFP23_CNF_DNF.mat (k=3) in the FK-B MATLAB reference"
+        ),
+        "provenance": "derived",
+        "n_vertices": 7 * k + 2,
+        "G": edges,
+        "H": edges,
+        "notes": (
+            f"On 7k+2 = {7 * k + 2} vertices with k = {k}. Writing a and b for "
+            "the two extra vertices, the edges are {a,b}; every Fano line plus "
+            "b; and every choice of one line per copy plus a. That is "
+            f"7^k + 7k + 1 = {7**k + 7 * k + 1} edges. Self-transversal: "
+            "Tr(E) = E, verified against the Berge oracle, so (E, E) is a "
+            "transversal pair by construction and the answer is always TRUE. "
+            "This is the shape that separates the two algorithms most sharply "
+            "-- see docs/fk-a-vs-fk-b.md. Vertices use this project's "
+            "FANO_LINES labelling, which is isomorphic to but not identical "
+            "with the MATLAB snapshot's, so node counts may differ from a "
+            "MATLAB run by the amount vertex numbering moves the split choice."
+        ),
+    }
+
+
+DEFINITIONS.extend(_self_dual_fano_spec(k) for k in (1, 2))
+
+
 def _load_trivial_aut() -> tuple[list[list[int]], list[list[int]]]:
     """Parse the two incidence matrices out of the archived decomposition log."""
     import ast
@@ -275,11 +326,23 @@ def _load_trivial_aut() -> tuple[list[list[int]], list[list[int]]]:
     return grab("np_f"), grab("np_g")
 
 
+#: Instances withdrawn from the live library on 2026-08-04 because they are not
+#: transversal pairs as printed. They are still authored here so the archived
+#: files stay regenerable, but they are written to the archive, not to
+#: ``data/instances/``. See that directory's README, and the corrected ``6a``
+#: and ``8ver`` above.
+WITHDRAWN = {"6a-verbatim", "8ver-verbatim"}
+
+ARCHIVE = "20260804-verbatim-nontransversal"
+
+
 def main() -> int:
     target = instance_dir()
     target.mkdir(parents=True, exist_ok=True)
+    archive = archive_root() / ARCHIVE
+    archive.mkdir(parents=True, exist_ok=True)
 
-    written = []
+    live = 0
     for spec in DEFINITIONS:
         spec = dict(spec)
         if spec["id"] == "trivial-aut-1":
@@ -296,18 +359,19 @@ def main() -> int:
             notes=spec.get("notes", ""),
         )
         refresh_expected(inst)
-        path = inst.save(target / f"{inst.id}.json")
+        withdrawn = inst.id in WITHDRAWN
+        path = inst.save((archive if withdrawn else target) / f"{inst.id}.json")
+        live += not withdrawn
         e = inst.expected
-        written.append(inst)
         print(
             f"{inst.id:16} dual={str(e['dual']):5} eps={e['epsilon']:>5} "
             f"|G|={e['n_edges_G']:3} |H|={e['n_edges_H']:3} "
-            f"nodes faithful/modified="
-            f"{e['fka']['faithful']['nodes']:4}/{e['fka']['modified']['nodes']:<4} "
-            f"-> {path.name}"
+            f"fk-a={e['fka']['modified']['nodes']:5} fk-b={e['fkb']['faithful']['nodes']:5} "
+            f"-> {'_archive/' + ARCHIVE if withdrawn else 'data/instances'}/{path.name}"
         )
 
-    print(f"\n{len(written)} instances written to {target}")
+    print(f"\n{live} live instances in {target}")
+    print(f"{len(WITHDRAWN)} withdrawn instances in {archive}")
     return 0
 
 

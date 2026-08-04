@@ -44,11 +44,21 @@ class AnalysisOptions:
     hyperedges than this. The search is fast on the thesis instances but is
     exponential in the worst case, and one runaway node should not stall a
     whole experiment.
+
+    Both defaults are set from measurement, not from taste. On the benchmark
+    instance ``sdfp-sd-2`` -- 16 vertices, 64 edges, ``|Aut| = 56448`` -- the
+    group search takes about 19 seconds and the graph classification about 4.6,
+    *per distinct node*, against roughly a millisecond on every thesis instance.
+    A tree with a thousand nodes therefore stops being annotatable somewhere
+    between those two regimes, so the caps sit below the benchmark and above
+    everything in the published work: the largest thesis instance is
+    ``trivial-aut-1`` at 35 edges and 8 vertices, and it is comfortably inside.
+    Raise them deliberately, per run, when a specific group is the question.
     """
 
     graph_classes: bool = True
-    max_vertices_for_graph_classes: int = 16
-    skip_group_above: int = 64
+    max_vertices_for_graph_classes: int = 14
+    skip_group_above: int = 40
     include_isolated: bool = False
     backend: Optional[str] = None
 
