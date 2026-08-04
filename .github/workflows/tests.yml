@@ -1,0 +1,39 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest
+      - run: python -m fka verify
+
+  sage:
+    name: SageMath 10.9
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/sagemath/sage-binder-env:10.9
+    steps:
+      - uses: actions/checkout@v4
+      - run: /sage/sage -python -m pip install --user -e ".[dev]"
+      - run: /sage/sage -python -m pytest
+      - run: /sage/sage -python -m fka verify

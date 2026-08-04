@@ -1,0 +1,53 @@
+{
+  "id": "k3",
+  "name": "K3",
+  "family": "self-transversal projective plane (smallest)",
+  "source": "Islam, 'Tracing the Effects of Symmetry in Hypergraphs On the Fredman-Khachiyan Algorithm', MSc thesis, SFU 2024, Observation 5.2.3, p.54",
+  "provenance": "verbatim",
+  "n_vertices": 3,
+  "G": [
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      1,
+      3
+    ]
+  ],
+  "H": [
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      1,
+      3
+    ]
+  ],
+  "notes": "The complete 2-uniform graph on 3 vertices, self-transversal, all frequencies 2/3. The smallest finite projective plane and the n = 3 tightness witness for the frequency bound.",
+  "expected": {
+    "dual": true,
+    "epsilon": "2/3",
+    "n_edges_G": 3,
+    "n_edges_H": 3,
+    "fka": {
+      "faithful": {
+        "nodes": 7,
+        "depth": 2
+      },
+      "modified": {
+        "nodes": 3,
+        "depth": 1
+      }
+    }
+  }
+}

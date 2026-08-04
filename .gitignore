@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+build/
+dist/
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store
+
+# Local reference libraries are not redistributed in the public repository.
+# Their provenance/licensing is separate from this project's GPL source.
+Reading/*.pdf
+FK- B/FK-master/

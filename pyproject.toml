@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fka"
+version = "1.0.0"
+description = "Fredman-Khachiyan algorithm A: recursion trees and hypergraph symmetry"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "GPL-3.0-or-later" }
+authors = [{ name = "Saimon Y. Islam" }]
+keywords = ["hypergraph", "transversal", "dualization", "fredman-khachiyan", "automorphism"]
+
+# Deliberately minimal. networkx is used for chordality, bipartiteness and
+# maximal cliques; everything else is stdlib. SageMath is optional and is never
+# imported at module load -- see src/fka/backends/__init__.py and docs/sagemath.md.
+dependencies = ["networkx>=3.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.scripts]
+fka = "fka.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+# Lets `pytest` work from a clean checkout with no install step.
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+    "slow: exhaustive or randomised checks; deselect with -m 'not slow'",
+    "sage: requires SageMath; skipped automatically when it is unavailable",
+]

@@ -1,0 +1,55 @@
+
+
+LoadPackage("sonata");
+LoadPackage("grape");
+
+IdProperties := function(generators, expectedCardinality)
+    local G, actualCardinality, structureDescription, orbits, stabilizers, center, 
+          subgroups, normalSubgroups, conjClassSubgroups, autGroup, subgroup, nsubgroup;
+
+    # Create the group from given generators
+    G := Group(generators);
+    actualCardinality := Size(G);
+
+    # Check for cardinality mismatch and handle appropriately
+    if actualCardinality <> expectedCardinality then
+        Print("Warning: The actual cardinality ", actualCardinality,
+              " does not match the expected cardinality ", expectedCardinality, "\n");
+        subgroups := Subgroups(G);
+        return Filtered(subgroups, H -> Size(H) = expectedCardinality);
+    else 
+        Print("Cardinality matches expected value of ", expectedCardinality, "\n");
+    fi;
+
+    # Calculate various properties of the group
+    structureDescription := StructureDescription(G);
+    orbits := Orbits(G, MovedPoints(G));
+    stabilizers := List(generators, g -> Stabilizer(G, g));
+    center := Center(G);
+    subgroups := Subgroups(G);
+    normalSubgroups := NormalSubgroups(G);
+    conjClassSubgroups := ConjugacyClassesSubgroups(G);
+    autGroup := AutomorphismGroup(G);
+
+    # Print details about the group and its structure
+    Print("Group Structure (Invariant under Operation+ Matching Cardinality): ", structureDescription, "\n");
+    Print("Orbits: ", orbits, "\n");
+    Print("Stabilizers: ", stabilizers, "\n");
+    Print("Center: ", StructureDescription(center), ", Elements: ", Elements(center), "\n");
+   
+    #for subgroup in subgroups do
+    #    Print("  ", StructureDescription(subgroup), ", Cardinality: ", Size(subgroup), ", Elements: ", Elements(subgroup), "\n");
+    #od;
+    #Print("Normal Subgroups (", Length(normalSubgroups), " found): ", Elements(normalSubgroups), "\n");
+    #for nsubgroup in normalSubgroups do
+    #    Print("  ", StructureDescription(nsubgroup), ", Cardinality: ", Size(nsubgroup), ", Elements: ", Elements(nsubgroup), "\n");
+    #od;
+    #Print("Conjugacy Classes of Subgroups: ", Length(conjClassSubgroups), " found: ", Elements(conjClassSubgroups), "\n");
+    Print("Automorphism Group: ", Size(autGroup), "\n");
+end;
+
+# Example usage
+generators:=[(1,3)(4,6)];  # Example generators for the function
+expectedCardinality := 2;  # Expected cardinality of the group
+IdProperties(generators, expectedCardinality);
+

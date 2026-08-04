@@ -1,0 +1,119 @@
+{
+  "id": "7ver",
+  "name": "7-Ver",
+  "family": "reinforcement-learning search results of [SS24]",
+  "source": "Islam, 'Tracing the Effects of Symmetry in Hypergraphs On the Fredman-Khachiyan Algorithm', MSc thesis, SFU 2024, Section 5.2.1, p.50",
+  "provenance": "verbatim",
+  "n_vertices": 7,
+  "G": [
+    [
+      1,
+      2,
+      6
+    ],
+    [
+      1,
+      5,
+      7
+    ],
+    [
+      3,
+      4,
+      7
+    ],
+    [
+      2,
+      5,
+      7
+    ],
+    [
+      1,
+      5,
+      6
+    ],
+    [
+      1,
+      3,
+      7
+    ],
+    [
+      3,
+      4,
+      5
+    ],
+    [
+      2,
+      3,
+      4
+    ],
+    [
+      2,
+      4,
+      6
+    ],
+    [
+      1,
+      6,
+      7
+    ],
+    [
+      2,
+      5,
+      6
+    ]
+  ],
+  "H": [
+    [
+      3,
+      6,
+      7
+    ],
+    [
+      3,
+      5,
+      6
+    ],
+    [
+      1,
+      2,
+      3
+    ],
+    [
+      2,
+      5,
+      7
+    ],
+    [
+      4,
+      6,
+      7
+    ],
+    [
+      1,
+      4,
+      5
+    ],
+    [
+      1,
+      2,
+      4
+    ]
+  ],
+  "notes": "epsilon = 5/11, suboptimal against the Fano plane's 3/7. The only instance from [SS24] that is not conformal (thesis p.55).",
+  "expected": {
+    "dual": true,
+    "epsilon": "5/11",
+    "n_edges_G": 11,
+    "n_edges_H": 7,
+    "fka": {
+      "faithful": {
+        "nodes": 39,
+        "depth": 6
+      },
+      "modified": {
+        "nodes": 21,
+        "depth": 5
+      }
+    }
+  }
+}

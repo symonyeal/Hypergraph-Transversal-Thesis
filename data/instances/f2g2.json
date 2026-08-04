@@ -1,0 +1,85 @@
+{
+  "id": "f2g2",
+  "name": "f2 / g2",
+  "family": "read-once, GK-family (Hertel's Mark's class)",
+  "source": "Islam, 'Tracing the Effects of Symmetry in Hypergraphs On the Fredman-Khachiyan Algorithm', MSc thesis, SFU 2024, Section 5.2.1, p.48",
+  "provenance": "verbatim",
+  "n_vertices": 8,
+  "G": [
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      5,
+      7
+    ],
+    [
+      5,
+      8
+    ],
+    [
+      6,
+      7
+    ],
+    [
+      6,
+      8
+    ]
+  ],
+  "H": [
+    [
+      1,
+      2,
+      7,
+      8
+    ],
+    [
+      3,
+      4,
+      5,
+      6
+    ],
+    [
+      1,
+      2,
+      5,
+      6
+    ],
+    [
+      3,
+      4,
+      7,
+      8
+    ]
+  ],
+  "notes": "The worked example of thesis Figure 5.1. Its primal graph is two disjoint C4s, so Aut is D4 wr S2 of order 128 -- the thesis writes this as (((C2 x C2 x C2 x C2) : C2) : C2) : C2 and notes the wreath form on p.53. Reproduces the published recursion tree exactly: 25 nodes under the modified variant, with split vertices v1 v2 v5 v6 - - - v3 - v4 v5 v6 - - - - v3 - v4 v5 v6 - - - -.",
+  "expected": {
+    "dual": true,
+    "epsilon": "1/2",
+    "n_edges_G": 8,
+    "n_edges_H": 4,
+    "fka": {
+      "faithful": {
+        "nodes": 37,
+        "depth": 7
+      },
+      "modified": {
+        "nodes": 25,
+        "depth": 6
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+digraph FKA {
+  rankdir=TB;
+  graph [fontname="Helvetica", labelloc="t", label="8ver-verbatim  (structure view)"];
+  node [shape=box, style="rounded,filled", fillcolor="#ffffff", fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=9, color="#888888"];
+  n1 [label="Node 1\n|G|=5  |H|=19\ncond_iii_disjoint", fillcolor="#f7e8e4"];
+}

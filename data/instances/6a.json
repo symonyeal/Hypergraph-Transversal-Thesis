@@ -1,0 +1,65 @@
+{
+  "id": "6a",
+  "name": "6-A (corrected)",
+  "family": "reinforcement-learning search results of [SS24]",
+  "source": "Islam, 'Tracing the Effects of Symmetry in Hypergraphs On the Fredman-Khachiyan Algorithm', MSc thesis, SFU 2024, Section 5.2.1, p.49, with a corrected hyperedge",
+  "provenance": "corrected",
+  "n_vertices": 6,
+  "G": [
+    [
+      1,
+      5,
+      6
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      3,
+      4
+    ]
+  ],
+  "H": [
+    [
+      2,
+      4,
+      6
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      1,
+      3,
+      5
+    ]
+  ],
+  "notes": "Repair of '6a-verbatim': G's edge {v4,v5,v6} should be {v4,v5}. Evidence: Tr(H) as published equals exactly this G, the repaired pair is mutually transversal in both directions, and it reproduces the thesis' own reported values for the instance -- epsilon = 1/2 (p.55) and Aut = C2 x C2 at the root (Figure 5.4a). The verbatim pair reproduces neither. Note the thesis also quotes generators <(v1 v4),(v5 v6)> on p.18; (v1 v4) is not an automorphism of either form of G, though the group is C2 x C2 as stated.",
+  "expected": {
+    "dual": true,
+    "epsilon": "1/2",
+    "n_edges_G": 4,
+    "n_edges_H": 4,
+    "fka": {
+      "faithful": {
+        "nodes": 15,
+        "depth": 4
+      },
+      "modified": {
+        "nodes": 11,
+        "depth": 3
+      }
+    }
+  }
+}

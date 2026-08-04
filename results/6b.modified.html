@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>6-B</title></head><body><style>
+:root {
+  --bg: #fbfbfa; --panel: #ffffff; --ink: #1b1b19; --muted: #6b6b66;
+  --line: #e2e1dd; --accent: #2f6f5e; --accent-soft: #e5f0ec;
+  --ok: #2f6f5e; --bad: #a4402f; --warn: #8a6a1f;
+  --node: #ffffff; --node-ink: #1b1b19;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14150f; --panel: #1c1e17; --ink: #e9e8e1; --muted: #9a9a90;
+    --line: #32342a; --accent: #7fc5ac; --accent-soft: #1f2c26;
+    --ok: #7fc5ac; --bad: #e08b76; --warn: #d6b45e;
+    --node: #22241c; --node-ink: #e9e8e1;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #fbfbfa; --panel: #ffffff; --ink: #1b1b19; --muted: #6b6b66;
+  --line: #e2e1dd; --accent: #2f6f5e; --accent-soft: #e5f0ec;
+  --ok: #2f6f5e; --bad: #a4402f; --warn: #8a6a1f;
+  --node: #ffffff; --node-ink: #1b1b19;
+}
+:root[data-theme="dark"] {
+  --bg: #14150f; --panel: #1c1e17; --ink: #e9e8e1; --muted: #9a9a90;
+  --line: #32342a; --accent: #7fc5ac; --accent-soft: #1f2c26;
+  --ok: #7fc5ac; --bad: #e08b76; --warn: #d6b45e;
+  --node: #22241c; --node-ink: #e9e8e1;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.5 ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+code, .mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; }
+header { padding: 22px 24px 14px; border-bottom: 1px solid var(--line); }
+h1 { margin: 0 0 4px; font-size: 21px; font-weight: 620; letter-spacing: -0.01em; }
+.sub { color: var(--muted); font-size: 13.5px; margin-bottom: 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.chip {
+  border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px;
+  font-size: 12.5px; background: var(--panel); white-space: nowrap;
+}
+.chip b { font-weight: 600; }
+.chip.ok { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 42%, var(--line)); }
+.chip.bad { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 42%, var(--line)); }
+.bar {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  padding: 11px 24px; border-bottom: 1px solid var(--line); background: var(--panel);
+  position: sticky; top: 0; z-index: 5;
+}
+button {
+  font: inherit; font-size: 13px; padding: 5px 13px; border-radius: 7px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer;
+}
+button:hover { border-color: var(--accent); }
+button[aria-pressed="true"] {
+  background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600;
+}
+.spacer { flex: 1; }
+.wrap { display: flex; align-items: stretch; min-height: calc(100vh - 190px); }
+#canvas { flex: 1; overflow: hidden; position: relative; cursor: grab; min-width: 0; }
+#canvas.drag { cursor: grabbing; }
+svg { display: block; width: 100%; height: 100%; touch-action: none; }
+.link { fill: none; stroke: var(--line); stroke-width: 1.6px; }
+.link.R { stroke-dasharray: 4 3; }
+.nodebox { fill: var(--node); stroke: var(--line); stroke-width: 1.4px; rx: 9px; }
+.nodebox.sel { stroke: var(--accent); stroke-width: 2.4px; }
+g[role="button"]:focus { outline: none; }
+g[role="button"]:focus .nodebox { stroke: var(--accent); stroke-width: 2.4px; }
+.nodebox.leafok { stroke: color-mix(in srgb, var(--ok) 55%, var(--line)); }
+.nodebox.leafbad { stroke: color-mix(in srgb, var(--bad) 60%, var(--line)); }
+.n-id { font-size: 11px; fill: var(--muted); }
+.n-main { font-size: 13.5px; font-weight: 600; fill: var(--node-ink); }
+.n-sub { font-size: 11.5px; fill: var(--muted); }
+.edgelabel { font-size: 10.5px; fill: var(--muted); }
+aside {
+  width: 370px; flex: none; border-left: 1px solid var(--line);
+  background: var(--panel); padding: 18px 20px; overflow-y: auto;
+  max-height: calc(100vh - 190px);
+}
+aside h2 { margin: 0 0 3px; font-size: 16px; }
+aside .path { color: var(--muted); font-size: 12.5px; margin-bottom: 14px; }
+.field { margin-bottom: 13px; }
+.field .k {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--muted); margin-bottom: 3px;
+}
+.field .v { font-size: 13px; word-break: break-word; }
+.field .v.mono { font-size: 12px; }
+.tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.tag {
+  font-size: 11.5px; border: 1px solid var(--line); border-radius: 5px;
+  padding: 1px 7px; background: var(--bg);
+}
+.hint { color: var(--muted); font-size: 13px; }
+.legend { padding: 10px 24px 26px; color: var(--muted); font-size: 12.5px; }
+.legend b { color: var(--ink); font-weight: 600; }
+@media (max-width: 900px) {
+  .wrap { flex-direction: column; }
+  aside { width: auto; border-left: none; border-top: 1px solid var(--line); max-height: none; }
+  #canvas { height: 62vh; flex: none; }
+}
+</style>
+
+<header>
+  <h1>6-B</h1>
+  <div class="sub">Islam, &#x27;Tracing the Effects of Symmetry in Hypergraphs On the Fredman-Khachiyan Algorithm&#x27;, MSc thesis, SFU 2024, Section 5.2.1, p.49</div>
+  <div class="chips"><span class="chip ok"><b>Result</b> G = Tr(H)</span><span class="chip"><b>Nodes</b> 13</span><span class="chip"><b>Leaves</b> 7</span><span class="chip"><b>Depth</b> 4</span><span class="chip"><b>Variant</b> modified</span><span class="chip"><b>Pivot rule</b> degree_sum</span><span class="chip"><b>ε(G,H)</b> 1/2</span><span class="chip"><b>Provenance</b> verbatim</span><span class="chip"><b>Annotated</b> yes</span></div>
+</header>
+
+<div class="bar">
+  <button id="v-structure" aria-pressed="true" onclick="setView('structure')">Structure</button>
+  <button id="v-automorphism" aria-pressed="false" onclick="setView('automorphism')">Automorphism</button>
+  <button id="v-properties" aria-pressed="false" onclick="setView('properties')">Properties</button>
+  <span class="spacer"></span>
+  <button onclick="zoom(1.25)">Zoom in</button>
+  <button onclick="zoom(0.8)">Zoom out</button>
+  <button onclick="readable()">Readable</button>
+  <button onclick="fit()">Overview</button>
+  <button onclick="toggleTheme()">Theme</button>
+</div>
+
+<div class="wrap">
+  <div id="canvas"><svg id="svg"><g id="scene"></g></svg></div>
+  <aside id="panel"><p class="hint">Select a node to inspect the subproblem at that
+  point in the recursion.</p></aside>
+</div>
+
+<div class="legend">
+  <b>L</b> (solid) is the subproblem <span class="mono">(G<sub>1</sub>, H<sub>0</sub>&nbsp;&or;&nbsp;H<sub>1</sub>)</span>;
+  <b>R</b> (dashed) is <span class="mono">(H<sub>1</sub>, G<sub>0</sub>&nbsp;&or;&nbsp;G<sub>1</sub>)</span>.
+  Node numbering follows the recursion order, matching the thesis figures.
+  Drag to pan, scroll to zoom.
+</div>
+
+<script>
+const NODES = [{"id":1,"parent":null,"x":472.5,"y":0,"depth":0,"branch":"root","path":"root","gs":8,"hs":3,"pivot":"v1","eps":0.5,"dual":true,"reason":"dual","detail":"both subproblems returned TRUE","G":"{1,2,3} {1,2,6} {1,3,5} {1,5,6} {2,3,4} {2,4,6} {3,4,5} {4,5,6}","H":"{1,4} {2,5} {3,6}","removedG":"","removedH":"","autLabel":"C2 x S4","autAgree":true,"autG":{"order":48,"name":"C2 x S4","generators":["(1,2,3,4,5,6)","(1,2,6,4,5,3)","(2,3,5,6)"],"orbits":[[1,2,3,4,5,6]]},"propsG":{"labels":["ROH","Conformal"],"classes":["Cograph","Weakly chordal","Perfect"],"conformal":true,"readOnce":true,"alphaAcyclic":false},"autH":{"order":48,"name":"C2 x S4","generators":["(1,2,3,4,5,6)","(1,2,6,4,5,3)","(2,3,5,6)"],"orbits":[[1,2,3,4,5,6]]},"propsH":{"labels":["ROH","alpha-acyclic","Conformal"],"classes":["Cograph","Chordal","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":true,"readOnce":true,"alphaAcyclic":true}},{"id":2,"parent":1,"x":147.0,"y":132,"depth":1,"branch":"L","path":"L","gs":4,"hs":3,"pivot":"v4","eps":1.0,"dual":true,"reason":"dual","detail":"both subproblems returned TRUE","G":"{2,3,4} {2,4,6} {3,4,5} {4,5,6}","H":"{2,5} {3,6} {4}","removedG":"","removedH":"","autLabel":"D4","autAgree":true,"autG":{"order":8,"name":"D4","generators":["(2,3,5,6)","(3,6)"],"orbits":[[2,3,5,6],[4]]},"propsG":{"labels":["Not conformal"],"classes":["Cograph","Weakly chordal","Perfect"],"conformal":false,"readOnce":false,"alphaAcyclic":false},"autH":{"order":8,"name":"D4","generators":["(2,3,5,6)","(3,6)"],"orbits":[[2,3,5,6],[4]]},"propsH":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":3,"parent":2,"x":0.0,"y":264,"depth":2,"branch":"L","path":"LL","gs":0,"hs":1,"pivot":"","eps":0.0,"dual":true,"reason":"trivial","detail":"|G|*|H| = 0 <= 1","G":"(empty)","H":"{}","removedG":"","removedH":"{2,5} {3,6}","autLabel":"","autAgree":null,"propsG":{"labels":["ROH","alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":true,"alphaAcyclic":true},"autH":{"order":1,"name":"C1","generators":[],"orbits":[]},"propsH":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":4,"parent":2,"x":294.0,"y":264,"depth":2,"branch":"R","path":"LR","gs":2,"hs":4,"pivot":"v2","eps":0.5,"dual":true,"reason":"dual","detail":"both subproblems returned TRUE","G":"{2,5} {3,6}","H":"{2,3} {2,6} {3,5} {5,6}","removedG":"","removedH":"","autLabel":"D4","autAgree":true,"autG":{"order":8,"name":"D4","generators":["(2,3,5,6)","(3,6)"],"orbits":[[2,3,5,6]]},"propsG":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true},"autH":{"order":8,"name":"D4","generators":["(2,3,5,6)","(3,6)"],"orbits":[[2,3,5,6]]},"propsH":{"labels":["Not conformal"],"classes":["Cograph","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":false}},{"id":5,"parent":4,"x":168.0,"y":396,"depth":3,"branch":"L","path":"LRL","gs":1,"hs":2,"pivot":"","eps":1.0,"dual":true,"reason":"single_edge","detail":"|G| = 1 with an edge of size 2; H is its 2 singletons","G":"{3,6}","H":"{3} {6}","removedG":"","removedH":"{3,5} {5,6}","autLabel":"C2","autAgree":true,"autG":{"order":2,"name":"C2","generators":["(3,6)"],"orbits":[[3,6]]},"propsG":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true},"autH":{"order":2,"name":"C2","generators":["(3,6)"],"orbits":[[3,6]]},"propsH":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":6,"parent":4,"x":420.0,"y":396,"depth":3,"branch":"R","path":"LRR","gs":2,"hs":2,"pivot":"v5","eps":1.0,"dual":true,"reason":"dual","detail":"both subproblems returned TRUE","G":"{3,5} {5,6}","H":"{3,6} {5}","removedG":"","removedH":"","autLabel":"C2","autAgree":true,"autG":{"order":2,"name":"C2","generators":["(3,6)"],"orbits":[[3,6],[5]]},"propsG":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true},"autH":{"order":2,"name":"C2","generators":["(3,6)"],"orbits":[[3,6],[5]]},"propsH":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":7,"parent":6,"x":336.0,"y":528,"depth":4,"branch":"L","path":"LRRL","gs":0,"hs":1,"pivot":"","eps":0.0,"dual":true,"reason":"trivial","detail":"|G|*|H| = 0 <= 1","G":"(empty)","H":"{}","removedG":"","removedH":"{3,6}","autLabel":"","autAgree":null,"propsG":{"labels":["ROH","alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":true,"alphaAcyclic":true},"autH":{"order":1,"name":"C1","generators":[],"orbits":[]},"propsH":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":8,"parent":6,"x":504.0,"y":528,"depth":4,"branch":"R","path":"LRRR","gs":1,"hs":2,"pivot":"","eps":1.0,"dual":true,"reason":"single_edge","detail":"|G| = 1 with an edge of size 2; H is its 2 singletons","G":"{3,6}","H":"{3} {6}","removedG":"","removedH":"","autLabel":"C2","autAgree":true,"autG":{"order":2,"name":"C2","generators":["(3,6)"],"orbits":[[3,6]]},"propsG":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true},"autH":{"order":2,"name":"C2","generators":["(3,6)"],"orbits":[[3,6]]},"propsH":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":9,"parent":1,"x":798.0,"y":132,"depth":1,"branch":"R","path":"R","gs":2,"hs":4,"pivot":"v2","eps":0.5,"dual":true,"reason":"dual","detail":"both subproblems returned TRUE","G":"{2,5} {3,6}","H":"{2,3} {2,6} {3,5} {5,6}","removedG":"","removedH":"{2,3,4} {2,4,6} {3,4,5} {4,5,6}","autLabel":"D4","autAgree":true,"autG":{"order":8,"name":"D4","generators":["(2,3,5,6)","(3,6)"],"orbits":[[2,3,5,6]]},"propsG":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true},"autH":{"order":8,"name":"D4","generators":["(2,3,5,6)","(3,6)"],"orbits":[[2,3,5,6]]},"propsH":{"labels":["Not conformal"],"classes":["Cograph","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":false}},{"id":10,"parent":9,"x":672.0,"y":264,"depth":2,"branch":"L","path":"RL","gs":1,"hs":2,"pivot":"","eps":1.0,"dual":true,"reason":"single_edge","detail":"|G| = 1 with an edge of size 2; H is its 2 singletons","G":"{3,6}","H":"{3} {6}","removedG":"","removedH":"{3,5} {5,6}","autLabel":"C2","autAgree":true,"autG":{"order":2,"name":"C2","generators":["(3,6)"],"orbits":[[3,6]]},"propsG":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true},"autH":{"order":2,"name":"C2","generators":["(3,6)"],"orbits":[[3,6]]},"propsH":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":11,"parent":9,"x":924.0,"y":264,"depth":2,"branch":"R","path":"RR","gs":2,"hs":2,"pivot":"v5","eps":1.0,"dual":true,"reason":"dual","detail":"both subproblems returned TRUE","G":"{3,5} {5,6}","H":"{3,6} {5}","removedG":"","removedH":"","autLabel":"C2","autAgree":true,"autG":{"order":2,"name":"C2","generators":["(3,6)"],"orbits":[[3,6],[5]]},"propsG":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true},"autH":{"order":2,"name":"C2","generators":["(3,6)"],"orbits":[[3,6],[5]]},"propsH":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":12,"parent":11,"x":840.0,"y":396,"depth":3,"branch":"L","path":"RRL","gs":0,"hs":1,"pivot":"","eps":0.0,"dual":true,"reason":"trivial","detail":"|G|*|H| = 0 <= 1","G":"(empty)","H":"{}","removedG":"","removedH":"{3,6}","autLabel":"","autAgree":null,"propsG":{"labels":["ROH","alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":true,"alphaAcyclic":true},"autH":{"order":1,"name":"C1","generators":[],"orbits":[]},"propsH":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":13,"parent":11,"x":1008.0,"y":396,"depth":3,"branch":"R","path":"RRR","gs":1,"hs":2,"pivot":"","eps":1.0,"dual":true,"reason":"single_edge","detail":"|G| = 1 with an edge of size 2; H is its 2 singletons","G":"{3,6}","H":"{3} {6}","removedG":"","removedH":"","autLabel":"C2","autAgree":true,"autG":{"order":2,"name":"C2","generators":["(3,6)"],"orbits":[[3,6]]},"propsG":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true},"autH":{"order":2,"name":"C2","generators":["(3,6)"],"orbits":[[3,6]]},"propsH":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}}];
+const BY_ID = new Map(NODES.map(n => [n.id, n]));
+const NODE_W = 146, NODE_H = 62;
+let view = "structure", sel = null;
+let tx = 0, ty = 0, scale = 1;
+
+const svg = document.getElementById("svg");
+const scene = document.getElementById("scene");
+const canvas = document.getElementById("canvas");
+const SVG_NS = "http:" + "//www.w3.org/2000/svg";
+
+function esc(s) {
+  return String(s == null ? "" : s).replace(/[&<>"]/g, c =>
+    ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]);
+}
+function el(name, attrs, text) {
+  const e = document.createElementNS(SVG_NS, name);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  return e;
+}
+
+function lines(n) {
+  if (view === "automorphism") {
+    const main = n.autLabel || (n.autG ? n.autG.name : "\u2014");
+    const sub = n.autG ? ("order " + n.autG.order) : "not computed";
+    return [main, sub];
+  }
+  if (view === "properties") {
+    const p = n.propsG;
+    if (!p) return ["\u2014", "not analysed"];
+    const tags = [];
+    if (p.readOnce) tags.push("ROH");
+    if (p.alphaAcyclic) tags.push("\u03b1-acyc");
+    tags.push(p.conformal ? "conf." : "non-conf.");
+    return [tags.join(" \u00b7 "), (p.classes || []).slice(0, 2).join(", ") || "\u2014"];
+  }
+  const main = "|G|=" + n.gs + "  |H|=" + n.hs;
+  const sub = n.pivot ? ("split " + n.pivot) : (n.reason || "leaf");
+  return [main, sub];
+}
+
+function draw() {
+  scene.textContent = "";
+  for (const n of NODES) {
+    if (n.parent == null) continue;
+    const p = BY_ID.get(n.parent);
+    const x1 = p.x, y1 = p.y + NODE_H / 2, x2 = n.x, y2 = n.y - NODE_H / 2;
+    const my = (y1 + y2) / 2;
+    scene.appendChild(el("path", {
+      class: "link " + n.branch,
+      d: `M ${x1} ${y1} C ${x1} ${my}, ${x2} ${my}, ${x2} ${y2}`
+    }));
+    scene.appendChild(el("text", {
+      class: "edgelabel", x: (x1 + x2) / 2 + (n.branch === "L" ? -9 : 9),
+      y: my + 4, "text-anchor": "middle"
+    }, n.branch));
+  }
+  for (const n of NODES) {
+    const g = el("g", {
+      transform: `translate(${n.x - NODE_W / 2},${n.y - NODE_H / 2})`,
+      style: "cursor:pointer", role: "button", tabindex: "0",
+      "aria-label": "Node " + n.id + ", " + (n.pivot ? "split " + n.pivot : n.reason || "leaf") });
+    let cls = "nodebox";
+    if (sel === n.id) cls += " sel";
+    else if (n.dual === true && !n.pivot) cls += " leafok";
+    else if (n.dual === false) cls += " leafbad";
+    g.appendChild(el("rect", { class: cls, width: NODE_W, height: NODE_H }));
+    g.appendChild(el("text", { class: "n-id", x: 10, y: 15 }, "Node " + n.id));
+    const [main, sub] = lines(n);
+    g.appendChild(el("text", { class: "n-main", x: 10, y: 35 }, main));
+    g.appendChild(el("text", { class: "n-sub", x: 10, y: 51 }, sub));
+    g.addEventListener("click", ev => { ev.stopPropagation(); select(n.id); });
+    g.addEventListener("keydown", ev => {
+      if (ev.key === "Enter" || ev.key === " ") {
+        ev.preventDefault(); select(n.id);
+      }
+    });
+    scene.appendChild(g);
+  }
+  apply();
+}
+
+function field(k, v, mono) {
+  return `<div class="field"><div class="k">${esc(k)}</div>` +
+         `<div class="v ${mono ? "mono" : ""}">${v}</div></div>`;
+}
+function tags(list) {
+  if (!list || !list.length) return '<span class="hint">none</span>';
+  return '<div class="tags">' + list.map(t => '<span class="tag">' + esc(t) + "</span>").join("") + "</div>";
+}
+
+function select(id) {
+  sel = id;
+  const n = BY_ID.get(id);
+  let h = "<h2>Node " + n.id + "</h2>";
+  h += '<div class="path">depth ' + n.depth + " \u00b7 path " + esc(n.path) + "</div>";
+  h += field("Subproblem sizes", "|G| = " + n.gs + ", |H| = " + n.hs);
+  if (n.pivot) h += field("Split vertex", esc(n.pivot) + (n.eps != null ? "  (\u03b5 = " + n.eps + ")" : ""));
+  h += field("Outcome", (n.dual === true ? "TRUE \u2014 " : n.dual === false ? "NOT DUAL \u2014 " : "") + esc(n.detail || n.reason));
+  if (n.certificate) h += field("Certificate S (eq. 2.1)", esc(n.certificate), true);
+  h += field("G", esc(n.G), true);
+  h += field("H", esc(n.H), true);
+  if (n.removedG) h += field("Removed from G (non-Sperner)", esc(n.removedG), true);
+  if (n.removedH) h += field("Removed from H (non-Sperner)", esc(n.removedH), true);
+  for (const side of ["G", "H"]) {
+    const a = n["aut" + side];
+    if (a) {
+      h += field("Aut(" + side + ")", esc(a.name) + " \u00b7 order " + a.order);
+      if (a.generators && a.generators.length)
+        h += field("Generators of Aut(" + side + ")", esc(a.generators.join("  ")), true);
+      if (a.orbits && a.orbits.length)
+        h += field("Orbits of Aut(" + side + ")",
+          esc(a.orbits.map(o => "{" + o.join(",") + "}").join(" ")), true);
+    }
+    const p = n["props" + side];
+    if (p) {
+      h += field("Properties of " + side, tags(p.labels));
+      h += field("Primal graph of " + side, tags(p.classes));
+    }
+  }
+  if (n.autAgree === false)
+    h += field("Note", "Aut(G) and Aut(H) differ at this node.");
+  document.getElementById("panel").innerHTML = h;
+  draw();
+}
+
+function apply() {
+  scene.setAttribute("transform", "translate(" + tx + "," + ty + ") scale(" + scale + ")");
+}
+function zoom(f) {
+  const r = canvas.getBoundingClientRect(), cx = r.width / 2, cy = r.height / 2;
+  tx = cx - (cx - tx) * f; ty = cy - (cy - ty) * f; scale *= f; apply();
+}
+function fit() {
+  const xs = NODES.map(n => n.x), ys = NODES.map(n => n.y);
+  const minX = Math.min(...xs) - NODE_W, maxX = Math.max(...xs) + NODE_W;
+  const minY = Math.min(...ys) - NODE_H, maxY = Math.max(...ys) + NODE_H;
+  const r = canvas.getBoundingClientRect();
+  scale = Math.min(r.width / (maxX - minX), r.height / (maxY - minY), 1.4);
+  tx = (r.width - (maxX - minX) * scale) / 2 - minX * scale;
+  ty = (r.height - (maxY - minY) * scale) / 2 - minY * scale;
+  apply();
+}
+function readable() {
+  if (!NODES.length) return;
+  const root = NODES[0], r = canvas.getBoundingClientRect();
+  scale = 0.9;
+  tx = r.width / 2 - root.x * scale;
+  ty = 42 - root.y * scale;
+  apply();
+}
+function setView(v) {
+  view = v;
+  for (const k of ["structure", "automorphism", "properties"])
+    document.getElementById("v-" + k).setAttribute("aria-pressed", String(k === v));
+  draw();
+}
+function toggleTheme() {
+  const root = document.documentElement;
+  const dark = root.getAttribute("data-theme") === "dark"
+    || (!root.hasAttribute("data-theme")
+        && matchMedia("(prefers-color-scheme: dark)").matches);
+  root.setAttribute("data-theme", dark ? "light" : "dark");
+}
+
+let dragging = false, px = 0, py = 0;
+canvas.addEventListener("pointerdown", e => {
+  dragging = true; px = e.clientX; py = e.clientY;
+  canvas.classList.add("drag"); canvas.setPointerCapture(e.pointerId);
+});
+canvas.addEventListener("pointermove", e => {
+  if (!dragging) return;
+  tx += e.clientX - px; ty += e.clientY - py; px = e.clientX; py = e.clientY; apply();
+});
+canvas.addEventListener("pointerup", e => {
+  dragging = false; canvas.classList.remove("drag");
+});
+canvas.addEventListener("wheel", e => {
+  e.preventDefault();
+  const r = canvas.getBoundingClientRect();
+  const mx = e.clientX - r.left, my = e.clientY - r.top;
+  const f = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+  tx = mx - (mx - tx) * f; ty = my - (my - ty) * f; scale *= f; apply();
+}, { passive: false });
+
+if (NODES.length) select(NODES[0].id);
+else draw();
+readable();
+</script>
+</body></html>
