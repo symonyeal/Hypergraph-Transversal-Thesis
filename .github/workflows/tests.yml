@@ -18,7 +18,7 @@ jobs:
       matrix:
         python-version: ["3.12", "3.14"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
@@ -33,7 +33,14 @@ jobs:
     container:
       image: ghcr.io/sagemath/sage-binder-env:10.9
     steps:
-      - uses: actions/checkout@v4
+      # The Sage image's libc cannot run the Node runtime bundled with
+      # actions/checkout. Fetch the exact workflow ref using Git instead.
+      - name: Checkout without Node
+        run: |
+          git init .
+          git remote add origin "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git"
+          git fetch --no-tags --depth=1 origin "${GITHUB_REF}"
+          git checkout --detach FETCH_HEAD
       - run: /sage/sage -python -m pip install --user -e ".[dev]"
       - run: /sage/sage -python -m pytest
       - run: /sage/sage -python -m fka verify
