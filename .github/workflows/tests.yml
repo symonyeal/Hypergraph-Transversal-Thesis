@@ -30,17 +30,18 @@ jobs:
   sage:
     name: SageMath 10.9
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/sagemath/sage-binder-env:10.9
     steps:
-      # The Sage image's libc cannot run the Node runtime bundled with
-      # actions/checkout. Fetch the exact workflow ref using Git instead.
-      - name: Checkout without Node
+      - uses: actions/checkout@v5
+      # Checkout runs on the host because the Sage image has neither a
+      # compatible Actions Node runtime nor Git. Mount the checked-out tree and
+      # keep install, tests, and verification in one container invocation.
+      - name: Test with SageMath 10.9
         run: |
-          git init .
-          git remote add origin "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git"
-          git fetch --no-tags --depth=1 origin "${GITHUB_REF}"
-          git checkout --detach FETCH_HEAD
-      - run: /sage/sage -python -m pip install --user -e ".[dev]"
-      - run: /sage/sage -python -m pytest
-      - run: /sage/sage -python -m fka verify
+          docker run --rm \
+            --entrypoint /bin/bash \
+            -v "${GITHUB_WORKSPACE}:/work" \
+            -w /work \
+            ghcr.io/sagemath/sage-binder-env:10.9 \
+            -lc '/sage/sage -python -m pip install --user -e ".[dev]" &&
+                 /sage/sage -python -m pytest &&
+                 /sage/sage -python -m fka verify'
