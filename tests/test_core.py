@@ -123,8 +123,6 @@ def test_chain_reduces_to_the_minimum():
 @pytest.mark.slow
 def test_both_superset_implementations_agree(rng):
     """The optimised pass must equal the definition on every input."""
-    from conftest import random_sperner  # noqa: F401  (import for symmetry)
-
     for _ in range(300):
         n = rng.randint(1, 9)
         edges = tuple(

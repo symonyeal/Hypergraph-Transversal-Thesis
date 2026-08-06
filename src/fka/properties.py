@@ -19,7 +19,7 @@ from dataclasses import dataclass
 from typing import Any, Optional
 
 from .graphs import Graph, GraphClasses, classify_graph, is_cograph, primal_graph
-from .hypergraph import Hypergraph, bits, popcount, verts
+from .hypergraph import Hypergraph, bits, verts
 
 __all__ = [
     "is_conformal",

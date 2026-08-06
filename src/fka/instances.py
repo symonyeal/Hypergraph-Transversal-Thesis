@@ -25,7 +25,7 @@ import json
 from dataclasses import dataclass, field
 from fractions import Fraction
 from pathlib import Path
-from typing import Any, Iterator, Optional, Sequence
+from typing import Any, Optional, Sequence
 
 from .hypergraph import Hypergraph, bits
 

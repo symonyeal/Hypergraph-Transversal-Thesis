@@ -15,7 +15,7 @@ import itertools
 import pytest
 
 from fka.algorithm import fk_a, verify_certificate
-from fka.hypergraph import Hypergraph, verts
+from fka.hypergraph import Hypergraph
 from fka.instances import load, load_all
 from fka.transversal import is_dual_oracle, transversal
 from fkb.algorithm import (

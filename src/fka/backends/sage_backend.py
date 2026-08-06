@@ -52,7 +52,7 @@ def to_incidence_structure(H: Hypergraph, *, include_isolated: bool = False):
     vertices permute among themselves -- see :mod:`fka.automorphism` for why
     that is not the default.
     """
-    sage = _require_sage()
+    _require_sage()
     from sage.combinat.designs.incidence_structures import IncidenceStructure
 
     target, mapping = (H, list(range(H.n))) if include_isolated else H.compact()

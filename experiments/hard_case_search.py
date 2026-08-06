@@ -86,10 +86,11 @@ from fkb.algorithm import fk_b  # noqa: E402
 
 RESULTS = Path(__file__).resolve().parents[1] / "results"
 
-#: Above this many edges the two algorithms are not run: the point of the
-#: search is the class, and the majority families (``C(2k+1, k+1)`` edges) are
-#: known to be loose -- ``eps`` is about 1/2, so they are nowhere near the FK
-#: floor whatever their tree looks like.
+#: Above this many edges the two algorithms are not run and the edge list is
+#: not recorded: the point of the search is the class, and the majority families
+#: (``C(2k+1, k+1)`` edges) are known to be loose -- ``eps`` is about 1/2, so
+#: they are nowhere near the FK floor whatever their tree looks like, and their
+#: blocks follow from ``n``.
 RUN_BELOW = 400
 
 
@@ -207,6 +208,20 @@ def describe(H: Hypergraph) -> dict:
     props = analyse(H, graph_classes=False)
     row["conformal"] = props.conformal
     row["read_once"] = props.read_once
+    if m >= RUN_BELOW:
+        # Every family this large in the searched range is a majority function,
+        # whose blocks are reconstructible from n alone. Recording 6435 blocks
+        # of size 8 costs 235 KB and says nothing the parameters do not, so the
+        # construction is recorded instead. Cf. the fk-b.multiple withdrawal in
+        # _archive/20260804-redundant-fkb-multiple-artifacts/.
+        half = (H.n + 1) // 2
+        is_majority = row["edge_sizes"] == [half] and m == math.comb(H.n, half)
+        row["edges"] = None
+        row["edges_omitted"] = (
+            f"majority({H.n}): every {half}-subset of {H.n} points"
+            if is_majority
+            else f"{m} edges, above the {RUN_BELOW}-edge recording threshold"
+        )
     if m < RUN_BELOW:
         a = fk_a(H, H, variant="modified")
         b = fk_b(H, H, variant="faithful")

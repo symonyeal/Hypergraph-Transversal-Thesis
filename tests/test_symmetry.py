@@ -56,7 +56,7 @@ def test_small_group_naming(generators, degree, name, order):
 
 def test_naming_reports_when_it_cannot_identify():
     """An unmatched group must say so, not guess a name."""
-    from fka.groups import GroupIdentification, _candidates
+    from fka.groups import _candidates
 
     # A group of prime order 101 is C101, which the catalogue does have; use a
     # deliberately empty candidate list to exercise the fallback path.

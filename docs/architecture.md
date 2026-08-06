@@ -20,12 +20,20 @@ one-way and is about where files sit, not about one algorithm needing the other.
 | `fka/hypergraph.py`, `fka/sperner.py` | exact data operations |
 | `fka/tree.py` | the serializable `RecursionTree`, shared by both algorithms |
 | `fka/transversal.py` | the independent Berge-method oracle |
+| `fka/automorphism.py`, `fka/groups.py` | `Aut(H)`, and naming the group it finds |
+| `fka/graphs.py`, `fka/properties.py` | the primal graph's class; conformality, alpha-acyclicity, read-once |
 | `fka/analysis.py` | annotating completed nodes, memoizing repeated subproblems |
+| `fka/backends/` | SageMath as an optional independent check, never an import-time dependency |
 | `fka/report.py`, `fka/dot.py` | rendering a stored tree without changing it |
 | `fka/instances.py` | the instance library, its generators, and its baselines |
 | `fka/algorithm.py` | FK-A |
+| `fka/cli.py`, `fkb/cli.py` | the two entry points; neither holds research logic |
 | `fkb/algorithm.py` | FK-B |
 | `fkb/dualize.py` | `Tr(H)` by repeated FK-B equivalence tests |
+
+`fka/automorphism.py` is the module Chapter 3 is about: every recursion node is
+annotated with the group of both its subhypergraphs, and that annotation is what
+`docs/fk-a-vs-fk-b.md` and `docs/hard-cases.md` measure.
 
 Neither algorithm plots, computes automorphism groups, or touches the filesystem
 while recursing. That separation is what makes a result reproducible and

@@ -18,13 +18,11 @@ second convention for reconciling an old result. It is not the default.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from itertools import combinations
-from typing import Any, Optional, Sequence
+from dataclasses import dataclass
+from typing import Any, Optional
 
 from .groups import (
     MAX_GROUP_ORDER,
-    GroupIdentification,
     Perm,
     PermutationGroup,
     cycle_notation,

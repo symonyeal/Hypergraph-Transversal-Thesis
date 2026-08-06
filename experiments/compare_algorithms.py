@@ -79,7 +79,7 @@ def profile(tree: RecursionTree, annotated: bool) -> dict:
     analysed = 0
     for node in tree:
         a = node.analysis or {}
-        aut_g, aut_h = a.get("aut_G"), a.get("aut_H")
+        aut_g = a.get("aut_G")
         if aut_g:
             orders.append(aut_g["order"])
             names[aut_g["name"]] += 1
