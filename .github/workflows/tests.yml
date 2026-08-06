@@ -39,14 +39,30 @@ jobs:
       # Checkout runs on the host because the Sage image has neither a
       # compatible Actions Node runtime nor Git. Mount the checked-out tree and
       # keep install, tests, and verification in one container invocation.
+      #
+      # Two things this invocation has to get right, both of which it got wrong
+      # until 2026-08-06 and neither of which shows up as a test failure:
+      #
+      # 1. Sage is not at /sage. The image installs it at /home/sage/sage and
+      #    symlinks /usr/bin/sage, so it is simply `sage` on PATH. The old
+      #    /sage/sage path made every run exit 127 before a single test ran.
+      # 2. The image's default user is `sage` (uid 1000) while the runner owns
+      #    the workspace as uid 1001, so an editable install and pytest's cache
+      #    cannot write into the mount. Run as root; the container is --rm.
+      # 3. Sage's Python is a virtualenv, which rejects `pip install --user`
+      #    outright ("User site-packages are not visible in this virtualenv").
+      #    As root the venv itself is writable, so install into it directly.
       - name: Test with SageMath 10.9
         run: |
           docker run --rm \
             --entrypoint /bin/bash \
             -v "${GITHUB_WORKSPACE}:/work" \
             -w /work \
+            -u root \
             ghcr.io/sagemath/sage-binder-env:10.9 \
-            -lc '/sage/sage -python -m pip install --user -e ".[dev]" &&
-                 /sage/sage -python -m pytest &&
-                 /sage/sage -python -m fka verify &&
-                 /sage/sage -python -m fkb verify'
+            -lc 'sage --version &&
+                 sage -python -m pip install -e ".[dev]" &&
+                 sage -python -m pytest &&
+                 sage -python -m fka env &&
+                 sage -python -m fka verify &&
+                 sage -python -m fkb verify'
