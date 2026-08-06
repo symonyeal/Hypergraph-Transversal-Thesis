@@ -5,7 +5,7 @@ suite reads lives anywhere else.
 
 | Folder | Holds | Read by |
 | --- | --- | --- |
-| `instances/` | the `(G, H)` library — 12 named problem instances | `fka.instances.load`, `load_all` |
+| `instances/` | the `(G, H)` library — 14 named problem instances | `fka.instances.load`, `load_all` |
 | `reference/` | the MATLAB FK-B authors' own recorded test vectors | `tests/test_fkb_reference.py` |
 | `baselines/` | node counts and split sequences printed in the thesis | `tests/test_thesis_reproduction.py` |
 

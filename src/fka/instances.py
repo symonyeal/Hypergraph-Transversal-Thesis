@@ -25,9 +25,9 @@ import json
 from dataclasses import dataclass, field
 from fractions import Fraction
 from pathlib import Path
-from typing import Any, Iterator, Optional
+from typing import Any, Iterator, Optional, Sequence
 
-from .hypergraph import Hypergraph
+from .hypergraph import Hypergraph, bits
 
 __all__ = [
     "Instance",
@@ -41,6 +41,8 @@ __all__ = [
     "list_ids",
     "sdfp",
     "self_dual_fano",
+    "self_dualise",
+    "witt_11",
     "matching",
     "threshold",
     "refresh_expected",
@@ -240,18 +242,75 @@ def self_dual_fano(k: int = 2) -> Hypergraph:
     sizes, same counts, same group -- so node counts can differ from the MATLAB
     run by the amount vertex numbering moves the split choice.
     """
+    return self_dualise([list(line) for line in FANO_LINES], 7, k)
+
+
+def self_dualise(base_edges: Sequence[Sequence[int]], n_base: int, k: int = 1) -> Hypergraph:
+    """Self-dualise ``k`` disjoint copies of a 1-indexed base family.
+
+    The construction :func:`self_dual_fano` names, with the base family a
+    parameter: on ``n_base*k + 2`` vertices, writing ``a`` and ``b`` for the two
+    extra ones, the edges are ``{a,b}``; every base edge of every copy plus
+    ``b``; and every choice of one base edge per copy plus ``a``. The result is
+    self-transversal whatever the base is, which is what makes it the standard
+    way to turn a family into a dualisation benchmark: the answer is always
+    "dual", so no branch can be closed early by a counterexample.
+
+    ``|E| = |base|^k + k|base| + 1``, so ``k`` is limited by the base: two
+    copies of the Fano plane's 7 lines give 64 edges, two of the 66 blocks of
+    :func:`witt_11` give 4489.
+    """
     if k < 1:
         raise ValueError(f"k must be at least 1, got {k}")
-    n = 7 * k + 2
+    n = n_base * k + 2
     a, b = n - 1, n  # 1-indexed
     edges = [[a, b]]
     for copy in range(k):
-        for line in FANO_LINES:
-            edges.append(sorted(v + 7 * copy for v in line) + [b])
-    for combo in itertools.product(FANO_LINES, repeat=k):
-        picked = sorted(v + 7 * c for c, line in enumerate(combo) for v in line)
+        for e in base_edges:
+            edges.append(sorted(v + n_base * copy for v in e) + [b])
+    for combo in itertools.product(base_edges, repeat=k):
+        picked = sorted(v + n_base * c for c, e in enumerate(combo) for v in e)
         edges.append(picked + [a])
     return Hypergraph.from_sets(n, edges, one_indexed=True)
+
+
+#: ``g(x) = -1 + x^2 - x^3 + x^4 + x^5``, one of the two degree-5 factors of
+#: ``x^11 - 1`` over ``GF(3)``. The cyclic code it generates is the perfect
+#: ``[11, 6, 5]`` ternary Golay code.
+GOLAY3_GENERATOR: tuple[int, ...] = (2, 0, 1, 2, 1, 1)
+
+
+def witt_11() -> Hypergraph:
+    """``W11``: the 66 blocks of the Steiner system ``S(4, 5, 11)``.
+
+    Built as the supports of the 132 minimum-weight words of the perfect
+    ``[11, 6, 5]`` ternary Golay code, which is the standard construction of
+    the design: every 4-subset of the 11 points lies in exactly one block,
+    ``Aut = M11`` of order 7920, every vertex has degree 30.
+
+    Like the Fano plane -- which is the same construction on the perfect
+    ``[7, 4, 3]`` Hamming code -- it is *self-transversal*: ``Tr(W11) = W11``.
+    Unlike the Fano plane it is hard for FK-B as well as FK-A; see
+    ``docs/hard-cases.md``. The third perfect code, the binary Golay
+    ``[23, 12, 7]``, gives ``S(4, 7, 23)``, which is intersecting but **not**
+    self-transversal, so the family stops here.
+    """
+    n = 11
+    degree = len(GOLAY3_GENERATOR) - 1
+    blocks = []
+    for message in itertools.product(range(3), repeat=n - degree):
+        word = [0] * n
+        for i, coefficient in enumerate(message):
+            if coefficient:
+                for j, g in enumerate(GOLAY3_GENERATOR):
+                    word[(i + j) % n] = (word[(i + j) % n] + coefficient * g) % 3
+        support = [i for i, x in enumerate(word) if x]
+        if len(support) == 5:
+            blocks.append(bits(support))
+    H = Hypergraph.from_bitsets(n, blocks)
+    if len(H) != 66:
+        raise AssertionError(f"S(4,5,11) must have 66 blocks, built {len(H)}")
+    return H
 
 
 def matching(v: int) -> Hypergraph:

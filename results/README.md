@@ -5,7 +5,7 @@ authored by hand.
 
 ## Per-instance runs
 
-`<instance>.<algorithm>.<variant>.<ext>`, over 12 instances and both algorithms:
+`<instance>.<algorithm>.<variant>.<ext>`, over 14 instances and both algorithms:
 
 | algorithm | variant | committed | |
 | --- | --- | :-: | --- |
@@ -54,6 +54,11 @@ The variant keeps its baseline in every instance file and its own row in
 - `fk-a-vs-fk-b.json` and `fk-a-vs-fk-b.md` — node counts, automorphism-group
   distributions, and symmetry retention for both algorithms on every instance,
   plus `sdfp-sd-3`, which is too large to keep in the library.
+- `hard-case-search.json` — every vertex-transitive self-transversal hypergraph
+  on at most 15 points, with its group, primitivity, frequency and both
+  algorithms' node counts. Regenerate with
+  `sage -python experiments/hard_case_search.py 3 15`; the reading is in
+  [`../docs/hard-cases.md`](../docs/hard-cases.md).
 
 Regenerate with `python experiments/compare_algorithms.py`. Every row is checked
 against the brute-force oracle before it is reported.

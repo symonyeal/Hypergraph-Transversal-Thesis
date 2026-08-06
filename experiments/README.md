@@ -7,6 +7,7 @@ importable library.
 | --- | --- |
 | `build_instances.py` | Authors `data/instances/` and the withdrawn instances under `_archive/`. Every `expected` block is computed here, not typed. |
 | `compare_algorithms.py` | Runs FK-A and FK-B on the same instances, annotates both trees, and writes `results/fk-a-vs-fk-b.{json,md}`. |
+| `hard_case_search.py` | Enumerates every vertex-transitive self-transversal hypergraph on <= 15 points, over SageMath's transitive-group database, and measures both algorithms on each. Writes `results/hard-case-search.json`. Requires SageMath. |
 | `import_fkb_benchmarks.py` | Reads the local MATLAB FK-B snapshot's `*_CNF_DNF.mat` files and reports what is in them. Requires SciPy and the snapshot; neither is a project dependency. |
 
 Core correctness claims belong in `tests/`, and normal runs belong in the `fka`
