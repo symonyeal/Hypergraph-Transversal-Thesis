@@ -49,6 +49,9 @@ jobs:
       # 2. The image's default user is `sage` (uid 1000) while the runner owns
       #    the workspace as uid 1001, so an editable install and pytest's cache
       #    cannot write into the mount. Run as root; the container is --rm.
+      # 3. Sage's Python is a virtualenv, which rejects `pip install --user`
+      #    outright ("User site-packages are not visible in this virtualenv").
+      #    As root the venv itself is writable, so install into it directly.
       - name: Test with SageMath 10.9
         run: |
           docker run --rm \
@@ -58,7 +61,7 @@ jobs:
             -u root \
             ghcr.io/sagemath/sage-binder-env:10.9 \
             -lc 'sage --version &&
-                 sage -python -m pip install --user -e ".[dev]" &&
+                 sage -python -m pip install -e ".[dev]" &&
                  sage -python -m pytest &&
                  sage -python -m fka env &&
                  sage -python -m fka verify &&

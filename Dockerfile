@@ -42,7 +42,9 @@ COPY --chown=${NB_USER}:${NB_USER} . ${HOME}/Hypergraph-Transversal-Thesis
 USER ${NB_USER}
 WORKDIR ${HOME}/Hypergraph-Transversal-Thesis
 
-RUN sage -python -m pip install --user --no-cache-dir -e ".[dev]" && \
+# No --user: Sage's Python is a virtualenv and rejects a user install. NB_USER
+# is the image's own uid 1000, which owns the venv, so it can install into it.
+RUN sage -python -m pip install --no-cache-dir -e ".[dev]" && \
     mkdir -p $(${SAGE_HOME}/venv/bin/jupyter --data-dir)/kernels && \
     ln -sf ${SAGE_HOME}/venv/share/jupyter/kernels/sagemath \
       $(${SAGE_HOME}/venv/bin/jupyter --data-dir)/kernels/sagemath
