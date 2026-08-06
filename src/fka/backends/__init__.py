@@ -1,16 +1,15 @@
 """Backend selection: SageMath when available, plain Python otherwise.
 
-The research code originally ran only inside a SageMath 10.3 Jupyter kernel, so
-none of it could be executed, tested or version-controlled without Sage -- which
-on Windows means WSL or conda. Everything here therefore has an exact
-pure-Python implementation needing only ``networkx``, and Sage is an optional
-accelerator and cross-check, never a requirement.
+Everything here has an exact pure-Python implementation needing only
+``networkx``; Sage is an optional accelerator and cross-check, never a
+requirement. On Windows a Sage install means WSL or conda, so requiring it would
+put the whole project out of reach of the machine it is maintained on.
 
 Sage adds GAP's ``StructureDescription``, which names any finite group where
 :mod:`fka.groups`' catalogue covers a fixed list; ``IncidenceStructure
 .automorphism_group`` as an independent check on the built-in search; and
 polynomial-time graph-class recognisers where :mod:`fka.graphs` enumerates
-induced subgraphs under a vertex cap.
+induced subgraphs under a variable cap.
 
 No code change is needed to run under it -- same package, same entry points::
 

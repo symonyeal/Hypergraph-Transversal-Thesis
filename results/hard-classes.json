@@ -1,0 +1,2959 @@
+[
+  {
+    "instance": "6a",
+    "class": "library",
+    "n_vertices": 6,
+    "N": 8,
+    "eps": "1/2",
+    "c": 1.5,
+    "s_over_log2N": 0.6667,
+    "fka_nodes": 11,
+    "fka_depth": 3,
+    "fkb_nodes": 3,
+    "fkb_depth": 1,
+    "ratio": 3.667,
+    "exponent": 1.153,
+    "fka_repeat_rate": 0.2727,
+    "distinct_pairs": 9,
+    "root_primitive": false,
+    "root_read_once": false,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 10,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.0
+  },
+  {
+    "instance": "6b",
+    "class": "library",
+    "n_vertices": 6,
+    "N": 11,
+    "eps": "1/2",
+    "c": 1.7297,
+    "s_over_log2N": 0.5781,
+    "fka_nodes": 13,
+    "fka_depth": 4,
+    "fkb_nodes": 6,
+    "fkb_depth": 1,
+    "ratio": 2.167,
+    "exponent": 1.07,
+    "fka_repeat_rate": 0.5385,
+    "distinct_pairs": 8,
+    "root_primitive": false,
+    "root_read_once": true,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 13,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 5,
+        "primitive": 0,
+        "read_once": 5,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.0
+  },
+  {
+    "instance": "6c",
+    "class": "library",
+    "n_vertices": 6,
+    "N": 10,
+    "eps": "1/2",
+    "c": 1.661,
+    "s_over_log2N": 0.6021,
+    "fka_nodes": 5,
+    "fka_depth": 2,
+    "fkb_nodes": 1,
+    "fkb_depth": 0,
+    "ratio": 5.0,
+    "exponent": 0.699,
+    "fka_repeat_rate": 0.2,
+    "distinct_pairs": 4,
+    "root_primitive": false,
+    "root_read_once": true,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 5,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.0
+  },
+  {
+    "instance": "6d",
+    "class": "library",
+    "n_vertices": 6,
+    "N": 8,
+    "eps": "1/2",
+    "c": 1.5,
+    "s_over_log2N": 0.6667,
+    "fka_nodes": 9,
+    "fka_depth": 3,
+    "fkb_nodes": 3,
+    "fkb_depth": 1,
+    "ratio": 3.0,
+    "exponent": 1.057,
+    "fka_repeat_rate": 0.1111,
+    "distinct_pairs": 9,
+    "root_primitive": false,
+    "root_read_once": true,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 9,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.0
+  },
+  {
+    "instance": "7ver",
+    "class": "library",
+    "n_vertices": 7,
+    "N": 18,
+    "eps": "5/11",
+    "c": 1.8954,
+    "s_over_log2N": 0.7194,
+    "fka_nodes": 21,
+    "fka_depth": 5,
+    "fkb_nodes": 11,
+    "fkb_depth": 3,
+    "ratio": 1.909,
+    "exponent": 1.053,
+    "fka_repeat_rate": 0.2857,
+    "distinct_pairs": 23,
+    "root_primitive": false,
+    "root_read_once": false,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 16,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 6,
+        "primitive": 0,
+        "read_once": 6,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 6,
+        "primitive": 0,
+        "read_once": 6,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.0
+  },
+  {
+    "instance": "8ver",
+    "class": "library",
+    "n_vertices": 8,
+    "N": 25,
+    "eps": "2/5",
+    "c": 1.8575,
+    "s_over_log2N": 0.646,
+    "fka_nodes": 21,
+    "fka_depth": 5,
+    "fkb_nodes": 21,
+    "fkb_depth": 4,
+    "ratio": 1.0,
+    "exponent": 0.946,
+    "fka_repeat_rate": 0.4762,
+    "distinct_pairs": 23,
+    "root_primitive": false,
+    "root_read_once": false,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 15,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 6,
+        "primitive": 0,
+        "read_once": 5,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 6,
+        "primitive": 0,
+        "read_once": 6,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 12,
+        "primitive": 0,
+        "read_once": 11,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.0
+  },
+  {
+    "instance": "f2g2",
+    "class": "library",
+    "n_vertices": 8,
+    "N": 12,
+    "eps": "1/2",
+    "c": 1.7925,
+    "s_over_log2N": 0.5579,
+    "fka_nodes": 25,
+    "fka_depth": 6,
+    "fkb_nodes": 7,
+    "fkb_depth": 2,
+    "ratio": 3.571,
+    "exponent": 1.295,
+    "fka_repeat_rate": 0.68,
+    "distinct_pairs": 9,
+    "root_primitive": false,
+    "root_read_once": true,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 25,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 6,
+        "primitive": 0,
+        "read_once": 6,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 6,
+        "primitive": 0,
+        "read_once": 6,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 3,
+        "primitive": 0,
+        "read_once": 3,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 3,
+        "primitive": 0,
+        "read_once": 3,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.0
+  },
+  {
+    "instance": "fano",
+    "class": "library",
+    "n_vertices": 7,
+    "N": 14,
+    "eps": "3/7",
+    "c": 1.6317,
+    "s_over_log2N": 0.7879,
+    "fka_nodes": 35,
+    "fka_depth": 5,
+    "fkb_nodes": 11,
+    "fkb_depth": 3,
+    "ratio": 3.182,
+    "exponent": 1.347,
+    "fka_repeat_rate": 0.6,
+    "distinct_pairs": 19,
+    "root_primitive": false,
+    "root_read_once": false,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 30,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 8,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 12,
+        "primitive": 0,
+        "read_once": 12,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 8,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.0
+  },
+  {
+    "instance": "k3",
+    "class": "library",
+    "n_vertices": 3,
+    "N": 6,
+    "eps": "2/3",
+    "c": 1.7233,
+    "s_over_log2N": 0.7737,
+    "fka_nodes": 3,
+    "fka_depth": 1,
+    "fkb_nodes": 3,
+    "fkb_depth": 1,
+    "ratio": 1.0,
+    "exponent": 0.613,
+    "fka_repeat_rate": 0.3333,
+    "distinct_pairs": 3,
+    "root_primitive": true,
+    "root_read_once": false,
+    "last_primitive_depth": 0,
+    "primitive_nodes_fka": 1,
+    "primitive_nodes_fkb": 1,
+    "read_once_nodes_fka": 2,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 1,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 1,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.0
+  },
+  {
+    "instance": "sdfp-sd-1",
+    "class": "library",
+    "n_vertices": 9,
+    "N": 30,
+    "eps": "8/15",
+    "c": 2.617,
+    "s_over_log2N": 0.4076,
+    "fka_nodes": 75,
+    "fka_depth": 7,
+    "fkb_nodes": 37,
+    "fkb_depth": 5,
+    "ratio": 2.027,
+    "exponent": 1.269,
+    "fka_repeat_rate": 0.7867,
+    "distinct_pairs": 47,
+    "root_primitive": false,
+    "root_read_once": false,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 62,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 16,
+        "primitive": 0,
+        "read_once": 16,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 24,
+        "primitive": 0,
+        "read_once": 24,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 16,
+        "primitive": 0,
+        "read_once": 16,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 14,
+        "primitive": 0,
+        "read_once": 14,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 8,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.1
+  },
+  {
+    "instance": "sdfp-sd-2",
+    "class": "library",
+    "n_vertices": 16,
+    "N": 128,
+    "eps": "25/32",
+    "c": 5.4688,
+    "s_over_log2N": 0.2857,
+    "fka_nodes": 1427,
+    "fka_depth": 14,
+    "fkb_nodes": 231,
+    "fkb_depth": 11,
+    "ratio": 6.177,
+    "exponent": 1.497,
+    "fka_repeat_rate": 0.9117,
+    "distinct_pairs": 182,
+    "root_primitive": false,
+    "root_read_once": false,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 1204,
+    "undetermined_nodes": 2,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 1
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 16,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 28,
+        "primitive": 0,
+        "read_once": 8,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 44,
+        "primitive": 0,
+        "read_once": 16,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 72,
+        "primitive": 0,
+        "read_once": 34,
+        "undetermined": 0
+      },
+      "8": {
+        "nodes": 120,
+        "primitive": 0,
+        "read_once": 84,
+        "undetermined": 0
+      },
+      "9": {
+        "nodes": 196,
+        "primitive": 0,
+        "read_once": 158,
+        "undetermined": 0
+      },
+      "10": {
+        "nodes": 260,
+        "primitive": 0,
+        "read_once": 240,
+        "undetermined": 0
+      },
+      "11": {
+        "nodes": 296,
+        "primitive": 0,
+        "read_once": 282,
+        "undetermined": 0
+      },
+      "12": {
+        "nodes": 224,
+        "primitive": 0,
+        "read_once": 224,
+        "undetermined": 0
+      },
+      "13": {
+        "nodes": 112,
+        "primitive": 0,
+        "read_once": 112,
+        "undetermined": 0
+      },
+      "14": {
+        "nodes": 44,
+        "primitive": 0,
+        "read_once": 44,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 1
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 44,
+        "primitive": 0,
+        "read_once": 42,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 44,
+        "primitive": 0,
+        "read_once": 42,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 44,
+        "primitive": 0,
+        "read_once": 42,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 26,
+        "primitive": 0,
+        "read_once": 26,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 26,
+        "primitive": 0,
+        "read_once": 26,
+        "undetermined": 0
+      },
+      "8": {
+        "nodes": 22,
+        "primitive": 0,
+        "read_once": 22,
+        "undetermined": 0
+      },
+      "9": {
+        "nodes": 12,
+        "primitive": 0,
+        "read_once": 12,
+        "undetermined": 0
+      },
+      "10": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "11": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "seconds": 1.0
+  },
+  {
+    "instance": "trivial-aut-1",
+    "class": "library",
+    "n_vertices": 8,
+    "N": 66,
+    "eps": "3/5",
+    "c": 3.6266,
+    "s_over_log2N": 0.4963,
+    "fka_nodes": 41,
+    "fka_depth": 6,
+    "fkb_nodes": 33,
+    "fkb_depth": 5,
+    "ratio": 1.242,
+    "exponent": 0.886,
+    "fka_repeat_rate": 0.1707,
+    "distinct_pairs": 58,
+    "root_primitive": false,
+    "root_read_once": false,
+    "last_primitive_depth": 4,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 1,
+    "read_once_nodes_fka": 24,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 12,
+        "primitive": 0,
+        "read_once": 8,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 12,
+        "primitive": 0,
+        "read_once": 12,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 3,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 10,
+        "primitive": 1,
+        "read_once": 6,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 8,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.0
+  },
+  {
+    "instance": "witt-s4511",
+    "class": "library",
+    "n_vertices": 11,
+    "N": 132,
+    "eps": "5/11",
+    "c": 3.202,
+    "s_over_log2N": 0.7098,
+    "fka_nodes": 483,
+    "fka_depth": 9,
+    "fkb_nodes": 321,
+    "fkb_depth": 9,
+    "ratio": 1.505,
+    "exponent": 1.266,
+    "fka_repeat_rate": 0.7308,
+    "distinct_pairs": 278,
+    "root_primitive": false,
+    "root_read_once": false,
+    "last_primitive_depth": 8,
+    "primitive_nodes_fka": 2,
+    "primitive_nodes_fkb": 4,
+    "read_once_nodes_fka": 354,
+    "undetermined_nodes": 6,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 1
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 2
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 2,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 16,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 32,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 60,
+        "primitive": 0,
+        "read_once": 12,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 100,
+        "primitive": 0,
+        "read_once": 80,
+        "undetermined": 0
+      },
+      "8": {
+        "nodes": 140,
+        "primitive": 0,
+        "read_once": 140,
+        "undetermined": 0
+      },
+      "9": {
+        "nodes": 120,
+        "primitive": 0,
+        "read_once": 120,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 1
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 2
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 2,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 16,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 34,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 70,
+        "primitive": 0,
+        "read_once": 20,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 110,
+        "primitive": 0,
+        "read_once": 74,
+        "undetermined": 0
+      },
+      "8": {
+        "nodes": 72,
+        "primitive": 2,
+        "read_once": 70,
+        "undetermined": 0
+      },
+      "9": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.8
+  },
+  {
+    "instance": "word-xy",
+    "class": "library",
+    "n_vertices": 16,
+    "N": 48,
+    "eps": "1/4",
+    "c": 1.3962,
+    "s_over_log2N": 0.7162,
+    "fka_nodes": 577,
+    "fka_depth": 14,
+    "fkb_nodes": 193,
+    "fkb_depth": 7,
+    "ratio": 2.99,
+    "exponent": 1.642,
+    "fka_repeat_rate": 0.9515,
+    "distinct_pairs": 43,
+    "root_primitive": false,
+    "root_read_once": true,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 577,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 8,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 16,
+        "primitive": 0,
+        "read_once": 16,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 30,
+        "primitive": 0,
+        "read_once": 30,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 52,
+        "primitive": 0,
+        "read_once": 52,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 76,
+        "primitive": 0,
+        "read_once": 76,
+        "undetermined": 0
+      },
+      "8": {
+        "nodes": 94,
+        "primitive": 0,
+        "read_once": 94,
+        "undetermined": 0
+      },
+      "9": {
+        "nodes": 98,
+        "primitive": 0,
+        "read_once": 98,
+        "undetermined": 0
+      },
+      "10": {
+        "nodes": 86,
+        "primitive": 0,
+        "read_once": 86,
+        "undetermined": 0
+      },
+      "11": {
+        "nodes": 62,
+        "primitive": 0,
+        "read_once": 62,
+        "undetermined": 0
+      },
+      "12": {
+        "nodes": 34,
+        "primitive": 0,
+        "read_once": 34,
+        "undetermined": 0
+      },
+      "13": {
+        "nodes": 12,
+        "primitive": 0,
+        "read_once": 12,
+        "undetermined": 0
+      },
+      "14": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 9,
+        "primitive": 0,
+        "read_once": 9,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 81,
+        "primitive": 0,
+        "read_once": 81,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 84,
+        "primitive": 0,
+        "read_once": 84,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 10,
+        "primitive": 0,
+        "read_once": 10,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 3,
+        "primitive": 0,
+        "read_once": 3,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 3,
+        "primitive": 0,
+        "read_once": 3,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.1
+  },
+  {
+    "instance": "word-yx",
+    "class": "library",
+    "n_vertices": 16,
+    "N": 48,
+    "eps": "1/4",
+    "c": 1.3962,
+    "s_over_log2N": 0.7162,
+    "fka_nodes": 577,
+    "fka_depth": 14,
+    "fkb_nodes": 223,
+    "fkb_depth": 9,
+    "ratio": 2.587,
+    "exponent": 1.642,
+    "fka_repeat_rate": 0.9515,
+    "distinct_pairs": 42,
+    "root_primitive": false,
+    "root_read_once": true,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 577,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 8,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 16,
+        "primitive": 0,
+        "read_once": 16,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 30,
+        "primitive": 0,
+        "read_once": 30,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 52,
+        "primitive": 0,
+        "read_once": 52,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 76,
+        "primitive": 0,
+        "read_once": 76,
+        "undetermined": 0
+      },
+      "8": {
+        "nodes": 94,
+        "primitive": 0,
+        "read_once": 94,
+        "undetermined": 0
+      },
+      "9": {
+        "nodes": 98,
+        "primitive": 0,
+        "read_once": 98,
+        "undetermined": 0
+      },
+      "10": {
+        "nodes": 86,
+        "primitive": 0,
+        "read_once": 86,
+        "undetermined": 0
+      },
+      "11": {
+        "nodes": 62,
+        "primitive": 0,
+        "read_once": 62,
+        "undetermined": 0
+      },
+      "12": {
+        "nodes": 34,
+        "primitive": 0,
+        "read_once": 34,
+        "undetermined": 0
+      },
+      "13": {
+        "nodes": 12,
+        "primitive": 0,
+        "read_once": 12,
+        "undetermined": 0
+      },
+      "14": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 5,
+        "primitive": 0,
+        "read_once": 5,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 29,
+        "primitive": 0,
+        "read_once": 29,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 81,
+        "primitive": 0,
+        "read_once": 81,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 84,
+        "primitive": 0,
+        "read_once": 84,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 8,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "8": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "9": {
+        "nodes": 5,
+        "primitive": 0,
+        "read_once": 5,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.1
+  },
+  {
+    "instance": "fano-plane",
+    "class": "self-dual",
+    "n_vertices": 7,
+    "N": 14,
+    "eps": "3/7",
+    "c": 1.6317,
+    "s_over_log2N": 0.7879,
+    "fka_nodes": 35,
+    "fka_depth": 5,
+    "fkb_nodes": 11,
+    "fkb_depth": 3,
+    "ratio": 3.182,
+    "exponent": 1.347,
+    "fka_repeat_rate": 0.6,
+    "distinct_pairs": 19,
+    "root_primitive": false,
+    "root_read_once": false,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 30,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 8,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 12,
+        "primitive": 0,
+        "read_once": 12,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 8,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.0
+  },
+  {
+    "instance": "witt-s4511",
+    "class": "self-dual",
+    "n_vertices": 11,
+    "N": 132,
+    "eps": "5/11",
+    "c": 3.202,
+    "s_over_log2N": 0.7098,
+    "fka_nodes": 483,
+    "fka_depth": 9,
+    "fkb_nodes": 321,
+    "fkb_depth": 9,
+    "ratio": 1.505,
+    "exponent": 1.266,
+    "fka_repeat_rate": 0.7308,
+    "distinct_pairs": 278,
+    "root_primitive": false,
+    "root_read_once": false,
+    "last_primitive_depth": 8,
+    "primitive_nodes_fka": 2,
+    "primitive_nodes_fkb": 4,
+    "read_once_nodes_fka": 354,
+    "undetermined_nodes": 6,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 1
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 2
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 2,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 16,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 32,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 60,
+        "primitive": 0,
+        "read_once": 12,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 100,
+        "primitive": 0,
+        "read_once": 80,
+        "undetermined": 0
+      },
+      "8": {
+        "nodes": 140,
+        "primitive": 0,
+        "read_once": 140,
+        "undetermined": 0
+      },
+      "9": {
+        "nodes": 120,
+        "primitive": 0,
+        "read_once": 120,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 1
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 2
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 2,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 16,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 34,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 70,
+        "primitive": 0,
+        "read_once": 20,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 110,
+        "primitive": 0,
+        "read_once": 74,
+        "undetermined": 0
+      },
+      "8": {
+        "nodes": 72,
+        "primitive": 2,
+        "read_once": 70,
+        "undetermined": 0
+      },
+      "9": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.8
+  },
+  {
+    "instance": "gk-f2",
+    "class": "read-once",
+    "n_vertices": 8,
+    "N": 12,
+    "eps": "1/2",
+    "c": 1.7925,
+    "s_over_log2N": 0.5579,
+    "fka_nodes": 25,
+    "fka_depth": 6,
+    "fkb_nodes": 7,
+    "fkb_depth": 2,
+    "ratio": 3.571,
+    "exponent": 1.295,
+    "fka_repeat_rate": 0.68,
+    "distinct_pairs": 9,
+    "root_primitive": false,
+    "root_read_once": true,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 25,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 6,
+        "primitive": 0,
+        "read_once": 6,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 6,
+        "primitive": 0,
+        "read_once": 6,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 3,
+        "primitive": 0,
+        "read_once": 3,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 3,
+        "primitive": 0,
+        "read_once": 3,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.0
+  },
+  {
+    "instance": "gk-f3",
+    "class": "read-once",
+    "n_vertices": 32,
+    "N": 192,
+    "eps": "1/4",
+    "c": 1.8962,
+    "s_over_log2N": 0.5274,
+    "fka_nodes": 103377,
+    "fka_depth": 28,
+    "fkb_nodes": 1952,
+    "fkb_depth": 12,
+    "ratio": 52.96,
+    "exponent": 2.196,
+    "fka_repeat_rate": 0.9964,
+    "distinct_pairs": 401,
+    "root_primitive": false,
+    "root_read_once": true,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 103377,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 8,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 16,
+        "primitive": 0,
+        "read_once": 16,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 32,
+        "primitive": 0,
+        "read_once": 32,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 64,
+        "primitive": 0,
+        "read_once": 64,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 128,
+        "primitive": 0,
+        "read_once": 128,
+        "undetermined": 0
+      },
+      "8": {
+        "nodes": 256,
+        "primitive": 0,
+        "read_once": 256,
+        "undetermined": 0
+      },
+      "9": {
+        "nodes": 510,
+        "primitive": 0,
+        "read_once": 510,
+        "undetermined": 0
+      },
+      "10": {
+        "nodes": 994,
+        "primitive": 0,
+        "read_once": 994,
+        "undetermined": 0
+      },
+      "11": {
+        "nodes": 1804,
+        "primitive": 0,
+        "read_once": 1804,
+        "undetermined": 0
+      },
+      "12": {
+        "nodes": 2978,
+        "primitive": 0,
+        "read_once": 2978,
+        "undetermined": 0
+      },
+      "13": {
+        "nodes": 4560,
+        "primitive": 0,
+        "read_once": 4560,
+        "undetermined": 0
+      },
+      "14": {
+        "nodes": 6604,
+        "primitive": 0,
+        "read_once": 6604,
+        "undetermined": 0
+      },
+      "15": {
+        "nodes": 9000,
+        "primitive": 0,
+        "read_once": 9000,
+        "undetermined": 0
+      },
+      "16": {
+        "nodes": 11350,
+        "primitive": 0,
+        "read_once": 11350,
+        "undetermined": 0
+      },
+      "17": {
+        "nodes": 12982,
+        "primitive": 0,
+        "read_once": 12982,
+        "undetermined": 0
+      },
+      "18": {
+        "nodes": 13228,
+        "primitive": 0,
+        "read_once": 13228,
+        "undetermined": 0
+      },
+      "19": {
+        "nodes": 11920,
+        "primitive": 0,
+        "read_once": 11920,
+        "undetermined": 0
+      },
+      "20": {
+        "nodes": 9582,
+        "primitive": 0,
+        "read_once": 9582,
+        "undetermined": 0
+      },
+      "21": {
+        "nodes": 7018,
+        "primitive": 0,
+        "read_once": 7018,
+        "undetermined": 0
+      },
+      "22": {
+        "nodes": 4758,
+        "primitive": 0,
+        "read_once": 4758,
+        "undetermined": 0
+      },
+      "23": {
+        "nodes": 2952,
+        "primitive": 0,
+        "read_once": 2952,
+        "undetermined": 0
+      },
+      "24": {
+        "nodes": 1606,
+        "primitive": 0,
+        "read_once": 1606,
+        "undetermined": 0
+      },
+      "25": {
+        "nodes": 718,
+        "primitive": 0,
+        "read_once": 718,
+        "undetermined": 0
+      },
+      "26": {
+        "nodes": 242,
+        "primitive": 0,
+        "read_once": 242,
+        "undetermined": 0
+      },
+      "27": {
+        "nodes": 54,
+        "primitive": 0,
+        "read_once": 54,
+        "undetermined": 0
+      },
+      "28": {
+        "nodes": 6,
+        "primitive": 0,
+        "read_once": 6,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 17,
+        "primitive": 0,
+        "read_once": 17,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 65,
+        "primitive": 0,
+        "read_once": 65,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 113,
+        "primitive": 0,
+        "read_once": 113,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 221,
+        "primitive": 0,
+        "read_once": 221,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 553,
+        "primitive": 0,
+        "read_once": 553,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 533,
+        "primitive": 0,
+        "read_once": 533,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 129,
+        "primitive": 0,
+        "read_once": 129,
+        "undetermined": 0
+      },
+      "8": {
+        "nodes": 97,
+        "primitive": 0,
+        "read_once": 97,
+        "undetermined": 0
+      },
+      "9": {
+        "nodes": 125,
+        "primitive": 0,
+        "read_once": 125,
+        "undetermined": 0
+      },
+      "10": {
+        "nodes": 49,
+        "primitive": 0,
+        "read_once": 49,
+        "undetermined": 0
+      },
+      "11": {
+        "nodes": 44,
+        "primitive": 0,
+        "read_once": 44,
+        "undetermined": 0
+      },
+      "12": {
+        "nodes": 5,
+        "primitive": 0,
+        "read_once": 5,
+        "undetermined": 0
+      }
+    },
+    "seconds": 17.6
+  },
+  {
+    "instance": "tk-s1",
+    "class": "read-once",
+    "n_vertices": 4,
+    "N": 6,
+    "eps": "1/2",
+    "c": 1.2925,
+    "s_over_log2N": 0.7737,
+    "fka_nodes": 5,
+    "fka_depth": 2,
+    "fkb_nodes": 1,
+    "fkb_depth": 0,
+    "ratio": 5.0,
+    "exponent": 0.898,
+    "fka_repeat_rate": 0.2,
+    "distinct_pairs": 4,
+    "root_primitive": false,
+    "root_read_once": true,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 5,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.0
+  },
+  {
+    "instance": "tk-s2",
+    "class": "read-once",
+    "n_vertices": 16,
+    "N": 72,
+    "eps": "1/4",
+    "c": 1.5425,
+    "s_over_log2N": 0.6483,
+    "fka_nodes": 481,
+    "fka_depth": 12,
+    "fkb_nodes": 67,
+    "fkb_depth": 5,
+    "ratio": 7.179,
+    "exponent": 1.444,
+    "fka_repeat_rate": 0.9293,
+    "distinct_pairs": 44,
+    "root_primitive": false,
+    "root_read_once": true,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 481,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 8,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 16,
+        "primitive": 0,
+        "read_once": 16,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 30,
+        "primitive": 0,
+        "read_once": 30,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 54,
+        "primitive": 0,
+        "read_once": 54,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 84,
+        "primitive": 0,
+        "read_once": 84,
+        "undetermined": 0
+      },
+      "8": {
+        "nodes": 102,
+        "primitive": 0,
+        "read_once": 102,
+        "undetermined": 0
+      },
+      "9": {
+        "nodes": 90,
+        "primitive": 0,
+        "read_once": 90,
+        "undetermined": 0
+      },
+      "10": {
+        "nodes": 58,
+        "primitive": 0,
+        "read_once": 58,
+        "undetermined": 0
+      },
+      "11": {
+        "nodes": 26,
+        "primitive": 0,
+        "read_once": 26,
+        "undetermined": 0
+      },
+      "12": {
+        "nodes": 6,
+        "primitive": 0,
+        "read_once": 6,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 17,
+        "primitive": 0,
+        "read_once": 17,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 3,
+        "primitive": 0,
+        "read_once": 3,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 12,
+        "primitive": 0,
+        "read_once": 12,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 22,
+        "primitive": 0,
+        "read_once": 22,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 12,
+        "primitive": 0,
+        "read_once": 12,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.2
+  },
+  {
+    "instance": "word-xy",
+    "class": "read-once",
+    "n_vertices": 16,
+    "N": 48,
+    "eps": "1/4",
+    "c": 1.3962,
+    "s_over_log2N": 0.7162,
+    "fka_nodes": 577,
+    "fka_depth": 14,
+    "fkb_nodes": 193,
+    "fkb_depth": 7,
+    "ratio": 2.99,
+    "exponent": 1.642,
+    "fka_repeat_rate": 0.9515,
+    "distinct_pairs": 43,
+    "root_primitive": false,
+    "root_read_once": true,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 577,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 8,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 16,
+        "primitive": 0,
+        "read_once": 16,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 30,
+        "primitive": 0,
+        "read_once": 30,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 52,
+        "primitive": 0,
+        "read_once": 52,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 76,
+        "primitive": 0,
+        "read_once": 76,
+        "undetermined": 0
+      },
+      "8": {
+        "nodes": 94,
+        "primitive": 0,
+        "read_once": 94,
+        "undetermined": 0
+      },
+      "9": {
+        "nodes": 98,
+        "primitive": 0,
+        "read_once": 98,
+        "undetermined": 0
+      },
+      "10": {
+        "nodes": 86,
+        "primitive": 0,
+        "read_once": 86,
+        "undetermined": 0
+      },
+      "11": {
+        "nodes": 62,
+        "primitive": 0,
+        "read_once": 62,
+        "undetermined": 0
+      },
+      "12": {
+        "nodes": 34,
+        "primitive": 0,
+        "read_once": 34,
+        "undetermined": 0
+      },
+      "13": {
+        "nodes": 12,
+        "primitive": 0,
+        "read_once": 12,
+        "undetermined": 0
+      },
+      "14": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 9,
+        "primitive": 0,
+        "read_once": 9,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 81,
+        "primitive": 0,
+        "read_once": 81,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 84,
+        "primitive": 0,
+        "read_once": 84,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 10,
+        "primitive": 0,
+        "read_once": 10,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 3,
+        "primitive": 0,
+        "read_once": 3,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 3,
+        "primitive": 0,
+        "read_once": 3,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.1
+  },
+  {
+    "instance": "word-yx",
+    "class": "read-once",
+    "n_vertices": 16,
+    "N": 48,
+    "eps": "1/4",
+    "c": 1.3962,
+    "s_over_log2N": 0.7162,
+    "fka_nodes": 577,
+    "fka_depth": 14,
+    "fkb_nodes": 223,
+    "fkb_depth": 9,
+    "ratio": 2.587,
+    "exponent": 1.642,
+    "fka_repeat_rate": 0.9515,
+    "distinct_pairs": 42,
+    "root_primitive": false,
+    "root_read_once": true,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 577,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 8,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 16,
+        "primitive": 0,
+        "read_once": 16,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 30,
+        "primitive": 0,
+        "read_once": 30,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 52,
+        "primitive": 0,
+        "read_once": 52,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 76,
+        "primitive": 0,
+        "read_once": 76,
+        "undetermined": 0
+      },
+      "8": {
+        "nodes": 94,
+        "primitive": 0,
+        "read_once": 94,
+        "undetermined": 0
+      },
+      "9": {
+        "nodes": 98,
+        "primitive": 0,
+        "read_once": 98,
+        "undetermined": 0
+      },
+      "10": {
+        "nodes": 86,
+        "primitive": 0,
+        "read_once": 86,
+        "undetermined": 0
+      },
+      "11": {
+        "nodes": 62,
+        "primitive": 0,
+        "read_once": 62,
+        "undetermined": 0
+      },
+      "12": {
+        "nodes": 34,
+        "primitive": 0,
+        "read_once": 34,
+        "undetermined": 0
+      },
+      "13": {
+        "nodes": 12,
+        "primitive": 0,
+        "read_once": 12,
+        "undetermined": 0
+      },
+      "14": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 5,
+        "primitive": 0,
+        "read_once": 5,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 29,
+        "primitive": 0,
+        "read_once": 29,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 81,
+        "primitive": 0,
+        "read_once": 81,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 84,
+        "primitive": 0,
+        "read_once": 84,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 8,
+        "primitive": 0,
+        "read_once": 8,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "8": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "9": {
+        "nodes": 5,
+        "primitive": 0,
+        "read_once": 5,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.1
+  },
+  {
+    "instance": "matching-12",
+    "class": "output",
+    "n_vertices": 12,
+    "N": 70,
+    "eps": "1/2",
+    "c": 3.0646,
+    "s_over_log2N": 0.3263,
+    "fka_nodes": 125,
+    "fka_depth": 10,
+    "fkb_nodes": 65,
+    "fkb_depth": 4,
+    "ratio": 1.923,
+    "exponent": 1.136,
+    "fka_repeat_rate": 0.904,
+    "distinct_pairs": 16,
+    "root_primitive": false,
+    "root_read_once": true,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 125,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 6,
+        "primitive": 0,
+        "read_once": 6,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 10,
+        "primitive": 0,
+        "read_once": 10,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 16,
+        "primitive": 0,
+        "read_once": 16,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 24,
+        "primitive": 0,
+        "read_once": 24,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 28,
+        "primitive": 0,
+        "read_once": 28,
+        "undetermined": 0
+      },
+      "8": {
+        "nodes": 22,
+        "primitive": 0,
+        "read_once": 22,
+        "undetermined": 0
+      },
+      "9": {
+        "nodes": 10,
+        "primitive": 0,
+        "read_once": 10,
+        "undetermined": 0
+      },
+      "10": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 33,
+        "primitive": 0,
+        "read_once": 33,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 17,
+        "primitive": 0,
+        "read_once": 17,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 9,
+        "primitive": 0,
+        "read_once": 9,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 5,
+        "primitive": 0,
+        "read_once": 5,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.0
+  },
+  {
+    "instance": "threshold-10",
+    "class": "shape",
+    "n_vertices": 10,
+    "N": 31,
+    "eps": "5/6",
+    "c": 4.1285,
+    "s_over_log2N": 0.4037,
+    "fka_nodes": 9,
+    "fka_depth": 4,
+    "fkb_nodes": 27,
+    "fkb_depth": 7,
+    "ratio": 0.333,
+    "exponent": 0.64,
+    "fka_repeat_rate": 0.0,
+    "distinct_pairs": 25,
+    "root_primitive": false,
+    "root_read_once": false,
+    "last_primitive_depth": -1,
+    "primitive_nodes_fka": 0,
+    "primitive_nodes_fkb": 0,
+    "read_once_nodes_fka": 5,
+    "undetermined_nodes": 0,
+    "fka_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 1,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "fkb_by_depth": {
+      "0": {
+        "nodes": 1,
+        "primitive": 0,
+        "read_once": 0,
+        "undetermined": 0
+      },
+      "1": {
+        "nodes": 6,
+        "primitive": 0,
+        "read_once": 5,
+        "undetermined": 0
+      },
+      "2": {
+        "nodes": 5,
+        "primitive": 0,
+        "read_once": 4,
+        "undetermined": 0
+      },
+      "3": {
+        "nodes": 4,
+        "primitive": 0,
+        "read_once": 3,
+        "undetermined": 0
+      },
+      "4": {
+        "nodes": 3,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "5": {
+        "nodes": 3,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "6": {
+        "nodes": 3,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      },
+      "7": {
+        "nodes": 2,
+        "primitive": 0,
+        "read_once": 2,
+        "undetermined": 0
+      }
+    },
+    "seconds": 0.0
+  }
+]

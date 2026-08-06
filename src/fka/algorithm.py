@@ -2,30 +2,29 @@
 
 Thesis Algorithm 1 (p.13), step for step:
 
-1. Sperner-reduce ``G`` and ``H``.
-2. Check conditions (i)-(iv); any failure means ``G != Tr(H)``.
-3. Resolve trivial instances.
-4. Otherwise pick a frequent vertex ``v`` and recurse on
-   ``L: (G_1, H_0 or H_1)`` and ``R: (H_1, G_0 or G_1)``, TRUE only if both are.
+1. ``Irredundant`` both sides;
+2. check conditions (i)-(iv); any failure means the pair is not dual;
+3. resolve trivial instances;
+4. otherwise pick a frequent variable ``x`` and recurse on
+   ``L: (C_x_1, D_x_0 v D_x_1)`` and ``R: (D_x_1, C_x_0 v C_x_1)``, TRUE only if
+   both are.
 
-Two axes are parameterised rather than hard-coded, so the variants can be
-compared on one instance:
+Two axes are parameterised so the variants can be compared on one instance:
 
 ``variant``
-    ``"faithful"`` stops at Step 3's ``|G|*|H| <= 1``, exactly as FK96 states
-    it. ``"modified"`` adds the ``D_{1,k}`` check of §5.1.1 (p.47): with
-    ``|G| = 1`` on an edge of size ``k``, duality is decided in ``O(k)`` by
-    testing whether ``H`` is precisely that edge's ``k`` singletons -- saving
-    the ``k-1`` further recursions the faithful version needs.
+    ``"faithful"`` stops at Step 3's ``nC * nD <= 1``, as FK96 states it.
+    ``"modified"`` adds the ``D_{1,k}`` check of §5.1.1 (p.47): with ``nC = 1``
+    on a term of size ``k``, duality is decided in ``O(k)`` by testing whether
+    the other side is precisely that term's ``k`` singletons -- saving the
+    ``k-1`` further recursions the faithful version needs.
 
-``pivot_rule``
-    ``"degree_sum"`` takes ``argmax_v (deg_G(v) + deg_H(v))``. That is what the
-    legacy implementation did, so it is what produced the published trees, so it
-    is the default. ``"frequency"`` takes ``argmax_v eps_v``, the quantity
-    Lemma 2.3.2 (p.16) actually bounds below by ``1/log n``. Both break ties to
-    the lowest index.
+``split_rule``
+    ``"degree_sum"`` takes ``argmax_x (deg_C(x) + deg_D(x))``; it produced the
+    published trees, so it is the default. ``"frequency"`` takes
+    ``argmax_x eps_v``, the quantity Lemma 2.3.2 (p.16) bounds below by
+    ``1/log n``. Both break ties to the lowest index.
 
-Neither switch affects the answer -- every frequent vertex gives a valid
+Neither switch affects the answer -- every frequent variable gives a valid
 decomposition. They change the shape and size of the tree, which is the object
 under study.
 """
@@ -33,202 +32,206 @@ under study.
 from __future__ import annotations
 
 from dataclasses import replace
+from fractions import Fraction
 from typing import Optional
 
-from .hypergraph import Hypergraph, popcount, verts
-from .sperner import sperner_reduce
-from .transversal import find_certificate
-from .tree import RecursionNode, RecursionTree, Verdict
+from .hypergraph import Hypergraph, phi_x_0, phi_x_1, popcount, verts
+from .irredundant import irredundant
+from .transversal import find_CA
+from .tree import Node, Tree, Verdict
 
 __all__ = [
     "fk_a",
     "is_dual",
     "eps",
     "eps_v",
-    "choose_pivot",
+    "eps_exact",
+    "choose_split_var",
     "check_conditions",
-    "verify_certificate",
+    "verify_CA",
     "VARIANTS",
-    "PIVOT_RULES",
+    "SPLIT_RULES",
 ]
 
 VARIANTS = ("faithful", "modified")
-PIVOT_RULES = ("degree_sum", "frequency")
+SPLIT_RULES = ("degree_sum", "frequency")
 
 
 # ----------------------------------------------------------------------
-# frequency and pivot selection
+# frequency and split-variable selection
 # ----------------------------------------------------------------------
-def eps_v(G: Hypergraph, H: Hypergraph, v: int) -> float:
-    """``eps(v) = max(deg_G(v)/|G|, deg_H(v)/|H|)`` (thesis §2.2.2, p.14).
+def eps_v(cnf: Hypergraph, dnf: Hypergraph, x: int) -> float:
+    """``eps(x) = max(deg_C(x)/nC, deg_D(x)/nD)`` (thesis §2.2.2, p.14).
 
     An empty side contributes 0 rather than dividing by zero.
     """
-    fg = G.degree(v) / len(G) if len(G) else 0.0
-    fh = H.degree(v) / len(H) if len(H) else 0.0
-    return max(fg, fh)
+    fc = cnf.degree(x) / len(cnf) if len(cnf) else 0.0
+    fd = dnf.degree(x) / len(dnf) if len(dnf) else 0.0
+    return max(fc, fd)
 
 
-def eps(G: Hypergraph, H: Hypergraph) -> float:
-    """``eps(G, H)``: the frequency of the most frequent vertex.
-
-    What the thesis reports per instance -- 3/7 for Fano, 1/2 for 6-A..6-D,
-    5/11 for 7-Ver, 2/5 for 8-Ver (§5.2).
-    """
-    n = max(G.n, H.n)
+def eps(cnf: Hypergraph, dnf: Hypergraph) -> float:
+    """``eps(C, D)``: the frequency of the most frequent variable."""
+    n = max(cnf.n, dnf.n)
     if n == 0:
         return 0.0
-    return max(eps_v(G, H, v) for v in range(n))
+    return max(eps_v(cnf, dnf, x) for x in range(n))
 
 
-def choose_pivot(
-    G: Hypergraph, H: Hypergraph, rule: str = "degree_sum"
-) -> Optional[int]:
-    """The split vertex, or ``None`` if every vertex has degree 0.
+def eps_exact(cnf: Hypergraph, dnf: Hypergraph) -> Fraction:
+    """:func:`eps` as an exact fraction.
 
-    Ties go to the lowest index, matching the legacy ``np.argmax`` so the
-    published trees reproduce exactly.
+    The thesis quotes values like ``5/11`` and ``3/7`` (§5.2), so the instance
+    baselines and the Chapter 4 bound store the fraction; the algorithm itself
+    only ever compares, so it uses the float.
     """
-    n = max(G.n, H.n)
+    best = Fraction(0)
+    for x in range(max(cnf.n, dnf.n)):
+        if len(cnf):
+            best = max(best, Fraction(cnf.degree(x), len(cnf)))
+        if len(dnf):
+            best = max(best, Fraction(dnf.degree(x), len(dnf)))
+    return best
+
+
+def choose_split_var(
+    cnf: Hypergraph, dnf: Hypergraph, rule: str = "degree_sum"
+) -> Optional[int]:
+    """The split variable, or ``None`` if every variable has degree 0.
+
+    Ties go to the lowest index, which is what reproduces the published trees.
+    """
+    if rule not in SPLIT_RULES:
+        raise ValueError(f"unknown split rule {rule!r}; expected one of {SPLIT_RULES}")
+    n = max(cnf.n, dnf.n)
     best: Optional[int] = None
     best_key = -1.0
-    for v in range(n):
-        dg, dh = G.degree(v), H.degree(v)
-        if dg + dh == 0:
+    for x in range(n):
+        dc, dd = cnf.degree(x), dnf.degree(x)
+        if dc + dd == 0:
             continue
-        if rule == "degree_sum":
-            key = float(dg + dh)
-        elif rule == "frequency":
-            key = eps_v(G, H, v)
-        else:
-            raise ValueError(
-                f"unknown pivot rule {rule!r}; expected one of {PIVOT_RULES}"
-            )
+        key = float(dc + dd) if rule == "degree_sum" else eps_v(cnf, dnf, x)
         if key > best_key:
-            best_key, best = key, v
+            best_key, best = key, x
     return best
 
 
 # ----------------------------------------------------------------------
 # conditions
 # ----------------------------------------------------------------------
-def check_conditions(G: Hypergraph, H: Hypergraph) -> Optional[Verdict]:
+def check_conditions(cnf: Hypergraph, dnf: Hypergraph) -> Optional[Verdict]:
     """Algorithm 1 Step 2, conditions (i)-(iv).
 
-    ``None`` when all hold, else a not-dual :class:`Verdict` naming the one that
-    failed. Both sides are assumed Sperner-reduced.
-
-    FK-B numbers its own conditions 1-3 in a different order and drops (iv); see
-    :func:`fkb.algorithm.check_conditions`.
+    ``None`` when all hold, else a not-dual verdict naming the one that failed.
+    Both sides are assumed irredundant. FK-B numbers its own conditions 1-3 in a
+    different order and drops (iv); see :func:`fkb.algorithm.check_conditions`.
     """
-    # (i) V(G) = V(H): the two sides must span the same vertices (Prop. 2.2.2).
-    if G.support() != H.support():
-        diff = G.support() ^ H.support()
+    # (i) equal supports (Prop. 2.2.2).
+    if cnf.support() != dnf.support():
+        diff = cnf.support() ^ dnf.support()
         return Verdict(
             dual=False,
             reason="cond_i_support",
             detail=(
-                "condition (i): the ground sets differ; vertices "
+                "condition (i): the ground sets differ; variables "
                 f"{[v + 1 for v in verts(diff)]} appear on one side only"
             ),
         )
 
-    # (ii) each side's largest edge is bounded by the other's edge count
+    # (ii) each side's largest term is bounded by the other's term count
     #      (Prop. 2.2.3).
-    if G.edges and len(H) < max(G.edge_sizes()):
-        big = max(G.edges, key=popcount)
+    if cnf.edges and len(dnf) < max(cnf.edge_sizes()):
+        big = max(cnf.edges, key=popcount)
         return Verdict(
             dual=False,
             reason="cond_ii_size",
             detail=(
-                f"condition (ii): G has an edge of size {popcount(big)} "
-                f"but |H| = {len(H)}"
+                f"condition (ii): C has a term of size {popcount(big)} "
+                f"but nD = {len(dnf)}"
             ),
             witness_edges=(big,),
         )
-    if H.edges and len(G) < max(H.edge_sizes()):
-        big = max(H.edges, key=popcount)
+    if dnf.edges and len(cnf) < max(dnf.edge_sizes()):
+        big = max(dnf.edges, key=popcount)
         return Verdict(
             dual=False,
             reason="cond_ii_size",
             detail=(
-                f"condition (ii): H has an edge of size {popcount(big)} "
-                f"but |G| = {len(G)}"
+                f"condition (ii): D has a term of size {popcount(big)} "
+                f"but nC = {len(cnf)}"
             ),
             witness_edges=(big,),
         )
 
-    # (iii) every cross pair intersects (Prop. 2.2.1). This is the witness the
-    #       thesis returns at Algorithm 1 line 6.
-    for a in G.edges:
-        for b in H.edges:
+    # (iii) every cross pair intersects (Prop. 2.2.1) -- the witness Algorithm 1
+    #       returns at line 6.
+    for a in cnf.edges:
+        for b in dnf.edges:
             if not (a & b):
                 return Verdict(
                     dual=False,
                     reason="cond_iii_disjoint",
                     detail=(
-                        f"condition (iii): edges {[v + 1 for v in verts(a)]} in G "
-                        f"and {[v + 1 for v in verts(b)]} in H are disjoint"
+                        f"condition (iii): clause {[v + 1 for v in verts(a)]} and "
+                        f"monomial {[v + 1 for v in verts(b)]} are disjoint"
                     ),
                     witness_edges=(a, b),
                 )
 
-    # (iv) the sum of 2^-|e| over both sides is at least 1 (Prop. 2.2.4), in
-    #      exact integer arithmetic. Comparing floats here can land just under
-    #      1.0 through rounding and reject a genuine transversal pair; scaling
-    #      by 2^L for the largest edge L makes every term an integer.
-    all_edges = G.edges + H.edges
-    scale = max((popcount(e) for e in all_edges), default=0)
-    if sum(1 << (scale - popcount(e)) for e in all_edges) < (1 << scale):
+    # (iv) the sum of 2^-|t| over both sides is at least 1 (Prop. 2.2.4), in
+    #      exact integer arithmetic. Floats here can land just under 1.0 through
+    #      rounding and reject a genuine dual pair; scaling by 2^L for the
+    #      largest term makes every summand an integer.
+    all_terms = cnf.edges + dnf.edges
+    scale = max((popcount(t) for t in all_terms), default=0)
+    if sum(1 << (scale - popcount(t)) for t in all_terms) < (1 << scale):
         return Verdict(
             dual=False,
             reason="cond_iv_frequency",
-            detail="condition (iv): sum of 2^-|e| over both sides is below 1",
+            detail="condition (iv): sum of 2^-|t| over both sides is below 1",
         )
     return None
 
 
 # ----------------------------------------------------------------------
-# certificates
+# conflicting assignments
 # ----------------------------------------------------------------------
-def verify_certificate(G: Hypergraph, H: Hypergraph, S: int) -> bool:
-    """Check thesis equation 2.1 (p.11): ``S`` meets every edge of ``G`` and
-    contains none of ``H``, which certifies ``G != Tr(H)``."""
-    if any(not (S & e) for e in G.edges):
+def verify_CA(cnf: Hypergraph, dnf: Hypergraph, S: int) -> bool:
+    """Check thesis equation 2.1 (p.11): ``S`` meets every clause and contains
+    no monomial, which certifies that the pair is not dual."""
+    if any(not (S & t) for t in cnf.edges):
         return False
-    if any((e & S) == e for e in H.edges):
+    if any((t & S) == t for t in dnf.edges):
         return False
     return True
 
 
-def _trivial_certificate(G: Hypergraph, H: Hypergraph) -> Optional[int]:
-    """A certificate for a non-dual instance with ``|G| = 1`` or ``|H| = 1``.
+def _trivial_CA(cnf: Hypergraph, dnf: Hypergraph) -> Optional[int]:
+    """A conflicting assignment when ``nC = 1`` or ``nD = 1``, else ``None``.
 
-    ``|G| = 1``: the single edge ``e`` is dual to its ``|e|`` singletons. If not,
-    some ``u`` in ``e`` has ``{u}`` not in ``H``, and ``S = {u}`` meets ``e``
-    while containing no edge of ``H`` -- every edge of ``H`` meets ``e`` by
+    ``nC = 1``: the single clause ``c`` is dual to its ``|c|`` singletons. If
+    not, some ``u`` in ``c`` has ``{u}`` not in ``D``, and ``S = {u}`` meets
+    ``c`` while containing no monomial -- every monomial meets ``c`` by
     condition (iii), so none is empty and none equals ``{u}``.
 
-    ``|H| = 1`` mirrors it: some ``w`` in the single edge has ``{w}`` not in
-    ``G``, and ``S = V \\ {w}`` meets every edge of ``G`` while excluding it.
-
-    ``None`` when no such construction applies, rather than guessing.
+    ``nD = 1`` mirrors it: some ``w`` in the single monomial has ``{w}`` not in
+    ``C``, and ``S = V \\ {w}`` meets every clause while excluding it.
     """
-    if len(G) == 1:
-        for u in verts(G.edges[0]):
-            if verify_certificate(G, H, 1 << u):
+    if len(cnf) == 1:
+        for u in verts(cnf.edges[0]):
+            if verify_CA(cnf, dnf, 1 << u):
                 return 1 << u
-    if len(H) == 1:
-        full = (1 << max(G.n, H.n)) - 1
-        for w in verts(H.edges[0]):
-            if verify_certificate(G, H, full & ~(1 << w)):
+    if len(dnf) == 1:
+        full = (1 << max(cnf.n, dnf.n)) - 1
+        for w in verts(dnf.edges[0]):
+            if verify_CA(cnf, dnf, full & ~(1 << w)):
                 return full & ~(1 << w)
-    if len(G) == 0 and verify_certificate(G, H, 0):
-        # G is the constant 0; the empty set vacuously meets its every edge.
+    if len(cnf) == 0 and verify_CA(cnf, dnf, 0):
+        # C is the constant 1; the empty set vacuously meets its every clause.
         return 0
-    if len(H) == 0:
-        full = (1 << max(G.n, H.n)) - 1
-        if verify_certificate(G, H, full):
+    if len(dnf) == 0:
+        full = (1 << max(cnf.n, dnf.n)) - 1
+        if verify_CA(cnf, dnf, full):
             return full
     return None
 
@@ -236,53 +239,53 @@ def _trivial_certificate(G: Hypergraph, H: Hypergraph) -> Optional[int]:
 # ----------------------------------------------------------------------
 # trivial cases
 # ----------------------------------------------------------------------
-def _is_singletons(H: Hypergraph, e: int) -> bool:
-    """True iff ``H`` is exactly ``{{v} : v in e}``, i.e. ``H = Tr({e})``."""
-    want = {1 << v for v in verts(e)}
-    return len(H) == len(want) and set(H.edges) == want
+def _is_singletons(MBF: Hypergraph, t: int) -> bool:
+    """True iff ``MBF`` is exactly ``{{v} : v in t}``, i.e. ``MBF = Tr({t})``."""
+    want = {1 << v for v in verts(t)}
+    return len(MBF) == len(want) and set(MBF.edges) == want
 
 
-def _trivial_case(G: Hypergraph, H: Hypergraph, variant: str) -> Optional[Verdict]:
+def _trivial_case(
+    cnf: Hypergraph, dnf: Hypergraph, variant: str
+) -> Optional[Verdict]:
     """Step 3, and under ``variant="modified"`` Step 3'.
 
-    A :class:`Verdict` when the instance is decided here, else ``None``.
-
-    The degenerate hypergraphs follow the monotone-Boolean reading of FK96: the
-    edgeless hypergraph is the constant 0, ``{{}}`` is the constant 1, and the
-    two are dual.
+    The degenerate cases follow the monotone-Boolean reading of FK96: no terms
+    is the constant 0 read as a DNF, ``{{}}`` is the constant 1, and the two are
+    dual. See ``docs/dictionary.md``.
     """
-    if len(G) * len(H) <= 1:
-        if len(G) == 0:
-            dual = len(H) == 1 and H.edges[0] == 0
-        elif len(H) == 0:
-            dual = len(G) == 1 and G.edges[0] == 0
-        else:  # |G| = |H| = 1
-            e, f = G.edges[0], H.edges[0]
-            dual = popcount(e) == 1 and e == f
+    if len(cnf) * len(dnf) <= 1:
+        if len(cnf) == 0:
+            dual = len(dnf) == 1 and dnf.edges[0] == 0
+        elif len(dnf) == 0:
+            dual = len(cnf) == 1 and cnf.edges[0] == 0
+        else:  # nC = nD = 1
+            c, m = cnf.edges[0], dnf.edges[0]
+            dual = popcount(c) == 1 and c == m
         return Verdict(
             dual=dual,
             reason="trivial",
-            detail=f"|G|*|H| = {len(G) * len(H)} <= 1",
-            certificate=None if dual else _trivial_certificate(G, H),
+            detail=f"nC * nD = {len(cnf) * len(dnf)} <= 1",
+            CA=None if dual else _trivial_CA(cnf, dnf),
         )
 
     if variant != "modified":
         return None
 
     # D_{1,k} / D_{k,1}: thesis §5.1.1 (p.47).
-    for one, other, name, other_name in ((G, H, "G", "H"), (H, G, "H", "G")):
+    for one, other, name, other_name in ((cnf, dnf, "C", "D"), (dnf, cnf, "D", "C")):
         if len(one) == 1:
-            e = one.edges[0]
-            dual = _is_singletons(other, e)
+            t = one.edges[0]
+            dual = _is_singletons(other, t)
             return Verdict(
                 dual=dual,
                 reason="single_edge",
                 detail=(
-                    f"|{name}| = 1 with an edge of size {popcount(e)}; "
+                    f"n{name} = 1 with a term of size {popcount(t)}; "
                     f"{other_name} {'is' if dual else 'is not'} its "
-                    f"{popcount(e)} singletons"
+                    f"{popcount(t)} singletons"
                 ),
-                certificate=None if dual else _trivial_certificate(G, H),
+                CA=None if dual else _trivial_CA(cnf, dnf),
             )
     return None
 
@@ -291,42 +294,41 @@ def _trivial_case(G: Hypergraph, H: Hypergraph, variant: str) -> Optional[Verdic
 # the algorithm
 # ----------------------------------------------------------------------
 def fk_a(
-    G: Hypergraph,
-    H: Hypergraph,
+    cnf: Hypergraph,
+    dnf: Hypergraph,
     *,
     variant: str = "modified",
-    pivot_rule: str = "degree_sum",
+    split_rule: str = "degree_sum",
     instance: str = "",
     validate: bool = False,
     max_nodes: Optional[int] = None,
-) -> RecursionTree:
-    """Decide whether ``G = Tr(H)``, returning the full recursion tree.
+) -> Tree:
+    """Decide whether ``cnf = Tr(dnf)``, returning the full recursion tree.
 
-    ``validate=True`` re-checks every certificate against equation 2.1 at the
-    node that built it. Off by default because it is only useful when changing
-    the algorithm; the tests turn it on. ``max_nodes`` aborts once the tree
-    passes that size -- the tree is the thing that can blow up.
+    ``validate=True`` re-checks every conflicting assignment against equation
+    2.1 at the node that built it; the tests turn it on. ``max_nodes`` aborts
+    once the tree passes that size -- the tree is the thing that can blow up.
     """
     if variant not in VARIANTS:
         raise ValueError(f"unknown variant {variant!r}; expected one of {VARIANTS}")
-    if pivot_rule not in PIVOT_RULES:
+    if split_rule not in SPLIT_RULES:
         raise ValueError(
-            f"unknown pivot rule {pivot_rule!r}; expected one of {PIVOT_RULES}"
+            f"unknown split rule {split_rule!r}; expected one of {SPLIT_RULES}"
         )
-    if G.n != H.n:
+    if cnf.n != dnf.n:
         raise ValueError(
-            f"G is on {G.n} vertices but H is on {H.n}; "
+            f"C is on {cnf.n} variables but D is on {dnf.n}; "
             "both sides must share a ground set"
         )
 
-    tree = RecursionTree(
-        instance=instance, algorithm="FK-A", variant=variant, pivot_rule=pivot_rule
+    tree = Tree(
+        instance=instance, algorithm="FK-A", variant=variant, split_rule=split_rule
     )
     counter = {"next_id": 1}
 
     def recurse(
-        G_in: Hypergraph,
-        H_in: Hypergraph,
+        cnf_in: Hypergraph,
+        dnf_in: Hypergraph,
         parent_id: Optional[int],
         path: tuple[str, ...],
     ) -> Verdict:
@@ -339,103 +341,96 @@ def fk_a(
         node_id = counter["next_id"]
         counter["next_id"] += 1
 
-        # Step 1: Sperner reduction, recording what it removed.
-        rg, rh = sperner_reduce(G_in), sperner_reduce(H_in)
-        G, H = rg.reduced, rh.reduced
+        # Step 1: Irredundant, recording what it removed.
+        rc, rd = irredundant(cnf_in), irredundant(dnf_in)
+        C, D = rc.reduced, rd.reduced
 
-        node = RecursionNode(
+        node = Node(
             node_id=node_id,
             parent_id=parent_id,
             path=path,
-            G_in=G_in,
-            H_in=H_in,
-            G=G,
-            H=H,
-            removed_G=rg.removed,
-            removed_H=rh.removed,
-            epsilon=eps(G, H),
+            cnf_in=cnf_in,
+            dnf_in=dnf_in,
+            cnf=C,
+            dnf=D,
+            cut_C=rc.removed,
+            cut_D=rd.removed,
+            epsilon=eps(C, D),
         )
         tree.add(node)
 
         def settle(verdict: Verdict) -> Verdict:
-            if validate and verdict.certificate is not None:
-                if not verify_certificate(G, H, verdict.certificate):
+            if validate and verdict.CA is not None:
+                if not verify_CA(C, D, verdict.CA):
                     raise AssertionError(
-                        f"node {node_id}: certificate "
-                        f"{[v + 1 for v in verts(verdict.certificate)]} "
-                        f"fails equation 2.1 for {G.label()} / {H.label()}"
+                        f"node {node_id}: {[v + 1 for v in verts(verdict.CA)]} "
+                        f"fails equation 2.1 for {C.label()} / {D.label()}"
                     )
             node.verdict = verdict
             return verdict
 
         # Step 2: conditions.
-        failed = check_conditions(G, H)
+        failed = check_conditions(C, D)
         if failed is not None:
-            # Algorithm 1 reports a structural witness here. For a research
-            # artifact, equation 2.1's set certificate is more useful: it can be
-            # checked independently at every ancestor after the lifts. Not every
-            # degenerate pair admits one in this orientation, so keep the
-            # structural verdict when the exact search returns None.
-            if failed.certificate is None:
-                found = find_certificate(G, H)
+            # Algorithm 1 reports a structural witness here. Equation 2.1's set
+            # assignment is more useful in a research artifact -- it can be
+            # checked independently at every ancestor after the lifts -- but not
+            # every degenerate pair admits one in this orientation, so the
+            # structural verdict stands when the exact search returns None.
+            if failed.CA is None:
+                found = find_CA(C, D)
                 if found is not None:
-                    failed = replace(failed, certificate=found)
+                    failed = replace(failed, CA=found)
             return settle(failed)
 
-        # Step 3: trivial instances, and the modified single-edge rule.
-        trivial = _trivial_case(G, H, variant)
+        # Step 3: trivial instances, and the modified single-term rule.
+        trivial = _trivial_case(C, D, variant)
         if trivial is not None:
             return settle(trivial)
 
         # Step 4: recursive decomposition.
-        pivot = choose_pivot(G, H, pivot_rule)
-        if pivot is None:
-            # Unreachable for Sperner-reduced inputs past Step 2: every edge is
-            # non-empty there, so some vertex has positive degree.
+        x = choose_split_var(C, D, split_rule)
+        if x is None:
+            # Unreachable for irredundant inputs past Step 2: every term is
+            # non-empty there, so some variable has positive degree.
             raise AssertionError(
-                f"node {node_id}: no vertex of positive degree in "
-                f"{G.label()} / {H.label()}"
+                f"node {node_id}: no variable of positive degree in "
+                f"{C.label()} / {D.label()}"
             )
-        node.pivot = pivot
-        node.pivot_frequency = eps_v(G, H, pivot)
+        node.split_var = x
+        node.split_var_frequency = eps_v(C, D, x)
 
-        G0, G1 = G.contraction(pivot), G.deletion(pivot)
-        H0, H1 = H.contraction(pivot), H.deletion(pivot)
+        C_x_0, C_x_1 = phi_x_0(C, x), phi_x_1(C, x)
+        D_x_0, D_x_1 = phi_x_0(D, x), phi_x_1(D, x)
 
-        # L: (G_1, H_0 or H_1)
-        left = recurse(G1, H0.union(H1), node_id, path + ("L",))
+        left = recurse(C_x_1, D_x_0.vee(D_x_1), node_id, path + ("L",))
         if not left.dual:
-            # S_L misses the pivot, so S_L + {v} still meets every edge of G --
-            # edges through v are hit by v -- and still contains no edge of H.
+            # The child's S misses x, so S + {x} still meets every clause --
+            # those through x are met by x -- and still contains no monomial.
             return settle(
                 Verdict(
                     dual=False,
                     reason="child_failed",
-                    detail=f"left subproblem (G1, H0 or H1) on pivot v{pivot + 1} failed",
-                    certificate=(
-                        None
-                        if left.certificate is None
-                        else left.certificate | (1 << pivot)
-                    ),
+                    detail=f"left subproblem (C_x_1, D_x_0 v D_x_1) on v{x + 1} failed",
+                    CA=None if left.CA is None else left.CA | (1 << x),
                     witness_edges=left.witness_edges,
                 )
             )
 
-        # R: (H_1, G_0 or G_1)
-        right = recurse(H1, G0.union(G1), node_id, path + ("R",))
+        right = recurse(D_x_1, C_x_0.vee(C_x_1), node_id, path + ("R",))
         if not right.dual:
-            # The right subproblem has the sides swapped, so its certificate is
-            # complemented within V \ {v} (thesis p.11: S works for (G,H) iff
-            # V \ S works for (H,G)).
-            cert = None
-            if right.certificate is not None:
-                cert = (((1 << G.n) - 1) & ~(1 << pivot)) & ~right.certificate
+            # The right subproblem has the sides swapped, so its assignment is
+            # complemented within V \ {x} (thesis p.11: S works for (C,D) iff
+            # V \ S works for (D,C)).
+            CA = None
+            if right.CA is not None:
+                CA = (((1 << C.n) - 1) & ~(1 << x)) & ~right.CA
             return settle(
                 Verdict(
                     dual=False,
                     reason="child_failed",
-                    detail=f"right subproblem (H1, G0 or G1) on pivot v{pivot + 1} failed",
-                    certificate=cert,
+                    detail=f"right subproblem (D_x_1, C_x_0 v C_x_1) on v{x + 1} failed",
+                    CA=CA,
                     witness_edges=right.witness_edges,
                 )
             )
@@ -444,18 +439,18 @@ def fk_a(
             Verdict(dual=True, reason="dual", detail="both subproblems returned TRUE")
         )
 
-    verdict = recurse(G, H, None, ())
+    verdict = recurse(cnf, dnf, None, ())
     tree.dual = verdict.dual
     tree.verdict = verdict
     return tree
 
 
 def is_dual(
-    G: Hypergraph,
-    H: Hypergraph,
+    cnf: Hypergraph,
+    dnf: Hypergraph,
     *,
     variant: str = "modified",
-    pivot_rule: str = "degree_sum",
+    split_rule: str = "degree_sum",
 ) -> bool:
-    """``True`` iff ``G = Tr(H)``. Discards the tree."""
-    return bool(fk_a(G, H, variant=variant, pivot_rule=pivot_rule).dual)
+    """``True`` iff ``cnf = Tr(dnf)``. Discards the tree."""
+    return bool(fk_a(cnf, dnf, variant=variant, split_rule=split_rule).dual)

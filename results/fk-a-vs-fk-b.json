@@ -3,8 +3,8 @@
     {
       "instance": "6a",
       "n": 6,
-      "edges_G": 4,
-      "edges_H": 4,
+      "nC": 4,
+      "nD": 4,
       "oracle_dual": true,
       "algorithms": {
         "FK-A": {
@@ -26,7 +26,7 @@
           "order_min": 2,
           "order_max": 4,
           "symmetry_retained": 0.5714,
-          "seconds": 0.0004
+          "seconds": 0.0006
         },
         "FK-B": {
           "nodes": 3,
@@ -50,7 +50,7 @@
           "branches": {
             "split": 1
           },
-          "seconds": 0.0002
+          "seconds": 0.0003
         }
       },
       "node_ratio": 3.667
@@ -58,8 +58,8 @@
     {
       "instance": "6b",
       "n": 6,
-      "edges_G": 8,
-      "edges_H": 3,
+      "nC": 8,
+      "nD": 3,
       "oracle_dual": true,
       "algorithms": {
         "FK-A": {
@@ -82,7 +82,7 @@
           "order_min": 2,
           "order_max": 48,
           "symmetry_retained": 0.175,
-          "seconds": 0.0005
+          "seconds": 0.0006
         },
         "FK-B": {
           "nodes": 6,
@@ -107,7 +107,7 @@
           "branches": {
             "mu_D": 1
           },
-          "seconds": 0.0003
+          "seconds": 0.0004
         }
       },
       "node_ratio": 2.167
@@ -115,8 +115,8 @@
     {
       "instance": "6c",
       "n": 6,
-      "edges_G": 8,
-      "edges_H": 2,
+      "nC": 8,
+      "nD": 2,
       "oracle_dual": true,
       "algorithms": {
         "FK-A": {
@@ -138,7 +138,7 @@
           "order_min": 24,
           "order_max": 48,
           "symmetry_retained": 0.625,
-          "seconds": 0.0002
+          "seconds": 0.0003
         },
         "FK-B": {
           "nodes": 1,
@@ -166,8 +166,8 @@
     {
       "instance": "6d",
       "n": 6,
-      "edges_G": 4,
-      "edges_H": 4,
+      "nC": 4,
+      "nD": 4,
       "oracle_dual": true,
       "algorithms": {
         "FK-A": {
@@ -192,7 +192,7 @@
           "order_min": 1,
           "order_max": 8,
           "symmetry_retained": 0.4464,
-          "seconds": 0.0003
+          "seconds": 0.0009
         },
         "FK-B": {
           "nodes": 3,
@@ -225,8 +225,8 @@
     {
       "instance": "7ver",
       "n": 7,
-      "edges_G": 11,
-      "edges_H": 7,
+      "nC": 11,
+      "nD": 7,
       "oracle_dual": true,
       "algorithms": {
         "FK-A": {
@@ -251,7 +251,7 @@
           "order_min": 1,
           "order_max": 8,
           "symmetry_retained": 1.3333,
-          "seconds": 0.0009
+          "seconds": 0.0011
         },
         "FK-B": {
           "nodes": 11,
@@ -277,7 +277,7 @@
           "branches": {
             "split": 5
           },
-          "seconds": 0.0006
+          "seconds": 0.0009
         }
       },
       "node_ratio": 1.909
@@ -285,8 +285,8 @@
     {
       "instance": "8ver",
       "n": 8,
-      "edges_G": 5,
-      "edges_H": 20,
+      "nC": 5,
+      "nD": 20,
       "oracle_dual": true,
       "algorithms": {
         "FK-A": {
@@ -312,7 +312,7 @@
           "order_min": 2,
           "order_max": 48,
           "symmetry_retained": 0.6324,
-          "seconds": 0.0009
+          "seconds": 0.0013
         },
         "FK-B": {
           "nodes": 21,
@@ -343,7 +343,7 @@
             "mu_C": 1,
             "mu_D": 1
           },
-          "seconds": 0.001
+          "seconds": 0.0015
         }
       },
       "node_ratio": 1.0
@@ -351,8 +351,8 @@
     {
       "instance": "f2g2",
       "n": 8,
-      "edges_G": 8,
-      "edges_H": 4,
+      "nC": 8,
+      "nD": 4,
       "oracle_dual": true,
       "algorithms": {
         "FK-A": {
@@ -376,7 +376,7 @@
           "order_min": 2,
           "order_max": 128,
           "symmetry_retained": 0.1016,
-          "seconds": 0.0009
+          "seconds": 0.0013
         },
         "FK-B": {
           "nodes": 7,
@@ -402,7 +402,7 @@
           "branches": {
             "mu_C": 2
           },
-          "seconds": 0.0003
+          "seconds": 0.0005
         }
       },
       "node_ratio": 3.571
@@ -410,8 +410,8 @@
     {
       "instance": "fano",
       "n": 7,
-      "edges_G": 7,
-      "edges_H": 7,
+      "nC": 7,
+      "nD": 7,
       "oracle_dual": true,
       "algorithms": {
         "FK-A": {
@@ -438,7 +438,7 @@
           "order_min": 1,
           "order_max": 168,
           "symmetry_retained": 0.0648,
-          "seconds": 0.0013
+          "seconds": 0.0017
         },
         "FK-B": {
           "nodes": 11,
@@ -465,7 +465,7 @@
           "branches": {
             "split": 5
           },
-          "seconds": 0.0006
+          "seconds": 0.0009
         }
       },
       "node_ratio": 3.182
@@ -473,8 +473,8 @@
     {
       "instance": "k3",
       "n": 3,
-      "edges_G": 3,
-      "edges_H": 3,
+      "nC": 3,
+      "nD": 3,
       "oracle_dual": true,
       "algorithms": {
         "FK-A": {
@@ -496,7 +496,7 @@
           "order_min": 2,
           "order_max": 6,
           "symmetry_retained": 0.5556,
-          "seconds": 0.0001
+          "seconds": 0.0002
         },
         "FK-B": {
           "nodes": 3,
@@ -520,7 +520,7 @@
           "branches": {
             "split": 1
           },
-          "seconds": 0.0001
+          "seconds": 0.0002
         }
       },
       "node_ratio": 1.0
@@ -528,8 +528,8 @@
     {
       "instance": "sdfp-sd-1",
       "n": 9,
-      "edges_G": 15,
-      "edges_H": 15,
+      "nC": 15,
+      "nD": 15,
       "oracle_dual": true,
       "algorithms": {
         "FK-A": {
@@ -557,7 +557,7 @@
           "order_min": 1,
           "order_max": 336,
           "symmetry_retained": 0.0658,
-          "seconds": 0.003
+          "seconds": 0.0041
         },
         "FK-B": {
           "nodes": 37,
@@ -589,7 +589,7 @@
             "mu_D": 5,
             "mu_C": 1
           },
-          "seconds": 0.0023
+          "seconds": 0.0043
         }
       },
       "node_ratio": 2.027
@@ -597,8 +597,8 @@
     {
       "instance": "sdfp-sd-2",
       "n": 16,
-      "edges_G": 64,
-      "edges_H": 64,
+      "nC": 64,
+      "nD": 64,
       "oracle_dual": true,
       "algorithms": {
         "FK-A": {
@@ -619,13 +619,13 @@
             "C2 x C2": 86,
             "D6": 82,
             "C2 x D4": 36,
-            "D3 wr C2": 32,
+            "S3 wr C2": 32,
             "D4": 30,
             "C2 x S4": 22,
             "PSL(3,2)": 22,
-            "D3 x D4": 18,
+            "S3 x D4": 18,
             "order 336 (non-abelian, unidentified)": 16,
-            "D3 x S4": 8,
+            "S3 x S4": 8,
             "C2 x D6": 8,
             "D4 x S4": 6,
             "order 1344 (non-abelian, unidentified)": 6,
@@ -643,7 +643,7 @@
           "order_mean": 138.789,
           "order_min": 1,
           "order_max": 56448,
-          "seconds": 0.0827
+          "seconds": 0.1249
         },
         "FK-B": {
           "nodes": 231,
@@ -661,12 +661,12 @@
             "C2": 14,
             "C2 x D4": 7,
             "D6": 5,
-            "D3 x D4": 4,
+            "S3 x D4": 4,
             "C2 x C2": 4,
             "D4 x S4": 2,
             "D4 wr C2": 2,
             "C2 x C2 x D4": 2,
-            "D3 x D3": 2,
+            "S3 x S3": 2,
             "C1": 2,
             "order 56448 (non-abelian, unidentified)": 1,
             "order 4032 (non-abelian, unidentified)": 1,
@@ -682,7 +682,7 @@
             "mu_D": 18,
             "mu_C": 8
           },
-          "seconds": 0.0227
+          "seconds": 0.0331
         }
       },
       "node_ratio": 6.177
@@ -690,8 +690,8 @@
     {
       "instance": "trivial-aut-1",
       "n": 8,
-      "edges_G": 31,
-      "edges_H": 35,
+      "nC": 31,
+      "nD": 35,
       "oracle_dual": true,
       "algorithms": {
         "FK-A": {
@@ -717,7 +717,7 @@
           "order_min": 1,
           "order_max": 24,
           "symmetry_retained": 4.8462,
-          "seconds": 0.0022
+          "seconds": 0.003
         },
         "FK-B": {
           "nodes": 33,
@@ -746,21 +746,21 @@
           "branches": {
             "split": 16
           },
-          "seconds": 0.0023
+          "seconds": 0.0032
         }
       },
       "node_ratio": 1.242
     },
     {
-      "instance": "w11",
+      "instance": "witt-s4511",
       "n": 11,
-      "edges_G": 66,
-      "edges_H": 66,
+      "nC": 66,
+      "nD": 66,
       "oracle_dual": true,
       "algorithms": {
         "FK-A": {
-          "nodes": 475,
-          "leaves": 238,
+          "nodes": 483,
+          "leaves": 242,
           "depth": 9,
           "dual": true,
           "annotated": true,
@@ -769,154 +769,156 @@
           "nodes_analysed": 404,
           "aut_disagreements": 0,
           "group_names": {
-            "C2": 194,
-            "S3": 52,
-            "D4": 46,
+            "C2": 202,
+            "S3": 50,
+            "D4": 48,
             "S4": 36,
-            "C2 x C2": 26,
-            "C1": 14,
+            "C2 x C2": 22,
             "C2 x S4": 10,
+            "C1": 10,
             "D6": 8,
-            "QD16": 6,
+            "order 16 (non-abelian, unidentified)": 6,
             "S5": 4,
-            "A6 . C2": 2,
-            "(C3 x C3) : QD16": 2,
-            "GL(2,3)": 2,
-            "(C3 x C3) : Q8": 2
+            "order 720 (non-abelian, unidentified)": 2,
+            "order 144 (non-abelian, unidentified)": 2,
+            "order 48 (non-abelian, unidentified)": 2,
+            "order 72 (non-abelian, unidentified)": 2
           },
-          "trivial_group_nodes": 14,
+          "trivial_group_nodes": 10,
           "order_mean": 12.797,
           "order_min": 1,
           "order_max": 720,
-          "seconds": 0.0287
+          "seconds": 0.0407
         },
         "FK-B": {
-          "nodes": 323,
+          "nodes": 321,
           "leaves": 172,
           "depth": 9,
           "dual": true,
           "annotated": true,
           "root_group": null,
           "root_order": null,
-          "nodes_analysed": 320,
+          "nodes_analysed": 318,
           "aut_disagreements": 0,
           "group_names": {
-            "C2": 122,
-            "S3": 78,
+            "C2": 120,
+            "S3": 74,
             "C2 x C2": 40,
-            "C1": 28,
+            "C1": 30,
             "D4": 26,
-            "S4": 10,
-            "QD16": 6,
-            "GL(2,3)": 2,
+            "S4": 14,
+            "order 16 (non-abelian, unidentified)": 6,
+            "order 48 (non-abelian, unidentified)": 2,
             "C2 x S4": 2,
-            "(C3 x C3) : Q8": 2,
-            "S5": 2,
-            "A6 . C2": 1,
-            "(C3 x C3) : QD16": 1
+            "order 72 (non-abelian, unidentified)": 2,
+            "order 720 (non-abelian, unidentified)": 1,
+            "order 144 (non-abelian, unidentified)": 1
           },
-          "trivial_group_nodes": 28,
-          "order_mean": 9.012,
+          "trivial_group_nodes": 30,
+          "order_mean": 8.535,
           "order_min": 1,
           "order_max": 720,
           "branches": {
-            "split": 131,
-            "mu_C": 10,
-            "mu_D": 10
+            "split": 127,
+            "mu_C": 11,
+            "mu_D": 11
           },
-          "seconds": 0.0306
+          "seconds": 0.0377
         }
       },
-      "node_ratio": 1.471
+      "node_ratio": 1.505
     },
     {
-      "instance": "w11-sd-1",
-      "n": 13,
-      "edges_G": 133,
-      "edges_H": 133,
+      "instance": "word-xy",
+      "n": 16,
+      "nC": 32,
+      "nD": 16,
       "oracle_dual": true,
       "algorithms": {
         "FK-A": {
-          "nodes": 955,
-          "leaves": 478,
-          "depth": 11,
+          "nodes": 577,
+          "leaves": 289,
+          "depth": 14,
           "dual": true,
-          "annotated": true,
+          "annotated": false,
           "root_group": null,
           "root_order": null,
-          "nodes_analysed": 808,
+          "nodes_analysed": 0,
           "aut_disagreements": 0,
-          "group_names": {
-            "C2": 388,
-            "S3": 104,
-            "D4": 92,
-            "S4": 72,
-            "C2 x C2": 52,
-            "C1": 28,
-            "C2 x S4": 20,
-            "D6": 16,
-            "QD16": 12,
-            "S5": 8,
-            "A6 . C2": 4,
-            "(C3 x C3) : QD16": 4,
-            "GL(2,3)": 4,
-            "(C3 x C3) : Q8": 4
-          },
-          "trivial_group_nodes": 28,
-          "order_mean": 12.797,
-          "order_min": 1,
-          "order_max": 720,
-          "seconds": 0.0643
+          "group_names": {},
+          "trivial_group_nodes": 0,
+          "seconds": 0.042
         },
         "FK-B": {
-          "nodes": 719,
-          "leaves": 402,
-          "depth": 10,
+          "nodes": 193,
+          "leaves": 161,
+          "depth": 7,
           "dual": true,
-          "annotated": true,
+          "annotated": false,
           "root_group": null,
           "root_order": null,
-          "nodes_analysed": 712,
+          "nodes_analysed": 0,
           "aut_disagreements": 0,
-          "group_names": {
-            "C2": 206,
-            "C2 x C2": 132,
-            "S3": 108,
-            "C1": 96,
-            "D4": 46,
-            "S4": 36,
-            "C2 x C2 x C2": 20,
-            "D6": 14,
-            "C2 x D4": 12,
-            "S5": 12,
-            "QD16": 12,
-            "GL(2,3)": 4,
-            "(C3 x C3) : Q8": 4,
-            "C2 x C2 x S4": 2,
-            "S6": 2,
-            "A6 . C2": 2,
-            "(C3 x C3) : QD16": 2,
-            "C2 x S4": 2
-          },
-          "trivial_group_nodes": 96,
-          "order_mean": 12.646,
-          "order_min": 1,
-          "order_max": 720,
+          "group_names": {},
+          "trivial_group_nodes": 0,
           "branches": {
-            "split": 241,
-            "mu_C": 34,
-            "mu_D": 42
+            "mu_D": 28,
+            "mu_C": 3,
+            "split": 1
           },
-          "seconds": 0.0622
+          "seconds": 0.0173
         }
       },
-      "node_ratio": 1.328
+      "node_ratio": 2.99
+    },
+    {
+      "instance": "word-yx",
+      "n": 16,
+      "nC": 16,
+      "nD": 32,
+      "oracle_dual": true,
+      "algorithms": {
+        "FK-A": {
+          "nodes": 577,
+          "leaves": 289,
+          "depth": 14,
+          "dual": true,
+          "annotated": false,
+          "root_group": null,
+          "root_order": null,
+          "nodes_analysed": 0,
+          "aut_disagreements": 0,
+          "group_names": {},
+          "trivial_group_nodes": 0,
+          "seconds": 0.0427
+        },
+        "FK-B": {
+          "nodes": 223,
+          "leaves": 185,
+          "depth": 9,
+          "dual": true,
+          "annotated": false,
+          "root_group": null,
+          "root_order": null,
+          "nodes_analysed": 0,
+          "aut_disagreements": 0,
+          "group_names": {},
+          "trivial_group_nodes": 0,
+          "branches": {
+            "mu_D": 5,
+            "mu_C": 32,
+            "split": 1
+          },
+          "seconds": 0.0198
+        }
+      },
+      "node_ratio": 2.587
     },
     {
       "instance": "sdfp-sd-3",
       "n": 23,
-      "edges_G": 365,
-      "edges_H": 365,
+      "nC": 365,
+      "nD": 365,
       "oracle_dual": true,
       "algorithms": {
         "FK-A": {
@@ -931,7 +933,7 @@
           "aut_disagreements": 0,
           "group_names": {},
           "trivial_group_nodes": 0,
-          "seconds": 2.1931
+          "seconds": 3.0271
         },
         "FK-B": {
           "nodes": 1677,
@@ -950,7 +952,7 @@
             "mu_D": 11,
             "mu_C": 10
           },
-          "seconds": 0.6425
+          "seconds": 0.9035
         }
       },
       "node_ratio": 16.059

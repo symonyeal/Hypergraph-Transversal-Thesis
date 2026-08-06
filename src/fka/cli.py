@@ -25,7 +25,7 @@ from typing import Optional, Sequence
 
 from . import __version__
 from .analysis import AnalysisOptions, annotate
-from .algorithm import PIVOT_RULES, VARIANTS, fk_a
+from .algorithm import SPLIT_RULES, VARIANTS, fk_a
 from .backends import describe
 from .dot import write_dot
 from .instances import Instance, list_ids, load, load_all, refresh_expected
@@ -65,13 +65,13 @@ def cmd_list(args: argparse.Namespace) -> int:
                 inst.provenance,
                 str(e.get("dual", "?")),
                 str(e.get("epsilon", "?")),
-                f"{e.get('n_edges_G','?')}/{e.get('n_edges_H','?')}",
+                f"{e.get('nC','?')}/{e.get('nD','?')}",
                 str((e.get("fka", {}).get("modified", {}) or {}).get("nodes", "?")),
                 str((e.get("fkb", {}).get("faithful", {}) or {}).get("nodes", "?")),
             )
         )
     head = (
-        "id", "name", "provenance", "dual", "eps", "|G|/|H|", "fk-a nodes", "fk-b nodes"
+        "id", "name", "provenance", "dual", "eps", "nC/nD", "fk-a nodes", "fk-b nodes"
     )
     widths = [max(len(str(r[i])) for r in (*rows, head)) for i in range(len(head))]
     line = "  ".join(h.ljust(w) for h, w in zip(head, widths))
@@ -89,9 +89,9 @@ def cmd_show(args: argparse.Namespace) -> int:
     print(f"  family      {inst.family}")
     print(f"  source      {inst.source}")
     print(f"  provenance  {inst.provenance}")
-    print(f"  vertices    {inst.n_vertices}")
-    print(f"  G ({len(inst.G_edges)} edges)  {inst.G.label()}")
-    print(f"  H ({len(inst.H_edges)} edges)  {inst.H.label()}")
+    print(f"  variables   {inst.n_vertices}")
+    print(f"  C ({len(inst.cnf_edges)} clauses)   {inst.cnf.label()}")
+    print(f"  D ({len(inst.dnf_edges)} monomials) {inst.dnf.label()}")
     if inst.expected:
         print("  expected    " + json.dumps(inst.expected))
     if args.notes and inst.notes:
@@ -101,10 +101,10 @@ def cmd_show(args: argparse.Namespace) -> int:
 
 def _run_one(inst: Instance, args: argparse.Namespace, outdir: Path) -> dict:
     tree = fk_a(
-        inst.G,
-        inst.H,
+        inst.cnf,
+        inst.dnf,
         variant=args.variant,
-        pivot_rule=args.pivot_rule,
+        split_rule=args.split_rule,
         instance=inst.id,
         validate=args.validate,
         max_nodes=args.max_nodes,
@@ -128,7 +128,7 @@ def _run_one(inst: Instance, args: argparse.Namespace, outdir: Path) -> dict:
     summary = tree.summary()
     baseline = (inst.expected.get("fka", {}) or {}).get(args.variant, {})
     flag = ""
-    if baseline and args.pivot_rule == "degree_sum":
+    if baseline and args.split_rule == "degree_sum":
         if baseline.get("nodes") != summary["nodes"]:
             flag = f"  !! baseline says {baseline['nodes']} nodes"
     expected_dual = inst.expected.get("dual")
@@ -166,14 +166,14 @@ def cmd_verify(args: argparse.Namespace) -> int:
     """Check FK-A against the brute-force oracle on every instance and variant."""
     failures = 0
     for inst in load_all():
-        truth = is_dual_oracle(inst.G, inst.H)
+        truth = is_dual_oracle(inst.cnf, inst.dnf)
         for variant in VARIANTS:
-            for rule in PIVOT_RULES:
+            for rule in SPLIT_RULES:
                 tree = fk_a(
-                    inst.G,
-                    inst.H,
+                    inst.cnf,
+                    inst.dnf,
                     variant=variant,
-                    pivot_rule=rule,
+                    split_rule=rule,
                     instance=inst.id,
                     validate=True,
                 )
@@ -205,7 +205,9 @@ def cmd_refresh(args: argparse.Namespace) -> int:
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="fka",
-        description="Fredman-Khachiyan algorithm A: recursion trees and hypergraph symmetry.",
+            description=(
+            "Fredman-Khachiyan algorithm A: recursion trees and symmetry."
+        ),
     )
     p.add_argument("--version", action="version", version=f"fka {__version__}")
     sub = p.add_subparsers(dest="command", required=True)
@@ -233,7 +235,7 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help=f"write one set of artifacts per variant ({', '.join(VARIANTS)})",
     )
-    s.add_argument("--pivot-rule", choices=PIVOT_RULES, default="degree_sum")
+    s.add_argument("--split-rule", choices=SPLIT_RULES, default="degree_sum")
     s.add_argument("--backend", choices=("python", "sage"), default=None)
     s.add_argument("--out", default=None, help="output directory (default: results/)")
     s.add_argument("--no-annotate", action="store_true", help="skip automorphism analysis")

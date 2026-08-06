@@ -5,7 +5,7 @@ authored by hand.
 
 ## Per-instance runs
 
-`<instance>.<algorithm>.<variant>.<ext>`, over 14 instances and both algorithms:
+`<instance>.<algorithm>.<variant>.<ext>`, over 16 instances and both algorithms:
 
 | algorithm | variant | committed | |
 | --- | --- | :-: | --- |
@@ -15,7 +15,7 @@ authored by hand.
 | `fk-b` | `multiple` | no | `MFK_B.m`; same tree, see below |
 
 Three formats each: `.json` is the complete machine-readable recursion tree —
-every node's subproblem, verdict, certificate and analysis; `.html` is a
+every node's subproblem, verdict, conflicting assignment and analysis; `.html` is a
 self-contained interactive explorer with structure, automorphism and property
 views, needing no network or font; `.dot` is optional Graphviz interchange.
 
@@ -24,6 +24,23 @@ Regenerate the committed set with:
 ```text
 python -m fka run --all --all-variants --dot
 python -m fkb run --all --dot
+```
+
+### `word-xy` and `word-yx` are structure only
+
+Their artifacts carry no `analysis` block, and the `Annotated` chip on the HTML
+says so. Both sides sit under `skip_group_above = 40` — 32 and 16 terms — so the
+annotation pass attempts the automorphism group, but the group is past
+`MAX_GROUP_ORDER` and every distinct node spends the full enumeration budget to
+discover that and return nothing. Measured: about 40 s per distinct node against
+under a second for every other instance, and the trees have 865 and 577 nodes.
+The cap is on term count and the cost is driven by variable count and group
+order, which is the gap; until that is closed these two are generated with
+`--no-annotate`:
+
+```text
+python -m fka run word-xy word-yx --all-variants --dot --no-annotate
+python -m fkb run word-xy word-yx --dot --no-annotate
 ```
 
 `--all-variants` works on both and writes every variant; for FK-B that adds a
@@ -39,8 +56,7 @@ about 2.7x the bytes — 7.4 MB against 2.7 MB for `sdfp-sd-2` under FK-A.
 
 `MFK_B.m` differs from `FK_B.m` only in how many conflicting assignments it
 reports, never in control flow, so the two produce identical trees. Every live
-instance is a transversal pair, so no node produces a conflicting assignment at
-all — leaving the `.dot` byte-identical, the `.html` differing by one header
+instance is a dual pair, so no node produces a conflicting assignment at all — leaving the `.dot` byte-identical, the `.html` differing by one header
 chip, and the `.json` by one field. Committing it duplicated 1.4 MB and invited
 readers to look for a difference that is not there.
 

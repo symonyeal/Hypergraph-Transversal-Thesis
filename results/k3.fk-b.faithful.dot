@@ -3,9 +3,9 @@ digraph FKB {
   graph [fontname="Helvetica", labelloc="t", label="k3  (FK-B, structure view)"];
   node [shape=box, style="rounded,filled", fillcolor="#ffffff", fontname="Helvetica", fontsize=10];
   edge [fontname="Helvetica", fontsize=9, color="#888888"];
-  n1 [label="Node 1\n|C|=3  |D|=3\nsplit v1", fillcolor="#ffffff"];
-  n2 [label="Node 2\n|C|=2  |D|=1\neasy_case", fillcolor="#eaf3ef"];
-  n3 [label="Node 3\n|C|=1  |D|=2\neasy_case", fillcolor="#eaf3ef"];
+  n1 [label="Node 1\nnC=3  nD=3\nsplit v1", fillcolor="#ffffff"];
+  n2 [label="Node 2\nnC=2  nD=1\neasy_case", fillcolor="#eaf3ef"];
+  n3 [label="Node 3\nnC=1  nD=2\neasy_case", fillcolor="#eaf3ef"];
   n1 -> n2 [label="x=0", style=solid];
   n1 -> n3 [label="x=1", style=dashed];
 }

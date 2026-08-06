@@ -23,11 +23,11 @@ from __future__ import annotations
 import itertools
 import json
 from dataclasses import dataclass, field
-from fractions import Fraction
 from pathlib import Path
 from typing import Any, Optional, Sequence
 
 from .hypergraph import Hypergraph, bits
+from .selfdual import FANO_LINES
 
 __all__ = [
     "Instance",
@@ -60,13 +60,13 @@ def instance_dir() -> Path:
 
 @dataclass(slots=True)
 class Instance:
-    """One named ``(G, H)`` problem instance."""
+    """One named ``(cnf, dnf)`` problem instance."""
 
     id: str
     name: str
     n_vertices: int
-    G_edges: list[list[int]]
-    H_edges: list[list[int]]
+    cnf_edges: list[list[int]]
+    dnf_edges: list[list[int]]
     family: str = ""
     source: str = ""
     provenance: str = "verbatim"
@@ -75,12 +75,12 @@ class Instance:
     path: Optional[Path] = None
 
     @property
-    def G(self) -> Hypergraph:
-        return Hypergraph.from_sets(self.n_vertices, self.G_edges, one_indexed=True)
+    def cnf(self) -> Hypergraph:
+        return Hypergraph.from_sets(self.n_vertices, self.cnf_edges, one_indexed=True)
 
     @property
-    def H(self) -> Hypergraph:
-        return Hypergraph.from_sets(self.n_vertices, self.H_edges, one_indexed=True)
+    def dnf(self) -> Hypergraph:
+        return Hypergraph.from_sets(self.n_vertices, self.dnf_edges, one_indexed=True)
 
     def to_json(self) -> dict[str, Any]:
         return {
@@ -90,8 +90,8 @@ class Instance:
             "source": self.source,
             "provenance": self.provenance,
             "n_vertices": self.n_vertices,
-            "G": self.G_edges,
-            "H": self.H_edges,
+            "cnf": self.cnf_edges,
+            "dnf": self.dnf_edges,
             "notes": self.notes,
             "expected": self.expected,
         }
@@ -102,8 +102,8 @@ class Instance:
             id=d["id"],
             name=d.get("name", d["id"]),
             n_vertices=d["n_vertices"],
-            G_edges=[list(e) for e in d["G"]],
-            H_edges=[list(e) for e in d["H"]],
+            cnf_edges=[list(t) for t in d["cnf"]],
+            dnf_edges=[list(t) for t in d["dnf"]],
             family=d.get("family", ""),
             source=d.get("source", ""),
             provenance=d.get("provenance", "verbatim"),
@@ -123,7 +123,7 @@ class Instance:
 def data_dir() -> Path:
     """The one folder all research inputs live under.
 
-    ``instances/`` the ``(G, H)`` library, ``reference/`` the MATLAB FK-B
+    ``instances/`` the ``(cnf, dnf)`` library, ``reference/`` the MATLAB FK-B
     authors' own recorded test vectors, ``baselines/`` the node counts and split
     sequences printed in the thesis. Superseded inputs move to ``_archive/`` and
     are read back through :func:`load_archived`.
@@ -188,24 +188,12 @@ def load_all() -> list[Instance]:
 # ----------------------------------------------------------------------
 # generated families
 # ----------------------------------------------------------------------
-#: The seven lines of the Fano plane, 1-indexed (thesis Definition 5.2.1, p.50).
-FANO_LINES: tuple[tuple[int, ...], ...] = (
-    (1, 2, 4), (2, 3, 5), (3, 4, 6), (4, 5, 7),
-    (1, 5, 6), (2, 6, 7), (1, 3, 7),
-)
-
-
 def sdfp(k: int = 1) -> Hypergraph:
-    """The self-dual Fano-plane hypergraph ``SDFP`` on ``k`` disjoint copies.
+    """``k`` disjoint copies of the Fano lines (thesis Def. 5.2.1, p.50).
 
-    Thesis Definition 5.2.1 (p.50): ``E`` is ``k`` disjoint copies of the Fano
-    plane's line set, giving ``7k`` edges on ``7k`` vertices.
-
-    ``k = 1`` is the self-transversal base case shown in the thesis
-    visualisations. For ``k >= 2`` the copies are disjoint, so the hypergraph is
-    *not* self-transversal -- its transversal is the much larger family the
-    thesis quotes a size formula for; use :func:`fka.transversal.transversal` to
-    build it, and expect that to be expensive.
+    Only ``k = 1`` is self-dual; for ``k >= 2`` the copies are disjoint and
+    ``Tr`` is the much larger family the thesis gives a size formula for. This
+    is *not* :func:`self_dual_fano`, which dualises this construction.
     """
     if k < 1:
         raise ValueError(f"k must be at least 1, got {k}")
@@ -219,28 +207,16 @@ def sdfp(k: int = 1) -> Hypergraph:
 def self_dual_fano(k: int = 2) -> Hypergraph:
     """``SDFP(k)``: the self-dualisation of ``k`` disjoint Fano planes.
 
-    The scaling benchmark the FK-B reference ships as ``SDFP16_CNF_DNF.mat``
-    (``k = 2``) and ``SDFP23_CNF_DNF.mat`` (``k = 3``). On ``7k + 2`` vertices,
-    writing ``a`` and ``b`` for the two extra ones, the edges are
+    The reference's ``SDFP16_CNF_DNF.mat`` (``k = 2``) and ``SDFP23`` (``k = 3``).
+    On ``7k + 2`` variables, with ``a``, ``b`` the two extra: ``{a,b}``, each of
+    the ``7k`` lines plus ``b``, and each of the ``7^k`` cross-copy line choices
+    plus ``a``. Self-dual, so ``(E, E)`` is a dual pair with no free parameters
+    -- the benchmark shape, where the answer is yes and every branch must be
+    explored to establish it.
 
-    * ``{a, b}``;
-    * ``line + {b}`` for each of the ``7k`` lines; and
-    * ``line_1 + ... + line_k + {a}``, one line from each copy: ``7^k`` of them.
-
-    ``|E| = 7^k + 7k + 1``, and the result is *self-transversal*:
-    ``Tr(E) = E``, so ``(E, E)`` is a transversal pair with no free parameters.
-    That is what makes it a benchmark -- it is the hardest shape for a
-    dualisation algorithm, an instance where the answer is yes and every branch
-    must be explored to establish it.
-
-    The thesis' own :func:`sdfp` is the ``k`` disjoint copies *before* this
-    construction is applied; the two are different objects and only ``k = 1`` of
-    :func:`sdfp` is itself self-transversal.
-
-    Vertices are numbered with this project's :data:`FANO_LINES` labelling
-    rather than the reference snapshot's. The two are isomorphic -- same edge
-    sizes, same counts, same group -- so node counts can differ from the MATLAB
-    run by the amount vertex numbering moves the split choice.
+    Variables use this project's :data:`FANO_LINES` labelling, not the reference
+    snapshot's. The two are isomorphic, so node counts can differ from the MATLAB
+    run by however much the numbering moves the split choice.
     """
     return self_dualise([list(line) for line in FANO_LINES], 7, k)
 
@@ -344,23 +320,6 @@ def threshold(v: int) -> Hypergraph:
 # ----------------------------------------------------------------------
 # expected-value maintenance
 # ----------------------------------------------------------------------
-def exact_epsilon(G: Hypergraph, H: Hypergraph) -> Fraction:
-    """``epsilon(G, H)`` as an exact fraction, for comparing with the thesis.
-
-    :func:`fka.algorithm.eps` returns a float, which is what the algorithm
-    needs; the thesis quotes values like ``5/11`` and ``3/7``, so the instance
-    baselines store the fraction.
-    """
-    n = max(G.n, H.n)
-    best = Fraction(0)
-    for v in range(n):
-        if len(G):
-            best = max(best, Fraction(G.degree(v), len(G)))
-        if len(H):
-            best = max(best, Fraction(H.degree(v), len(H)))
-    return best
-
-
 def refresh_expected(inst: Instance, *, node_counts: bool = True) -> dict[str, Any]:
     """Recompute the ``expected`` block for ``inst``.
 
@@ -369,27 +328,27 @@ def refresh_expected(inst: Instance, *, node_counts: bool = True) -> dict[str, A
     independent. Node counts are recorded per algorithm and per variant, at
     each one's default split rule.
     """
-    from .algorithm import fk_a
+    from .algorithm import eps_exact, fk_a
     from .transversal import is_dual_oracle
 
     # ``fkb`` ships alongside this package and imports the model from it. The
     # import is function-local so the two never form an import cycle.
     from fkb.algorithm import fk_b
 
-    G, H = inst.G, inst.H
+    cnf, dnf = inst.cnf, inst.dnf
     expected: dict[str, Any] = {
-        "dual": is_dual_oracle(G, H),
-        "epsilon": str(exact_epsilon(G, H)),
-        "n_edges_G": len(G),
-        "n_edges_H": len(H),
+        "dual": is_dual_oracle(cnf, dnf),
+        "epsilon": str(eps_exact(cnf, dnf)),
+        "nC": len(cnf),
+        "nD": len(dnf),
     }
     if node_counts:
         expected["fka"] = {
-            variant: _tree_shape(fk_a(G, H, variant=variant, instance=inst.id))
+            variant: _tree_shape(fk_a(cnf, dnf, variant=variant, instance=inst.id))
             for variant in ("faithful", "modified")
         }
         expected["fkb"] = {
-            variant: _tree_shape(fk_b(G, H, variant=variant, instance=inst.id))
+            variant: _tree_shape(fk_b(cnf, dnf, variant=variant, instance=inst.id))
             for variant in ("faithful", "multiple")
         }
     inst.expected = expected

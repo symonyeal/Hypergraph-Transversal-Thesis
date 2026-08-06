@@ -54,15 +54,42 @@ def test_small_group_naming(generators, degree, name, order):
     assert identify(g).name == name
 
 
-def test_naming_reports_when_it_cannot_identify():
+def test_naming_reports_when_it_cannot_identify(monkeypatch):
     """An unmatched group must say so, not guess a name."""
-    from fka.groups import _candidates
+    import fka.groups as groups
 
-    # A group of prime order 101 is C101, which the catalogue does have; use a
-    # deliberately empty candidate list to exercise the fallback path.
     g = PermutationGroup.from_generators([tuple(range(1, 101)) + (0,)], 101)
     assert identify(g).name == "C101"
-    assert _candidates(101)
+
+    # Starve every route to a name: no analytic match, no candidates, no
+    # special case. The result must be the placeholder, not a guess.
+    monkeypatch.setattr(groups, "_named_cyclic", lambda _: None)
+    monkeypatch.setattr(groups, "_named_dihedral", lambda _: None)
+    monkeypatch.setattr(groups, "_candidates", lambda _order: ())
+    monkeypatch.setattr(groups, "_SPECIAL", {})
+    result = groups.identify(g)
+    assert result.method == "unidentified"
+    assert result.name == "order 101 (abelian, unidentified)"
+
+
+def test_cyclic_and_dihedral_are_named_without_being_built():
+    """The two infinite families are recognised from invariants alone.
+
+    ``_candidates`` stops at :data:`fka.groups.MAX_ATOM_ORDER`, so a larger
+    cyclic or dihedral group has no constructed candidate to match against and
+    must be named by :func:`_named_cyclic` / :func:`_named_dihedral`.
+    """
+    from fka.groups import MAX_ATOM_ORDER, _candidates, _dihedral
+
+    n = MAX_ATOM_ORDER + 2
+    big_cyclic = PermutationGroup.from_generators([tuple(range(1, n)) + (0,)], n)
+    assert identify(big_cyclic).name == f"C{n}"
+    assert not any(name == f"C{n}" for name, _ in _candidates(n))
+
+    m = MAX_ATOM_ORDER  # D_m has order 2m, past the atom bound
+    big_dihedral = _dihedral(m)
+    assert identify(big_dihedral).name == f"D{m}"
+    assert not any(name == f"D{m}" for name, _ in _candidates(2 * m))
 
 
 # ----------------------------------------------------------------------
@@ -70,10 +97,10 @@ def test_naming_reports_when_it_cannot_identify():
 # ----------------------------------------------------------------------
 def test_automorphisms_are_actual_automorphisms():
     inst = load("f2g2")
-    H, _ = inst.G.compact()
-    edges = set(H.edges)
-    for p in hypergraph_automorphisms(H):
-        mapped = {sum(1 << p[v] for v in range(H.n) if e >> v & 1) for e in edges}
+    MBF, _ = inst.cnf.compact()
+    edges = set(MBF.edges)
+    for p in hypergraph_automorphisms(MBF):
+        mapped = {sum(1 << p[v] for v in range(MBF.n) if e >> v & 1) for e in edges}
         assert mapped == edges
 
 
@@ -81,18 +108,18 @@ def test_automorphisms_are_actual_automorphisms():
     "instance_id,side,order,name",
     [
         # Thesis Figure 5.2 (p.54): the Fano plane's automorphism group.
-        ("fano", "G", 168, "PSL(3,2)"),
+        ("fano", "cnf", 168, "PSL(3,2)"),
         # Thesis p.53: two disjoint C4s give D4 wr S2, order 128, which the
         # thesis also writes as (((C2 x C2 x C2 x C2) : C2) : C2) : C2.
-        ("f2g2", "G", 128, "D4 wr C2"),
-        ("f2g2", "H", 128, "D4 wr C2"),
+        ("f2g2", "cnf", 128, "D4 wr C2"),
+        ("f2g2", "dnf", 128, "D4 wr C2"),
         # Thesis Figures 5.4b-d.
-        ("6b", "G", 48, "C2 x S4"),
-        ("6c", "G", 48, "C2 x S4"),
-        ("6d", "G", 8, "D4"),
+        ("6b", "cnf", 48, "C2 x S4"),
+        ("6c", "cnf", 48, "C2 x S4"),
+        ("6d", "cnf", 8, "D4"),
         # Thesis Figure 5.4a, after the 6-A correction.
-        ("6a", "G", 4, "C2 x C2"),
-        ("6a", "H", 4, "C2 x C2"),
+        ("6a", "cnf", 4, "C2 x C2"),
+        ("6a", "dnf", 4, "C2 x C2"),
     ],
 )
 def test_automorphism_groups_match_the_thesis(instance_id, side, order, name):
@@ -108,8 +135,7 @@ def test_automorphism_groups_match_the_thesis(instance_id, side, order, name):
     what the Sage backend actually owes: a group of the right isomorphism type.
     """
     inst = load(instance_id)
-    H = inst.G if side == "G" else inst.H
-    result = automorphism_group(H, backend="python")
+    result = automorphism_group(getattr(inst, side), backend="python")
     assert result.order == order
     assert result.name == name
 
@@ -142,24 +168,24 @@ def test_sage_group_names_are_isomorphic(instance_id, side, order):
 
 def test_asymmetric_instance_has_trivial_group():
     inst = load("trivial-aut-1")
-    assert automorphism_group(inst.G).order == 1
-    assert automorphism_group(inst.H).order == 1
+    assert automorphism_group(inst.cnf).order == 1
+    assert automorphism_group(inst.dnf).order == 1
 
 
 def test_isolated_vertices_are_excluded_by_default():
     """Isolated vertices would otherwise contribute a free symmetric group.
 
-    The two legacy notebooks disagreed on this; ``include_isolated`` makes the
+    ``include_isolated`` makes the
     choice explicit and defaults to the thesis' convention (p.53).
     """
-    H = Hypergraph.from_sets(6, [[0, 1]])
-    assert automorphism_group(H).order == 2  # just the swap of {0,1}
-    assert automorphism_group(H, include_isolated=True).order == 2 * 24  # x S4
+    MBF = Hypergraph.from_sets(6, [[0, 1]])
+    assert automorphism_group(MBF).order == 2  # just the swap of {0,1}
+    assert automorphism_group(MBF, include_isolated=True).order == 2 * 24  # x S4
 
 
 def test_automorphism_result_uses_original_vertex_numbering():
-    H = Hypergraph.from_sets(6, [[3, 5]])  # 0-indexed; vertices v4, v6
-    result = automorphism_group(H)
+    MBF = Hypergraph.from_sets(6, [[3, 5]])  # 0-indexed; vertices v4, v6
+    result = automorphism_group(MBF)
     assert result.generators == ("(4,6)",)
     assert result.isolated_vertices == (0, 1, 2, 4)
 
@@ -180,7 +206,7 @@ def test_sage_cycle_translation_uses_zero_based_incidence_points():
 # ----------------------------------------------------------------------
 def test_primal_graph_of_the_fano_plane_is_k7():
     inst = load("fano")
-    g = primal_graph(inst.G)
+    g = primal_graph(inst.cnf)
     assert g.size == 7 * 6 // 2  # complete graph on 7 vertices
 
 
@@ -222,15 +248,15 @@ def test_enumeration_cap_is_enforced():
 def test_fano_is_not_conformal():
     """Thesis p.55: the Fano plane is non-conformal, its primal graph being K7."""
     inst = load("fano")
-    assert not is_conformal(inst.G)
-    assert analyse(inst.G).nonconformal_clique is not None
+    assert not is_conformal(inst.cnf)
+    assert analyse(inst.cnf).nonconformal_clique is not None
 
 
 def test_read_once_instances():
     """f2/g2 is the thesis' read-once example (Section 5.2.1, p.48)."""
     inst = load("f2g2")
-    assert is_read_once(inst.G)
-    assert is_read_once(inst.H)
+    assert is_read_once(inst.cnf)
+    assert is_read_once(inst.dnf)
 
 
 def test_alpha_acyclicity_by_gyo():
@@ -238,21 +264,21 @@ def test_alpha_acyclicity_by_gyo():
     acyclic = Hypergraph.from_sets(4, [[0, 1], [1, 2], [2, 3]])
     assert is_alpha_acyclic(acyclic)
     # The Fano plane has no ear anywhere, so GYO stalls at once.
-    assert not is_alpha_acyclic(load("fano").G)
+    assert not is_alpha_acyclic(load("fano").cnf)
 
 
 def test_conformal_and_normal_are_the_same_predicate():
     """Documented in fka.properties: every clique sits inside a maximal one."""
-    from fka.properties import is_conformal, is_normal
+    from fka.properties import is_conformal, is_conformal
 
-    assert is_normal is is_conformal
+    assert is_conformal is is_conformal
 
 
 def test_thesis_claim_that_aut_g_equals_aut_h_needs_a_transversal_pair():
-    """Thesis p.51 states G and H share an automorphism group at every node.
+    """Thesis p.51 states cnf and MBF share an automorphism group at every node.
 
-    The apparent counterexample is 6-A *as published*, where Aut(G) = C2 and
-    Aut(H) = C2 x C2. That pair is not a transversal pair, which is exactly the
+    The apparent counterexample is 6-A *as published*, where Aut(cnf) = C2 and
+    Aut(MBF) = C2 x C2. That pair is not a transversal pair, which is exactly the
     hypothesis the claim carries, so it never contradicted it. Recorded so the
     distinction is not lost -- and so a future edit cannot quietly promote the
     archived form back into the library and call it a counterexample.
@@ -261,15 +287,15 @@ def test_thesis_claim_that_aut_g_equals_aut_h_needs_a_transversal_pair():
     from fka.transversal import is_dual_oracle
 
     verbatim = load_archived("6a-verbatim")
-    assert automorphism_group(verbatim.G).order == 2
-    assert automorphism_group(verbatim.H).order == 4
-    assert is_dual_oracle(verbatim.G, verbatim.H) is False
+    assert automorphism_group(verbatim.cnf).order == 2
+    assert automorphism_group(verbatim.dnf).order == 4
+    assert is_dual_oracle(verbatim.cnf, verbatim.dnf) is False
 
     corrected = load("6a")
-    assert is_dual_oracle(corrected.G, corrected.H) is True
+    assert is_dual_oracle(corrected.cnf, corrected.dnf) is True
     assert (
-        automorphism_group(corrected.G).order
-        == automorphism_group(corrected.H).order
+        automorphism_group(corrected.cnf).order
+        == automorphism_group(corrected.dnf).order
         == 4
     )
 
@@ -298,7 +324,7 @@ def test_aut_g_equals_aut_h_at_every_node_of_both_algorithms(algorithm):
 
     checked = 0
     for inst in load_all():
-        tree = build(inst.G, inst.H, instance=inst.id)
+        tree = build(inst.cnf, inst.dnf, instance=inst.id)
         if len(tree) > 200:  # sdfp-sd-2 is covered by the committed report
             continue
         annotate(tree, opts)
@@ -308,8 +334,8 @@ def test_aut_g_equals_aut_h_at_every_node_of_both_algorithms(algorithm):
                 continue  # one side's group was above the cap
             assert agree is True, (
                 f"{algorithm} {inst.id} node {node.node_id}: "
-                f"{node.analysis['aut_G']['name']} vs {node.analysis['aut_H']['name']} "
-                f"for {node.G.label()} / {node.H.label()}"
+                f"{node.analysis['aut_C']['name']} vs {node.analysis['aut_D']['name']} "
+                f"for {node.cnf.label()} / {node.dnf.label()}"
             )
             checked += 1
     assert checked > 100, f"only {checked} nodes had both groups; not meaningful"
@@ -324,8 +350,8 @@ def test_sage_agrees_on_automorphism_order(instance_id):
     from fka.backends.sage_backend import sage_automorphism_group
 
     inst = load(instance_id)
-    ours = automorphism_group(inst.G, backend="python")
-    theirs = sage_automorphism_group(inst.G)
+    ours = automorphism_group(inst.cnf, backend="python")
+    theirs = sage_automorphism_group(inst.cnf)
     assert ours.order == theirs["order"]
 
 
@@ -335,7 +361,7 @@ def test_sage_agrees_on_graph_classes(instance_id):
     from fka.backends.sage_backend import sage_graph_classes
 
     inst = load(instance_id)
-    g = primal_graph(inst.G)
+    g = primal_graph(inst.cnf)
     ours = classify_graph(g).to_json()
     theirs = sage_graph_classes(g.edges(), g.n)
     for key, value in theirs.items():

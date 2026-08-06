@@ -20,13 +20,14 @@ translated line-for-line, or redistributed. What crossed over is:
 | `SDFP16/23_CNF_DNF.mat` | `fka.instances.self_dual_fano` | the *construction*, reproduced exactly; the data is not copied |
 | `Unit_Tests_Equivalency.m`, `Unit_tests_Check_Conditions.m` | `tests/test_fkb_reference.py` | the recorded input/answer vectors, as conformance tests |
 
-`Irredundant.m` needed nothing: it is Sperner reduction, which `fka.sperner`
-already had. `berge.m` likewise duplicates `fka.transversal`.
+`Irredundant.m` names the operation this project already had, so
+`fka.irredundant` took its name. `berge.m` likewise duplicates
+`fka.transversal`.
 
 ## Deviations, all of them corrections
 
 Enumerated with a test each in `fkb/algorithm.py`'s docstring: kept empty terms
-where `phi_x_0.m` deletes them, constants as ordinary hypergraphs where
+where `phi_x_0.m` deletes them, constants as ordinary term sets where
 `A_c_x.m`/`A_m_x.m` return a MATLAB scalar, and `None` rather than `[]` for "no
 conflicting assignment".
 

@@ -38,14 +38,14 @@ def _require_sage():
     return sage
 
 
-def to_sage_matrix(H: Hypergraph):
-    """The incidence matrix of ``H`` as a Sage integer matrix."""
+def to_sage_matrix(MBF: Hypergraph):
+    """The incidence matrix of ``MBF`` as a Sage integer matrix."""
     sage = _require_sage()
-    return sage.Matrix(sage.ZZ, H.to_incidence())
+    return sage.Matrix(sage.ZZ, MBF.to_incidence())
 
 
-def to_incidence_structure(H: Hypergraph, *, include_isolated: bool = False):
-    """``H`` as a Sage :class:`IncidenceStructure`.
+def to_incidence_structure(MBF: Hypergraph, *, include_isolated: bool = False):
+    """``MBF`` as a Sage :class:`IncidenceStructure`.
 
     Points are the *active* vertices by default. Passing
     ``include_isolated=True`` keeps the full ground set, which lets isolated
@@ -55,7 +55,9 @@ def to_incidence_structure(H: Hypergraph, *, include_isolated: bool = False):
     _require_sage()
     from sage.combinat.designs.incidence_structures import IncidenceStructure
 
-    target, mapping = (H, list(range(H.n))) if include_isolated else H.compact()
+    target, mapping = (
+        (MBF, list(range(MBF.n))) if include_isolated else MBF.compact()
+    )
     points = list(range(target.n))
     blocks = [list(verts(e)) for e in target.edges]
     if not blocks:
@@ -81,11 +83,13 @@ def name_group(group: PermutationGroup) -> GroupIdentification:
         gens = [g for g in gens if g != "()"]
         if not gens:
             return GroupIdentification("C1", 1, True, "sage-trivial")
-        G = sage.PermutationGroup([sage.PermutationGroupElement(g) for g in gens])
+        sage_group = sage.PermutationGroup(
+            [sage.PermutationGroupElement(g) for g in gens]
+        )
     except Exception:
         return identify(group)
 
-    sage_order = int(G.order())
+    sage_order = int(sage_group.order())
     if sage_order != group.order:
         # Disagreement means the generating set was mis-transcribed; that is a
         # correctness bug, not a reason to silently relabel with the fallback.
@@ -94,8 +98,8 @@ def name_group(group: PermutationGroup) -> GroupIdentification:
             f"but the search found {group.order} automorphisms"
         )
     try:
-        name = str(G.structure_description())
-        return GroupIdentification(name, group.order, bool(G.is_abelian()), "sage-gap")
+        name = str(sage_group.structure_description())
+        return GroupIdentification(name, group.order, bool(graph.is_abelian()), "sage-gap")
     except Exception:
         return identify(group)
 
@@ -104,8 +108,8 @@ def _sage_permutation_label(perm, mapping: Sequence[int]) -> str:
     """Translate Sage cycles on compact 0-based points to thesis labels.
 
     ``IncidenceStructure`` preserves the point labels supplied to it.  Here
-    those labels are ``0..n-1``; subtracting one (as the legacy adapter did)
-    rotated every generator and mapped point 0 to the last vertex.
+    those labels are ``0..n-1``; subtracting one
+    rotated every generator and mapped point 0 to the last variable.
     """
     cycles = [
         "(" + ",".join(str(mapping[int(i)] + 1) for i in cyc) + ")"
@@ -115,14 +119,16 @@ def _sage_permutation_label(perm, mapping: Sequence[int]) -> str:
     return "".join(cycles) or "()"
 
 
-def sage_automorphism_group(H: Hypergraph, *, include_isolated: bool = False) -> dict[str, Any]:
-    """``Aut(H)`` via Sage's ``IncidenceStructure``, for cross-checking.
+def sage_automorphism_group(MBF: Hypergraph, *, include_isolated: bool = False) -> dict[str, Any]:
+    """``Aut(MBF)`` via Sage's ``IncidenceStructure``, for cross-checking.
 
     Returns order, structure name and generators in cycle notation on the
-    caller's 1-indexed vertex numbering.
+    caller's 1-indexed variable numbering.
     """
     _require_sage()
-    structure, mapping = to_incidence_structure(H, include_isolated=include_isolated)
+    structure, mapping = to_incidence_structure(
+        MBF, include_isolated=include_isolated
+    )
     A = structure.automorphism_group()
     gens = [_sage_permutation_label(perm, mapping) for perm in A.gens()]
     return {
@@ -140,14 +146,14 @@ def sage_graph_classes(edges: Sequence[tuple[int, int]], n: int) -> dict[str, bo
     and are capped at 20 vertices; this has no such limit.
     """
     sage = _require_sage()
-    G = sage.Graph([list(range(n)), list(edges)], format="vertices_and_edges")
+    graph = sage.Graph([list(range(n)), list(edges)], format="vertices_and_edges")
     return {
-        "cograph": bool(G.is_cograph()),
-        "chordal": bool(G.is_chordal()),
-        "bipartite": bool(G.is_bipartite()),
-        "split": bool(G.is_split()),
-        "weakly_chordal": bool(G.is_weakly_chordal()),
-        "perfect": bool(G.is_perfect()),
-        "chordal_bipartite": bool(G.is_chordal_bipartite()),
-        "triangle_free": bool(G.is_triangle_free()),
+        "cograph": bool(graph.is_cograph()),
+        "chordal": bool(graph.is_chordal()),
+        "bipartite": bool(graph.is_bipartite()),
+        "split": bool(graph.is_split()),
+        "weakly_chordal": bool(graph.is_weakly_chordal()),
+        "perfect": bool(graph.is_perfect()),
+        "chordal_bipartite": bool(graph.is_chordal_bipartite()),
+        "triangle_free": bool(graph.is_triangle_free()),
     }

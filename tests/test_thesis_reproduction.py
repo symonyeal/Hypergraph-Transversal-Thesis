@@ -10,7 +10,7 @@ Any change to Sperner reduction, pivot selection, base cases, or recursion
 order will move these numbers. That is the point: they are the contract with
 the published results.
 
-All of these use ``variant="modified"`` and ``pivot_rule="degree_sum"``, which
+All of these use ``variant="modified"`` and ``split_rule="degree_sum"``, which
 is what the original implementation did and therefore what produced the figures.
 """
 
@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import pytest
 
-from fka.algorithm import fk_a
+from fka.algorithm import eps_exact, fk_a
 from fka.instances import load, load_data
 from fkb.algorithm import fk_b
 
@@ -33,7 +33,7 @@ def test_node_count_matches_thesis_figure(instance_id):
     nodes = PUBLISHED_TREES[instance_id]["nodes"]
     reference = PUBLISHED_TREES[instance_id]["reference"]
     inst = load(instance_id)
-    tree = fk_a(inst.G, inst.H, variant="modified", pivot_rule="degree_sum")
+    tree = fk_a(inst.cnf, inst.dnf, variant="modified", split_rule="degree_sum")
     assert len(tree) == nodes, (
         f"{instance_id}: thesis {reference} numbers nodes 1..{nodes}, got {len(tree)}"
     )
@@ -48,8 +48,8 @@ def test_split_vertices_match_thesis_figure(instance_id):
     splits = PUBLISHED_TREES[instance_id]["splits"]
     reference = PUBLISHED_TREES[instance_id]["reference"]
     inst = load(instance_id)
-    tree = fk_a(inst.G, inst.H, variant="modified", pivot_rule="degree_sum")
-    got = " ".join(node.pivot_label() or "-" for node in tree)
+    tree = fk_a(inst.cnf, inst.dnf, variant="modified", split_rule="degree_sum")
+    got = " ".join(node.split_var_label() or "-" for node in tree)
     assert got == splits, f"{instance_id} ({reference})"
 
 
@@ -81,8 +81,8 @@ def test_trivial_aut_matches_the_archived_run_log():
         logged[node_id] = f"v{m.group(1)}" if m else "-"
 
     inst = load("trivial-aut-1")
-    tree = fk_a(inst.G, inst.H, variant="modified", pivot_rule="degree_sum")
-    got = {node.node_id: (node.pivot_label() or "-") for node in tree}
+    tree = fk_a(inst.cnf, inst.dnf, variant="modified", split_rule="degree_sum")
+    got = {node.node_id: (node.split_var_label() or "-") for node in tree}
 
     assert len(tree) == len(logged) == 41
     assert got == logged
@@ -111,14 +111,14 @@ def test_archived_verbatim_instances_are_not_transversal_pairs():
         )
 
         # Re-derived, not read from the stored baseline.
-        assert is_dual_oracle(verbatim.G, verbatim.H) is False, verbatim_id
-        assert is_dual_oracle(corrected.G, corrected.H) is True, corrected_id
+        assert is_dual_oracle(verbatim.cnf, verbatim.dnf) is False, verbatim_id
+        assert is_dual_oracle(corrected.cnf, corrected.dnf) is True, corrected_id
         assert corrected.provenance == "corrected"
         assert corrected.notes.strip(), "a correction must state its evidence"
 
         # Both algorithms must agree with the oracle on the archived form too.
-        assert fk_a(verbatim.G, verbatim.H).dual is False
-        assert fk_b(verbatim.G, verbatim.H).dual is False
+        assert fk_a(verbatim.cnf, verbatim.dnf).dual is False
+        assert fk_b(verbatim.cnf, verbatim.dnf).dual is False
 
 
 def test_archived_verbatim_instances_are_out_of_the_live_library():
@@ -135,13 +135,13 @@ def test_corrected_instances_reproduce_the_thesis_reported_epsilon():
     8-Ver gives 8/19; only the repair gives 2/5. That is the evidence for the
     correction, so it is recomputed here rather than read from a baseline.
     """
-    from fka.instances import exact_epsilon, load_archived
+    from fka.instances import load_archived
 
     assert load("6a").expected["epsilon"] == "1/2"
     assert load("8ver").expected["epsilon"] == "2/5"
 
     archived = load_archived("8ver-verbatim")
-    assert str(exact_epsilon(archived.G, archived.H)) == "8/19"
+    assert str(eps_exact(archived.cnf, archived.dnf)) == "8/19"
 
 
 def test_committed_baselines_still_hold():

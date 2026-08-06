@@ -68,7 +68,7 @@ def test_matches_the_reference_equivalency_vectors(name, cnf, dnf, reference_ca)
         assert is_conflict(C, D, bits(reference_ca)), (
             "the assignment the MATLAB recorded is not a conflict under this port"
         )
-        assert is_conflict(C, D, tree.verdict.certificate)
+        assert is_conflict(C, D, tree.verdict.CA)
 
 
 def test_reference_vectors_5_and_6_are_the_same_pair_transposed():
@@ -82,14 +82,14 @@ def test_reference_vectors_5_and_6_are_the_same_pair_transposed():
     FK-B reduces at every node, which is why it decides the pair either way
     round, and it is why duality has to be asserted against the reduced form.
     """
-    from fka.sperner import sperner_reduce
+    from fka.irredundant import irredundant
 
     _, cnf, dnf, _ = EQUIVALENCY_VECTORS[4]
     C, D = M(cnf), M(dnf)
     assert fk_b(C, D).dual is True
     assert fk_b(D, C).dual is True
 
-    reduced = sperner_reduce(C).reduced
+    reduced = irredundant(C).reduced
     assert reduced.edges != C.edges, "this vector is expected to carry a redundancy"
     assert transversal(D).edges == reduced.edges
     assert transversal(reduced).edges == D.edges
@@ -130,7 +130,7 @@ def test_matches_the_reference_check_conditions_vectors(cnf, dnf, reference_ca):
     assert is_conflict(C, D, S), (
         "the assignment the MATLAB recorded is not a conflict under this port"
     )
-    assert is_conflict(C, D, verdict.certificate)
+    assert is_conflict(C, D, verdict.CA)
     assert fk_b(C, D, validate=True).dual is False
 
 
@@ -140,7 +140,7 @@ def test_reference_vectors_whose_recorded_answer_does_not_parse(cnf, dnf):
     C, D = M(cnf), M(dnf)
     verdict = check_conditions(C, D)
     assert verdict is not None and verdict.dual is False
-    assert is_conflict(C, D, verdict.certificate)
+    assert is_conflict(C, D, verdict.CA)
     assert fk_b(C, D, validate=True).dual is is_dual_oracle(C, D) is False
     # The bare "% 1" the file records is not a conflict in either direction.
     assert not is_conflict(C, D, bits([1] + [0] * (max(C.n, D.n) - 1)))
@@ -152,11 +152,11 @@ def test_reference_vectors_whose_recorded_answer_does_not_parse(cnf, dnf):
 def test_matching_family():
     """``M(v)``: v/2 disjoint pairs, so ``|Tr| = 2^(v/2)``."""
     for v in (2, 4, 6, 8):
-        H = matching(v)
-        assert len(H) == v // 2
-        assert H.edge_sizes() == [2] * (v // 2)
-        assert len(transversal(H)) == 2 ** (v // 2)
-        assert fk_b(transversal(H), H, validate=True).dual is True
+        MBF = matching(v)
+        assert len(MBF) == v // 2
+        assert MBF.edge_sizes() == [2] * (v // 2)
+        assert len(transversal(MBF)) == 2 ** (v // 2)
+        assert fk_b(transversal(MBF), MBF, validate=True).dual is True
     for bad in (0, 3):
         with pytest.raises(ValueError, match="even and at least 2"):
             matching(bad)
@@ -164,9 +164,9 @@ def test_matching_family():
 
 def test_threshold_family():
     for v in (2, 4, 6):
-        H = threshold(v)
-        assert all(size == 2 for size in H.edge_sizes())
-        assert fk_b(transversal(H), H, validate=True).dual is True
+        MBF = threshold(v)
+        assert all(size == 2 for size in MBF.edge_sizes())
+        assert fk_b(transversal(MBF), MBF, validate=True).dual is True
     with pytest.raises(ValueError, match="even and at least 2"):
         threshold(5)
 

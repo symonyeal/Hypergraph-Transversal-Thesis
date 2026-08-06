@@ -14,21 +14,17 @@ import itertools
 
 import pytest
 
-from fka.algorithm import fk_a, verify_certificate
-from fka.hypergraph import Hypergraph
+from fka.algorithm import fk_a, verify_CA
+from fka.hypergraph import A_c_x, A_m_x, Hypergraph, phi_x_0, phi_x_1
 from fka.instances import load, load_all
 from fka.transversal import is_dual_oracle, transversal
 from fkb.algorithm import (
     BRANCHES,
     SPLIT_RULES,
     VARIANTS,
-    c_set_0,
-    c_set_1,
     check_conditions,
     choose_split_var,
     cnf_value,
-    d_set_0,
-    d_set_1,
     dnf_value,
     easy_case,
     fk_b,
@@ -36,8 +32,6 @@ from fkb.algorithm import (
     is_dual,
     mu,
     mu_frequent,
-    phi_x_0,
-    phi_x_1,
 )
 
 
@@ -60,16 +54,16 @@ def brute_conflict(cnf, dnf):
 def test_agrees_with_oracle_on_library(instance_id, variant, split_rule):
     inst = load(instance_id)
     tree = fk_b(
-        inst.G, inst.H, variant=variant, split_rule=split_rule, validate=True
+        inst.cnf, inst.dnf, variant=variant, split_rule=split_rule, validate=True
     )
-    assert tree.dual == is_dual_oracle(inst.G, inst.H)
+    assert tree.dual == is_dual_oracle(inst.cnf, inst.dnf)
 
 
 @pytest.mark.parametrize("instance_id", [i.id for i in load_all()])
 def test_agrees_with_fk_a_on_library(instance_id):
     """The two algorithms decide the same predicate, so they must never differ."""
     inst = load(instance_id)
-    assert fk_b(inst.G, inst.H).dual == fk_a(inst.G, inst.H).dual
+    assert fk_b(inst.cnf, inst.dnf).dual == fk_a(inst.cnf, inst.dnf).dual
 
 
 @pytest.mark.slow
@@ -79,20 +73,20 @@ def test_agrees_with_oracle_on_random_instances(rng):
     seeded_dual = 0
     for _ in range(300):
         n = rng.randint(2, 7)
-        G = random_sperner(n, rng.randint(1, 5), rng)
-        if not G.edges:
+        cnf = random_sperner(n, rng.randint(1, 5), rng)
+        if not cnf.edges:
             continue
         if rng.random() < 0.5:
-            H = transversal(G)
+            dnf = transversal(cnf)
             seeded_dual += 1
         else:
-            H = random_sperner(n, rng.randint(1, 5), rng)
-        truth = is_dual_oracle(G, H)
+            dnf = random_sperner(n, rng.randint(1, 5), rng)
+        truth = is_dual_oracle(cnf, dnf)
         for variant in VARIANTS:
             for rule in SPLIT_RULES:
-                tree = fk_b(G, H, variant=variant, split_rule=rule, validate=True)
+                tree = fk_b(cnf, dnf, variant=variant, split_rule=rule, validate=True)
                 assert tree.dual == truth, (
-                    f"n={n} C={G.label()} D={H.label()} "
+                    f"n={n} C={cnf.label()} D={dnf.label()} "
                     f"variant={variant} rule={rule}"
                 )
     assert seeded_dual > 50, "not enough genuinely equivalent cases were exercised"
@@ -111,22 +105,22 @@ def test_root_assignment_conflicts_on_the_root_instance(rng):
     checked = 0
     for _ in range(300):
         n = rng.randint(2, 7)
-        G = random_sperner(n, rng.randint(1, 5), rng)
-        H = random_sperner(n, rng.randint(1, 5), rng)
-        if not G.edges or not H.edges:
+        cnf = random_sperner(n, rng.randint(1, 5), rng)
+        dnf = random_sperner(n, rng.randint(1, 5), rng)
+        if not cnf.edges or not dnf.edges:
             continue
-        tree = fk_b(G, H, variant="multiple")
+        tree = fk_b(cnf, dnf, variant="multiple")
         if tree.dual or tree.verdict is None:
             continue
-        for S in tree.verdict.certificates or (tree.verdict.certificate,):
-            assert is_conflict(G, H, S), f"C={G.label()} D={H.label()} S={S:b}"
+        for S in tree.verdict.CAs or (tree.verdict.CA,):
+            assert is_conflict(cnf, dnf, S), f"C={cnf.label()} D={dnf.label()} S={S:b}"
             checked += 1
     assert checked > 40, "not enough assignments were produced to be meaningful"
 
 
 def test_is_dual_convenience_wrapper():
     inst = load("fano")
-    assert is_dual(inst.G, inst.H) is True
+    assert is_dual(inst.cnf, inst.dnf) is True
 
 
 # ----------------------------------------------------------------------
@@ -140,11 +134,11 @@ def test_multiple_variant_leaves_the_tree_alone(instance_id):
     so control flow -- and therefore the recursion tree -- is untouched.
     """
     inst = load(instance_id)
-    one = fk_b(inst.G, inst.H, variant="faithful")
-    many = fk_b(inst.G, inst.H, variant="multiple")
+    one = fk_b(inst.cnf, inst.dnf, variant="faithful")
+    many = fk_b(inst.cnf, inst.dnf, variant="multiple")
     assert len(one) == len(many)
     assert one.dual == many.dual
-    assert [n.pivot for n in one] == [n.pivot for n in many]
+    assert [n.split_var for n in one] == [n.split_var for n in many]
     assert [n.path for n in one] == [n.path for n in many]
 
 
@@ -164,10 +158,10 @@ def test_multiple_variant_reports_every_assignment_it_finds(cnf, dnf, reason):
     assert one.dual is many.dual is False
     assert one.verdict.reason == many.verdict.reason == reason
 
-    found = many.verdict.certificates
+    found = many.verdict.CAs
     assert len(found) > 1
-    assert found[0] == many.verdict.certificate == one.verdict.certificate
-    assert one.verdict.certificates == (), "faithful must not collect the rest"
+    assert found[0] == many.verdict.CA == one.verdict.CA
+    assert one.verdict.CAs == (), "faithful must not collect the rest"
     for S in found:
         assert is_conflict(cnf, dnf, S)
 
@@ -205,8 +199,8 @@ def test_most_frequent_rule_matches_choose_splitvar():
     the first pass already intersects and v1 must win.
     """
     inst = load("fano")
-    assert choose_split_var(inst.G, inst.H, "most_frequent") == 0
-    assert choose_split_var(inst.G, inst.H, "degree_sum") == 0
+    assert choose_split_var(inst.cnf, inst.dnf, "most_frequent") == 0
+    assert choose_split_var(inst.cnf, inst.dnf, "degree_sum") == 0
 
 
 def test_split_var_ignores_variables_no_term_uses():
@@ -251,15 +245,15 @@ def test_restrictions_agree_with_evaluation():
         bit = 1 << x
         rest = [S for S in range(1 << 4) if not S & bit]
         for S in rest:
-            assert cnf_value(c_set_0(C, bit), S) == cnf_value(C, S)
-            assert dnf_value(d_set_0(D, bit), S) == dnf_value(D, S)
-            assert cnf_value(c_set_1(C, bit), S) == cnf_value(C, S | bit)
-            assert dnf_value(d_set_1(D, bit), S) == dnf_value(D, S | bit)
+            assert cnf_value(A_c_x(C, bit, clauses=True), S) == cnf_value(C, S)
+            assert dnf_value(A_c_x(D, bit, clauses=False), S) == dnf_value(D, S)
+            assert cnf_value(A_m_x(C, bit, clauses=True), S) == cnf_value(C, S | bit)
+            assert dnf_value(A_m_x(D, bit, clauses=False), S) == dnf_value(D, S | bit)
 
 
 def test_restriction_pieces_reassemble_the_x_zero_form():
     C = hg(4, [[1, 2], [2, 3], [1, 4]])
-    assert phi_x_0(C, 0).union(phi_x_1(C, 0)) == c_set_0(C, 1)
+    assert phi_x_0(C, 0).vee(phi_x_1(C, 0)) == A_c_x(C, 1, clauses=True)
 
 
 # ----------------------------------------------------------------------
@@ -270,10 +264,10 @@ def test_condition_1_disjoint_clause_and_monomial():
     D = hg(3, [[2]])
     v = check_conditions(C, D)
     assert v.reason == "cond_1_disjoint"
-    assert is_conflict(C, D, v.certificate)
+    assert is_conflict(C, D, v.CA)
     # This is the one condition whose conflict runs the other way: the monomial
     # is satisfied while the clause it misses is not.
-    assert dnf_value(D, v.certificate) and not cnf_value(C, v.certificate)
+    assert dnf_value(D, v.CA) and not cnf_value(C, v.CA)
 
 
 def test_condition_2_extra_variable_on_either_side():
@@ -283,8 +277,8 @@ def test_condition_2_extra_variable_on_either_side():
     ):
         v = check_conditions(C, D)
         assert v.reason == "cond_2_support"
-        assert is_conflict(C, D, v.certificate)
-        assert verify_certificate(C, D, v.certificate)
+        assert is_conflict(C, D, v.CA)
+        assert verify_CA(C, D, v.CA)
 
 
 def test_condition_3_term_longer_than_the_other_side():
@@ -294,10 +288,10 @@ def test_condition_3_term_longer_than_the_other_side():
     ):
         v = check_conditions(C, D)
         assert v.reason == "cond_3_size"
-        assert is_conflict(C, D, v.certificate)
+        assert is_conflict(C, D, v.CA)
         # Everything but condition 1 yields equation 2.1's certificate, so FK-A
         # would accept the same witness.
-        assert verify_certificate(C, D, v.certificate)
+        assert verify_CA(C, D, v.CA)
 
 
 @pytest.mark.parametrize(
@@ -322,7 +316,7 @@ def test_constant_sides_are_decided_not_recursed(cnf, dnf, dual):
     assert v.dual is dual
     assert fk_b(cnf, dnf, validate=True).dual is dual
     if not dual:
-        assert is_conflict(cnf, dnf, v.certificate)
+        assert is_conflict(cnf, dnf, v.CA)
 
 
 def test_empty_set_is_a_conflict_not_an_absent_one():
@@ -333,7 +327,7 @@ def test_empty_set_is_a_conflict_not_an_absent_one():
     """
     v = check_conditions(Hypergraph.empty(3), Hypergraph.empty(3))
     assert v.dual is False
-    assert v.certificate == 0
+    assert v.CA == 0
 
 
 # ----------------------------------------------------------------------
@@ -364,7 +358,7 @@ def test_easy_case_matches_exhaustive_search(n):
                 v = easy_case(C, D, variant="multiple")
                 truth = brute_conflict(C, D)
                 assert v.dual == (not truth), f"C={C.label()} D={D.label()}"
-                for S in v.certificates:
+                for S in v.CAs:
                     assert S in truth
                 checked += 1
     assert checked > 20, "the easy case was never reached"
@@ -375,66 +369,66 @@ def test_easy_case_matches_exhaustive_search(n):
 # ----------------------------------------------------------------------
 def test_tree_is_labelled_fk_b():
     inst = load("fano")
-    tree = fk_b(inst.G, inst.H, instance="fano")
+    tree = fk_b(inst.cnf, inst.dnf, instance="fano")
     assert tree.algorithm == "FK-B"
     assert tree.summary()["algorithm"] == "FK-B"
-    assert fk_a(inst.G, inst.H).algorithm == "FK-A"
+    assert fk_a(inst.cnf, inst.dnf).algorithm == "FK-A"
 
 
 def test_tree_structure_invariants():
     inst = load("8ver")
-    tree = fk_b(inst.G, inst.H, instance="8ver")
+    tree = fk_b(inst.cnf, inst.dnf, instance="8ver")
     assert tree.root.parent_id is None
     for node in tree:
         for child_id in node.children:
             child = tree[child_id]
             assert child.parent_id == node.node_id
             assert child.depth == node.depth + 1
-            assert child.branch in ("x=0", "x=1") or child.branch[0] in ("c", "m")
-        assert bool(node.children) == (node.pivot is not None)
-        assert bool(node.split_branch) == (node.pivot is not None)
+            assert child.step in ("x=0", "x=1") or child.step[0] in ("c", "m")
+        assert bool(node.children) == (node.split_var is not None)
+        assert bool(node.branch) == (node.split_var is not None)
     assert [n.node_id for n in tree.preorder()] == sorted(tree.nodes)
 
 
-def test_every_split_branch_is_exercised_by_the_library():
+def test_every_branch_is_exercised_by_the_library():
     """All three FK-B branches must be live, or the mu test is dead code."""
     seen = set()
     for inst in load_all():
-        for node in fk_b(inst.G, inst.H):
-            if node.split_branch:
-                seen.add(node.split_branch)
+        for node in fk_b(inst.cnf, inst.dnf):
+            if node.branch:
+                seen.add(node.branch)
     assert seen == set(BRANCHES), f"unexercised branches: {set(BRANCHES) - seen}"
 
 
 def test_per_term_branches_give_a_node_more_than_two_children():
     """The shape that distinguishes an FK-B tree from an FK-A one."""
     inst = load("6b")
-    tree = fk_b(inst.G, inst.H)
+    tree = fk_b(inst.cnf, inst.dnf)
     wide = [n for n in tree if len(n.children) > 2]
     assert wide, "expected at least one node with a subproblem per clause"
-    assert wide[0].split_branch in ("mu_C", "mu_D")
+    assert wide[0].branch in ("mu_C", "mu_D")
 
 
 def test_tree_json_round_trip_keeps_the_fk_b_fields(tmp_path):
-    from fka.tree import RecursionTree
+    from fka.tree import Tree
 
     inst = load("8ver")
-    tree = fk_b(inst.G, inst.H, instance="8ver", variant="multiple")
-    restored = RecursionTree.load(tree.save(tmp_path / "b.json"))
+    tree = fk_b(inst.cnf, inst.dnf, instance="8ver", variant="multiple")
+    restored = Tree.load(tree.save(tmp_path / "b.json"))
     assert restored.algorithm == "FK-B"
     for a, b in zip(tree, restored):
         assert a.path == b.path
-        assert a.split_branch == b.split_branch
+        assert a.branch == b.branch
         if a.verdict is not None:
-            assert a.verdict.certificates == b.verdict.certificates
+            assert a.verdict.CAs == b.verdict.CAs
 
 
 def test_arguments_are_validated():
     inst = load("k3")
     with pytest.raises(ValueError, match="unknown variant"):
-        fk_b(inst.G, inst.H, variant="nope")
+        fk_b(inst.cnf, inst.dnf, variant="nope")
     with pytest.raises(ValueError, match="unknown split rule"):
-        fk_b(inst.G, inst.H, split_rule="nope")
+        fk_b(inst.cnf, inst.dnf, split_rule="nope")
     with pytest.raises(ValueError, match="both sides must share a ground set"):
         fk_b(Hypergraph.from_sets(3, [[0]]), Hypergraph.from_sets(4, [[0]]))
 
@@ -442,16 +436,16 @@ def test_arguments_are_validated():
 def test_max_nodes_guard():
     inst = load("trivial-aut-1")
     with pytest.raises(RuntimeError, match="max_nodes"):
-        fk_b(inst.G, inst.H, max_nodes=5)
+        fk_b(inst.cnf, inst.dnf, max_nodes=5)
 
 
-def test_irredundant_switch_is_recorded_on_the_node():
+def test_redundancy_check_switch_is_recorded_on_the_node():
     inst = load("f2g2")
-    reduced = fk_b(inst.G, inst.H)
-    assert any(n.removed_G or n.removed_H for n in reduced), (
+    reduced = fk_b(inst.cnf, inst.dnf)
+    assert any(n.cut_C or n.cut_D for n in reduced), (
         "no node needed reduction, so the switch below proves nothing"
     )
-    assert all(not (n.removed_G or n.removed_H) for n in fk_b(inst.G, inst.H, irredundant=False))
+    assert all(not (n.cut_C or n.cut_D) for n in fk_b(inst.cnf, inst.dnf, redundancy_check=False))
 
 
 # ----------------------------------------------------------------------
@@ -462,16 +456,16 @@ def test_report_and_dot_are_labelled_fk_b():
     from fka.report import render_html
 
     inst = load("6b")
-    tree = fk_b(inst.G, inst.H, instance="6b")
+    tree = fk_b(inst.cnf, inst.dnf, instance="6b")
     page = render_html(tree, instance=inst)
     assert "FK-B" in page
-    assert '"a":"C"' in page and '"b":"D"' in page
+    assert "nC=" in page and "nD=" in page
     assert "conflicting assignment" in page
 
     src = to_dot(tree)
     assert src.startswith("digraph FKB {")
     assert "FK-B" in src
-    assert "|C|=" in src
+    assert "nC=" in src
     assert "style=dotted" in src  # the per-clause branch
 
 

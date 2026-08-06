@@ -6,7 +6,7 @@ Writes ``results/fk-a-vs-fk-b.json`` and ``results/fk-a-vs-fk-b.md``.
 
 Chapter 5 of the thesis studies FK-A by annotating each recursion-tree node with
 the automorphism group of its two subhypergraphs. The same annotation applies to
-an FK-B tree without modification -- both are :class:`fka.tree.RecursionTree` --
+an FK-B tree without modification -- both are :class:`fka.tree.Tree` --
 so the two decompositions can be compared node for node on the same instance,
 which is what this program does.
 
@@ -15,7 +15,7 @@ Three things are collected per instance and per algorithm:
 ``shape``
     node count, depth, leaf count, and for FK-B the split-branch mix.
 ``groups``
-    the multiset of ``Aut(G)`` names over all nodes, the number of nodes whose
+    the multiset of ``Aut(C)`` names over all nodes, the number of nodes whose
     two sides disagree, and how far the group falls from the root's.
 ``symmetry decay``
     the root group order against the mean and minimum over the tree. The thesis'
@@ -43,7 +43,7 @@ from fka.algorithm import fk_a  # noqa: E402
 from fka.analysis import AnalysisOptions, annotate  # noqa: E402
 from fka.instances import load_all, self_dual_fano  # noqa: E402
 from fka.transversal import is_dual_oracle  # noqa: E402
-from fka.tree import RecursionTree  # noqa: E402
+from fka.tree import Tree  # noqa: E402
 from fkb.algorithm import fk_b  # noqa: E402
 
 #: Group analysis is exponential in the worst case, and the point here is the
@@ -51,7 +51,7 @@ from fkb.algorithm import fk_b  # noqa: E402
 OPTIONS = AnalysisOptions(graph_classes=False, skip_group_above=40)
 
 #: Above this many nodes a tree is reported by shape alone. Annotation memoises
-#: on the (G, H) pair, but a tree with tens of thousands of nodes still holds
+#: on the (cnf, dnf) pair, but a tree with tens of thousands of nodes still holds
 #: thousands of distinct subproblems, and at up to a second each that is hours
 #: for a number the smaller instances already establish. Which instances were
 #: annotated is recorded per row, so a shape-only row is never mistaken for a
@@ -67,7 +67,7 @@ RESULTS = Path(__file__).resolve().parents[1] / "results"
 ARTIFACT = {"FK-A": "fk-a.modified", "FK-B": "fk-b.faithful"}
 
 
-def profile(tree: RecursionTree, annotated: bool) -> dict:
+def profile(tree: Tree, annotated: bool) -> dict:
     """Reduce a tree to the numbers being compared.
 
     ``annotated=False`` reports shape only, and says so, rather than reporting
@@ -79,7 +79,7 @@ def profile(tree: RecursionTree, annotated: bool) -> dict:
     analysed = 0
     for node in tree:
         a = node.analysis or {}
-        aut_g = a.get("aut_G")
+        aut_g = a.get("aut_C")
         if aut_g:
             orders.append(aut_g["order"])
             names[aut_g["name"]] += 1
@@ -87,7 +87,7 @@ def profile(tree: RecursionTree, annotated: bool) -> dict:
         if a.get("aut_agree") is False:
             disagree += 1
 
-    root = (tree.root.analysis or {}).get("aut_G") or {}
+    root = (tree.root.analysis or {}).get("aut_C") or {}
     root_order = root.get("order")
     out = {
         "nodes": len(tree),
@@ -115,13 +115,13 @@ def profile(tree: RecursionTree, annotated: bool) -> dict:
     return out
 
 
-def run(name: str, G, H, instance_id: str) -> dict:
-    truth = is_dual_oracle(G, H)
-    row: dict = {"instance": instance_id, "n": G.n, "edges_G": len(G), "edges_H": len(H),
+def run(name: str, cnf, dnf, instance_id: str) -> dict:
+    truth = is_dual_oracle(cnf, dnf)
+    row: dict = {"instance": instance_id, "n": cnf.n, "nC": len(cnf), "nD": len(dnf),
                  "oracle_dual": truth, "algorithms": {}}
     for label, build in (
-        ("FK-A", lambda: fk_a(G, H, variant="modified", instance=instance_id)),
-        ("FK-B", lambda: fk_b(G, H, variant="faithful", instance=instance_id)),
+        ("FK-A", lambda: fk_a(cnf, dnf, variant="modified", instance=instance_id)),
+        ("FK-B", lambda: fk_b(cnf, dnf, variant="faithful", instance=instance_id)),
     ):
         # Time the algorithm itself, always: that is a number being compared.
         t0 = time.perf_counter()
@@ -133,15 +133,19 @@ def run(name: str, G, H, instance_id: str) -> dict:
                 f"{tree.dual} vs {truth}"
             )
 
-        # Reuse the committed artifact's annotation when it is for this exact
-        # tree, and fall back to computing it only for instances that have none.
+        # The committed artifact is the record of what this project chose to
+        # compute, so adopt it whole when it is for this exact tree -- including
+        # a deliberate decision *not* to annotate. `word-xy` and `word-yx` are
+        # generated with --no-annotate because their group search costs about
+        # 40 s per distinct node and returns nothing; see results/README.md.
         annotated = False
         artifact = RESULTS / f"{instance_id}.{ARTIFACT[label]}.json"
         if artifact.exists():
-            stored = RecursionTree.load(artifact)
-            if len(stored) == len(tree) and any(n.analysis for n in stored):
-                tree, annotated = stored, True
-        if not annotated and len(tree) < ANNOTATE_BELOW:
+            stored = Tree.load(artifact)
+            if len(stored) == len(tree):
+                tree = stored
+                annotated = any(n.analysis for n in stored)
+        elif len(tree) < ANNOTATE_BELOW:
             annotate(tree, OPTIONS)
             annotated = True
 
@@ -151,7 +155,7 @@ def run(name: str, G, H, instance_id: str) -> dict:
     a, b = row["algorithms"]["FK-A"], row["algorithms"]["FK-B"]
     row["node_ratio"] = round(a["nodes"] / b["nodes"], 3)
     print(
-        f"{name:16} n={G.n:3} |G|={len(G):4} |H|={len(H):4} "
+        f"{name:16} n={cnf.n:3} nC={len(cnf):4} nD={len(dnf):4} "
         f"fk-a={a['nodes']:6} fk-b={b['nodes']:5} ratio={row['node_ratio']:6.2f}x "
         f"root={a['root_group'] or '-'}"
         + ("" if a["annotated"] and b["annotated"] else "  (shape only)")
@@ -162,7 +166,7 @@ def run(name: str, G, H, instance_id: str) -> dict:
 def main() -> int:
     rows = []
     for inst in load_all():
-        rows.append(run(inst.id, inst.G, inst.H, inst.id))
+        rows.append(run(inst.id, inst.cnf, inst.dnf, inst.id))
 
     # SDFP(3) is not in the instance library -- 365 edges makes every baseline
     # refresh and test run expensive -- but it is where the gap is widest, so it
@@ -189,17 +193,17 @@ def render(rows: list[dict]) -> str:
         "Regenerate with `python experiments/compare_algorithms.py`. Every row is",
         "checked against the brute-force transversal oracle before it is reported.",
         "",
-        "`retained` is the mean `|Aut(G)|` over the tree divided by the root's: how",
+        "`retained` is the mean `|Aut(C)|` over the tree divided by the root's: how",
         "much of the instance's symmetry the average subproblem still carries.",
         "",
-        "| instance | n | \\|G\\| | \\|H\\| | dual | root Aut | FK-A nodes | FK-B nodes | ratio | FK-A retained | FK-B retained |",
+        "| instance | n | nC | nD | dual | root Aut | FK-A nodes | FK-B nodes | ratio | FK-A retained | FK-B retained |",
         "| --- | ---: | ---: | ---: | :-: | --- | ---: | ---: | ---: | ---: | ---: |",
     ]
     for r in rows:
         a, b = r["algorithms"]["FK-A"], r["algorithms"]["FK-B"]
         note = "" if a["annotated"] and b["annotated"] else " ‡"
         lines.append(
-            f"| `{r['instance']}`{note} | {r['n']} | {r['edges_G']} | {r['edges_H']} | "
+            f"| `{r['instance']}`{note} | {r['n']} | {r['nC']} | {r['nD']} | "
             f"{'yes' if r['oracle_dual'] else 'no'} | "
             f"{a['root_group'] or '—'} ({a['root_order'] or '—'}) | "
             f"{a['nodes']} | {b['nodes']} | {r['node_ratio']}x | "
@@ -208,7 +212,7 @@ def render(rows: list[dict]) -> str:
     lines += ["", "‡ too large to annotate; node counts only. See `ANNOTATE_BELOW`."]
 
     lines += ["", "## Automorphism groups seen inside each tree", "",
-              "Group of the `G` side, counted over every node whose group was",
+              "Group of the `C` side, counted over every node whose group was",
               "computed. A node above `skip_group_above` edges is not counted.", "",
               "| instance | FK-A groups | FK-B groups |", "| --- | --- | --- |"]
     for r in rows:

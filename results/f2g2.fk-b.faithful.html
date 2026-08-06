@@ -133,8 +133,7 @@ aside .path { color: var(--muted); font-size: 12.5px; margin-bottom: 14px; }
 </div>
 
 <script>
-const NODES = [{"id":1,"parent":null,"x":448.0,"y":0,"depth":0,"branch":"root","style":"dotted","path":"root","gs":8,"hs":4,"pivot":"v1","rule":"mu_C","eps":0.5,"dual":true,"reason":"equivalent","detail":"every subproblem of the split on v1 agreed","G":"{1,3} {1,4} {2,3} {2,4} {5,7} {5,8} {6,7} {6,8}","H":"{1,2,5,6} {1,2,7,8} {3,4,5,6} {3,4,7,8}","removedG":"","removedH":"","autLabel":"D4 wr C2","autAgree":true,"autG":{"order":128,"name":"D4 wr C2","generators":["(1,5,3,7,2,6,4,8)","(1,5,4,8,2,6,3,7)","(1,5,3,8,2,6,4,7)","(5,7,6,8)","(3,4)(5,7,6,8)"],"orbits":[[1,2,3,4,5,6,7,8]]},"propsG":{"labels":["ROH","Conformal"],"classes":["Cograph","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":true,"readOnce":true,"alphaAcyclic":false},"autH":{"order":128,"name":"D4 wr C2","generators":["(1,5,3,7,2,6,4,8)","(1,5,4,8,2,6,3,7)","(1,5,3,8,2,6,4,7)","(5,7,6,8)","(3,4)(5,7,6,8)"],"orbits":[[1,2,3,4,5,6,7,8]]},"propsH":{"labels":["ROH","Conformal"],"classes":["Cograph","Weakly chordal","Perfect"],"conformal":true,"readOnce":true,"alphaAcyclic":false}},{"id":2,"parent":1,"x":168.0,"y":132,"depth":1,"branch":"x=1","style":"dashed","path":"x=1","gs":6,"hs":4,"pivot":"v2","rule":"mu_C","eps":0.5,"dual":true,"reason":"equivalent","detail":"every subproblem of the split on v2 agreed","G":"{2,3} {2,4} {5,7} {5,8} {6,7} {6,8}","H":"{2,5,6} {2,7,8} {3,4,5,6} {3,4,7,8}","removedG":"","removedH":"","autLabel":"C2 x D4","autAgree":true,"autG":{"order":16,"name":"C2 x D4","generators":["(5,7,6,8)","(3,4)(5,7,6,8)","(7,8)"],"orbits":[[2],[3,4],[5,6,7,8]]},"propsG":{"labels":["Not conformal"],"classes":["Cograph","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":false},"autH":{"order":16,"name":"C2 x D4","generators":["(5,7,6,8)","(3,4)(5,7,6,8)","(7,8)"],"orbits":[[2],[3,4],[5,6,7,8]]},"propsH":{"labels":["Not conformal"],"classes":["Cograph","Weakly chordal","Perfect"],"conformal":false,"readOnce":false,"alphaAcyclic":false}},{"id":3,"parent":2,"x":0.0,"y":264,"depth":2,"branch":"x=1","style":"dashed","path":"x=1 x=1","gs":4,"hs":2,"pivot":"","rule":"","eps":0.5,"dual":true,"reason":"easy_case","detail":"min(|C|, |D|) = 2 <= 2 and the two sides agree","G":"{5,7} {5,8} {6,7} {6,8}","H":"{5,6} {7,8}","removedG":"","removedH":"{3,4,5,6} {3,4,7,8}","autLabel":"D4","autAgree":true,"autG":{"order":8,"name":"D4","generators":["(5,7,6,8)","(7,8)"],"orbits":[[5,6,7,8]]},"propsG":{"labels":["Not conformal"],"classes":["Cograph","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":false},"autH":{"order":8,"name":"D4","generators":["(5,7,6,8)","(7,8)"],"orbits":[[5,6,7,8]]},"propsH":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":4,"parent":2,"x":168.0,"y":264,"depth":2,"branch":"m1","style":"dotted","path":"x=1 m1","gs":2,"hs":1,"pivot":"","rule":"","eps":1.0,"dual":true,"reason":"easy_case","detail":"min(|C|, |D|) = 1 <= 2 and the two sides agree","G":"{3} {4}","H":"{3,4}","removedG":"","removedH":"{3,4,7,8}","autLabel":"C2","autAgree":true,"autG":{"order":2,"name":"C2","generators":["(3,4)"],"orbits":[[3,4]]},"propsG":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true},"autH":{"order":2,"name":"C2","generators":["(3,4)"],"orbits":[[3,4]]},"propsH":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":5,"parent":2,"x":336.0,"y":264,"depth":2,"branch":"m2","style":"dotted","path":"x=1 m2","gs":2,"hs":1,"pivot":"","rule":"","eps":1.0,"dual":true,"reason":"easy_case","detail":"min(|C|, |D|) = 1 <= 2 and the two sides agree","G":"{3} {4}","H":"{3,4}","removedG":"","removedH":"{3,4,5,6}","autLabel":"C2","autAgree":true,"autG":{"order":2,"name":"C2","generators":["(3,4)"],"orbits":[[3,4]]},"propsG":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true},"autH":{"order":2,"name":"C2","generators":["(3,4)"],"orbits":[[3,4]]},"propsH":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":6,"parent":1,"x":504.0,"y":132,"depth":1,"branch":"m1","style":"dotted","path":"m1","gs":2,"hs":1,"pivot":"","rule":"","eps":1.0,"dual":true,"reason":"easy_case","detail":"min(|C|, |D|) = 1 <= 2 and the two sides agree","G":"{3} {4}","H":"{3,4}","removedG":"","removedH":"{3,4,7,8}","autLabel":"C2","autAgree":true,"autG":{"order":2,"name":"C2","generators":["(3,4)"],"orbits":[[3,4]]},"propsG":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true},"autH":{"order":2,"name":"C2","generators":["(3,4)"],"orbits":[[3,4]]},"propsH":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":7,"parent":1,"x":672.0,"y":132,"depth":1,"branch":"m2","style":"dotted","path":"m2","gs":2,"hs":1,"pivot":"","rule":"","eps":1.0,"dual":true,"reason":"easy_case","detail":"min(|C|, |D|) = 1 <= 2 and the two sides agree","G":"{3} {4}","H":"{3,4}","removedG":"","removedH":"{3,4,5,6}","autLabel":"C2","autAgree":true,"autG":{"order":2,"name":"C2","generators":["(3,4)"],"orbits":[[3,4]]},"propsG":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true},"autH":{"order":2,"name":"C2","generators":["(3,4)"],"orbits":[[3,4]]},"propsH":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}}];
-const LBL = {"a":"C","b":"D","cert":"Conflicting assignment S"};
+const NODES = [{"id":1,"parent":null,"x":448.0,"y":0,"depth":0,"step":"root","style":"dotted","path":"root","nC":8,"nD":4,"split_var":"v1","branch":"mu_C","eps":0.5,"dual":true,"reason":"equivalent","detail":"every subproblem of the split on v1 agreed","C":"{1,3} {1,4} {2,3} {2,4} {5,7} {5,8} {6,7} {6,8}","D":"{1,2,5,6} {1,2,7,8} {3,4,5,6} {3,4,7,8}","cutC":"","cutD":"","autLabel":"D4 wr C2","autAgree":true,"autC":{"order":128,"name":"D4 wr C2","generators":["(1,5,3,7,2,6,4,8)","(1,5,4,8,2,6,3,7)","(1,5,3,8,2,6,4,7)","(5,7,6,8)","(3,4)(5,7,6,8)"],"orbits":[[1,2,3,4,5,6,7,8]]},"propsC":{"labels":["ROH","Conformal"],"classes":["Cograph","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":true,"readOnce":true,"alphaAcyclic":false},"autD":{"order":128,"name":"D4 wr C2","generators":["(1,5,3,7,2,6,4,8)","(1,5,4,8,2,6,3,7)","(1,5,3,8,2,6,4,7)","(5,7,6,8)","(3,4)(5,7,6,8)"],"orbits":[[1,2,3,4,5,6,7,8]]},"propsD":{"labels":["ROH","Conformal"],"classes":["Cograph","Weakly chordal","Perfect"],"conformal":true,"readOnce":true,"alphaAcyclic":false}},{"id":2,"parent":1,"x":168.0,"y":132,"depth":1,"step":"x=1","style":"dashed","path":"x=1","nC":6,"nD":4,"split_var":"v2","branch":"mu_C","eps":0.5,"dual":true,"reason":"equivalent","detail":"every subproblem of the split on v2 agreed","C":"{2,3} {2,4} {5,7} {5,8} {6,7} {6,8}","D":"{2,5,6} {2,7,8} {3,4,5,6} {3,4,7,8}","cutC":"","cutD":"","autLabel":"C2 x D4","autAgree":true,"autC":{"order":16,"name":"C2 x D4","generators":["(5,7,6,8)","(3,4)(5,7,6,8)","(7,8)"],"orbits":[[2],[3,4],[5,6,7,8]]},"propsC":{"labels":["Not conformal"],"classes":["Cograph","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":false},"autD":{"order":16,"name":"C2 x D4","generators":["(5,7,6,8)","(3,4)(5,7,6,8)","(7,8)"],"orbits":[[2],[3,4],[5,6,7,8]]},"propsD":{"labels":["Not conformal"],"classes":["Cograph","Weakly chordal","Perfect"],"conformal":false,"readOnce":false,"alphaAcyclic":false}},{"id":3,"parent":2,"x":0.0,"y":264,"depth":2,"step":"x=1","style":"dashed","path":"x=1 x=1","nC":4,"nD":2,"split_var":"","branch":"","eps":0.5,"dual":true,"reason":"easy_case","detail":"min(nC, nD) = 2 <= 2 and the two sides agree","C":"{5,7} {5,8} {6,7} {6,8}","D":"{5,6} {7,8}","cutC":"","cutD":"{3,4,5,6} {3,4,7,8}","autLabel":"D4","autAgree":true,"autC":{"order":8,"name":"D4","generators":["(5,7,6,8)","(7,8)"],"orbits":[[5,6,7,8]]},"propsC":{"labels":["Not conformal"],"classes":["Cograph","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":false},"autD":{"order":8,"name":"D4","generators":["(5,7,6,8)","(7,8)"],"orbits":[[5,6,7,8]]},"propsD":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":4,"parent":2,"x":168.0,"y":264,"depth":2,"step":"m1","style":"dotted","path":"x=1 m1","nC":2,"nD":1,"split_var":"","branch":"","eps":1.0,"dual":true,"reason":"easy_case","detail":"min(nC, nD) = 1 <= 2 and the two sides agree","C":"{3} {4}","D":"{3,4}","cutC":"","cutD":"{3,4,7,8}","autLabel":"C2","autAgree":true,"autC":{"order":2,"name":"C2","generators":["(3,4)"],"orbits":[[3,4]]},"propsC":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true},"autD":{"order":2,"name":"C2","generators":["(3,4)"],"orbits":[[3,4]]},"propsD":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":5,"parent":2,"x":336.0,"y":264,"depth":2,"step":"m2","style":"dotted","path":"x=1 m2","nC":2,"nD":1,"split_var":"","branch":"","eps":1.0,"dual":true,"reason":"easy_case","detail":"min(nC, nD) = 1 <= 2 and the two sides agree","C":"{3} {4}","D":"{3,4}","cutC":"","cutD":"{3,4,5,6}","autLabel":"C2","autAgree":true,"autC":{"order":2,"name":"C2","generators":["(3,4)"],"orbits":[[3,4]]},"propsC":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true},"autD":{"order":2,"name":"C2","generators":["(3,4)"],"orbits":[[3,4]]},"propsD":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":6,"parent":1,"x":504.0,"y":132,"depth":1,"step":"m1","style":"dotted","path":"m1","nC":2,"nD":1,"split_var":"","branch":"","eps":1.0,"dual":true,"reason":"easy_case","detail":"min(nC, nD) = 1 <= 2 and the two sides agree","C":"{3} {4}","D":"{3,4}","cutC":"","cutD":"{3,4,7,8}","autLabel":"C2","autAgree":true,"autC":{"order":2,"name":"C2","generators":["(3,4)"],"orbits":[[3,4]]},"propsC":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true},"autD":{"order":2,"name":"C2","generators":["(3,4)"],"orbits":[[3,4]]},"propsD":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}},{"id":7,"parent":1,"x":672.0,"y":132,"depth":1,"step":"m2","style":"dotted","path":"m2","nC":2,"nD":1,"split_var":"","branch":"","eps":1.0,"dual":true,"reason":"easy_case","detail":"min(nC, nD) = 1 <= 2 and the two sides agree","C":"{3} {4}","D":"{3,4}","cutC":"","cutD":"{3,4,5,6}","autLabel":"C2","autAgree":true,"autC":{"order":2,"name":"C2","generators":["(3,4)"],"orbits":[[3,4]]},"propsC":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true},"autD":{"order":2,"name":"C2","generators":["(3,4)"],"orbits":[[3,4]]},"propsD":{"labels":["alpha-acyclic","Not conformal"],"classes":["Cograph","Chordal","Split","Bipartite","Chordal bipartite","Weakly chordal","Perfect","Triangle-free"],"conformal":false,"readOnce":false,"alphaAcyclic":true}}];
 const BRANCH_TEXT = {
   mu_D: "x is at most \u03bc-frequent in D \u2014 one subproblem per clause",
   mu_C: "x is at most \u03bc-frequent in C \u2014 one subproblem per monomial",
@@ -163,12 +162,12 @@ function el(name, attrs, text) {
 
 function lines(n) {
   if (view === "automorphism") {
-    const main = n.autLabel || (n.autG ? n.autG.name : "\u2014");
-    const sub = n.autG ? ("order " + n.autG.order) : "not computed";
+    const main = n.autLabel || (n.autC ? n.autC.name : "\u2014");
+    const sub = n.autC ? ("order " + n.autC.order) : "not computed";
     return [main, sub];
   }
   if (view === "properties") {
-    const p = n.propsG;
+    const p = n.propsC;
     if (!p) return ["\u2014", "not analysed"];
     const tags = [];
     if (p.readOnce) tags.push("ROH");
@@ -176,8 +175,8 @@ function lines(n) {
     tags.push(p.conformal ? "conf." : "non-conf.");
     return [tags.join(" \u00b7 "), (p.classes || []).slice(0, 2).join(", ") || "\u2014"];
   }
-  const main = "|" + LBL.a + "|=" + n.gs + "  |" + LBL.b + "|=" + n.hs;
-  const sub = n.pivot ? ("split " + n.pivot) : (n.reason || "leaf");
+  const main = "nC=" + n.nC + "  nD=" + n.nD;
+  const sub = n.split_var ? ("split " + n.split_var) : (n.reason || "leaf");
   return [main, sub];
 }
 
@@ -195,16 +194,16 @@ function draw() {
     scene.appendChild(el("text", {
       class: "edgelabel", x: (x1 + x2) / 2 + (n.style === "solid" ? -9 : 9),
       y: my + 4, "text-anchor": "middle"
-    }, n.branch));
+    }, n.step));
   }
   for (const n of NODES) {
     const g = el("g", {
       transform: `translate(${n.x - NODE_W / 2},${n.y - NODE_H / 2})`,
       style: "cursor:pointer", role: "button", tabindex: "0",
-      "aria-label": "Node " + n.id + ", " + (n.pivot ? "split " + n.pivot : n.reason || "leaf") });
+      "aria-label": "Node " + n.id + ", " + (n.split_var ? "split " + n.split_var : n.reason || "leaf") });
     let cls = "nodebox";
     if (sel === n.id) cls += " sel";
-    else if (n.dual === true && !n.pivot) cls += " leafok";
+    else if (n.dual === true && !n.split_var) cls += " leafok";
     else if (n.dual === false) cls += " leafbad";
     g.appendChild(el("rect", { class: cls, width: NODE_W, height: NODE_H }));
     g.appendChild(el("text", { class: "n-id", x: 10, y: 15 }, "Node " + n.id));
@@ -236,19 +235,18 @@ function select(id) {
   const n = BY_ID.get(id);
   let h = "<h2>Node " + n.id + "</h2>";
   h += '<div class="path">depth ' + n.depth + " \u00b7 path " + esc(n.path) + "</div>";
-  h += field("Subproblem sizes", "|" + LBL.a + "| = " + n.gs + ", |" + LBL.b + "| = " + n.hs);
-  if (n.pivot) h += field("Split vertex", esc(n.pivot) + (n.eps != null ? "  (\u03b5 = " + n.eps + ")" : ""));
-  if (n.rule) h += field("Split branch", esc(BRANCH_TEXT[n.rule] || n.rule));
+  h += field("Subproblem sizes", "nC = " + n.nC + ", nD = " + n.nD);
+  if (n.split_var) h += field("Split variable", esc(n.split_var) + (n.eps != null ? "  (\u03b5 = " + n.eps + ")" : ""));
+  if (n.branch) h += field("Split branch", esc(BRANCH_TEXT[n.branch] || n.branch));
   h += field("Outcome", (n.dual === true ? "TRUE \u2014 " : n.dual === false ? "NOT DUAL \u2014 " : "") + esc(n.detail || n.reason));
-  if (n.certificate) h += field(LBL.cert, esc(n.certificate), true);
-  if (n.certificates) h += field(LBL.cert + " (all found here)", esc(n.certificates), true);
-  h += field(LBL.a, esc(n.G), true);
-  h += field(LBL.b, esc(n.H), true);
-  if (n.removedG) h += field("Removed from " + LBL.a + " (non-Sperner)", esc(n.removedG), true);
-  if (n.removedH) h += field("Removed from " + LBL.b + " (non-Sperner)", esc(n.removedH), true);
-  // The analysis keys stay G/H whatever the algorithm calls its two sides.
-  for (const [key, side] of [["G", LBL.a], ["H", LBL.b]]) {
-    const a = n["aut" + key];
+  if (n.CA) h += field("Conflicting assignment S", esc(n.CA), true);
+  if (n.CAs) h += field("Conflicting assignments (all here)", esc(n.CAs), true);
+  h += field("C", esc(n.C), true);
+  h += field("D", esc(n.D), true);
+  if (n.cutC) h += field("Removed from C (redundant)", esc(n.cutC), true);
+  if (n.cutD) h += field("Removed from D (redundant)", esc(n.cutD), true);
+  for (const side of ["C", "D"]) {
+    const a = n["aut" + side];
     if (a) {
       h += field("Aut(" + side + ")", esc(a.name) + " \u00b7 order " + a.order);
       if (a.generators && a.generators.length)
@@ -257,14 +255,14 @@ function select(id) {
         h += field("Orbits of Aut(" + side + ")",
           esc(a.orbits.map(o => "{" + o.join(",") + "}").join(" ")), true);
     }
-    const p = n["props" + key];
+    const p = n["props" + side];
     if (p) {
       h += field("Properties of " + side, tags(p.labels));
       h += field("Primal graph of " + side, tags(p.classes));
     }
   }
   if (n.autAgree === false)
-    h += field("Note", "Aut(" + LBL.a + ") and Aut(" + LBL.b + ") differ at this node.");
+    h += field("Note", "Aut(C) and Aut(D) differ at this node.");
   document.getElementById("panel").innerHTML = h;
   draw();
 }

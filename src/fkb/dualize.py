@@ -1,29 +1,24 @@
-"""Dualisation by repeated equivalence testing.
-
-Port of ``FK_Dualization.m`` with ``Maximum_False_Point.m``,
-``Minimality_Check.m`` and ``Initialize_CNF.m``.
+"""Dualisation by repeated equivalence testing (FK_Dualization.m).
 
 This is what the FK-B reference actually uses FK-B *for*. :func:`fkb.fk_b` only
-decides whether a given ``C`` equals a given ``D``; here that decision is turned
-into a generator of ``Tr(D)`` by the standard self-reduction:
+decides whether a given ``C`` equals a given ``D``; here that decision becomes a
+generator of ``Tr(D)`` by the standard self-reduction:
 
 1. start from a small guess at ``C``;
 2. ask FK-B whether ``C = D``. No conflicting assignment means ``C`` is already
    ``Tr(D)`` and the loop is done;
-3. otherwise the assignment ``S`` has ``C(S) = 1`` and ``D(S) = 0``. Grow it to
-   a *maximal* false point of ``D`` -- as many variables true as possible while
-   ``D`` stays false -- and add its complement to ``C`` as a new clause;
+3. otherwise ``S`` has ``C(S) = 1`` and ``D(S) = 0``. Grow it to a maximal false
+   point of ``D`` and add its complement to ``C`` as a new clause;
 4. repeat.
 
 The complement of a maximal false point is a minimal transversal of ``D``, so
-every pass adds a genuine member of ``Tr(D)`` and none is ever added twice.
-That bounds the loop by ``|Tr(D)|`` passes.
+every pass adds a genuine member of ``Tr(D)`` and none is added twice. That
+bounds the loop by ``|Tr(D)|`` passes.
 
-Compared with :func:`fka.transversal.transversal`, which folds monomials in one
-at a time by Berge's method, this pays one equivalence test per output edge.
-Berge is far faster on the instances in this project and remains the oracle; the
-value of this route is that it is *incremental* -- it produces correct partial
-output and can be stopped early -- and that it exercises FK-B on the sequence of
+Against :func:`fka.transversal.transversal`, which folds terms in by Berge's
+method, this pays one equivalence test per output term. Berge is far faster here
+and remains the oracle; this route's value is that it is *incremental* -- correct
+partial output, stoppable early -- and that it exercises FK-B on the sequence of
 subproblems the reference benchmarks time.
 """
 
@@ -33,7 +28,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 from fka.hypergraph import Hypergraph, verts
-from fka.sperner import sperner_reduce
+from fka.irredundant import irredundant
 
 from .algorithm import cnf_value, dnf_value, fk_b
 
@@ -43,11 +38,11 @@ __all__ = ["Dualisation", "dualise", "maximum_false_point", "initial_cnf"]
 def _greedy_cover(dnf: Hypergraph, allowed: int) -> Optional[int]:
     """A transversal of ``dnf`` drawn only from the variables in ``allowed``.
 
-    Repeatedly takes the allowed variable lying in the most surviving monomials
-    and drops the monomials it meets -- the greedy set cover that
-    ``Maximum_False_Point.m`` and ``Initialize_CNF.m`` both run, differing only
-    in the tie-break. ``None`` when some monomial has no allowed variable at
-    all, so no transversal of this shape exists.
+    Repeatedly takes the allowed variable in the most surviving monomials and
+    drops the monomials it meets -- the greedy set cover Maximum_False_Point.m
+    and Initialize_CNF.m both run, differing only in the tie-break. ``None`` when
+    some monomial has no allowed variable, so no transversal of this shape
+    exists.
     """
     left = list(dnf.edges)
     picked = 0
@@ -64,7 +59,7 @@ def _greedy_cover(dnf: Hypergraph, allowed: int) -> Optional[int]:
     return picked
 
 
-def _minimise(cover: int, dnf: Hypergraph) -> int:
+def minimality_check(cover: int, dnf: Hypergraph) -> int:
     """Drop variables ``cover`` does not need (Minimality_Check.m).
 
     Highest index first, matching the MATLAB's descending loop, so the result is
@@ -80,24 +75,23 @@ def _minimise(cover: int, dnf: Hypergraph) -> int:
 def maximum_false_point(dnf: Hypergraph, S: int) -> int:
     """Grow ``S`` to a maximal set on which ``dnf`` is still false.
 
-    ``Maximum_False_Point.m``: find a minimal set of variables whose being false
+    Maximum_False_Point.m: find a minimal set of variables whose being false
     already falsifies every monomial, and set everything else true. The
-    complement of the result is therefore a *minimal* transversal of ``dnf``,
-    which is what makes it a legitimate new clause.
+    complement is therefore a *minimal* transversal of ``dnf``, which is what
+    makes it a legitimate new clause.
 
-    ``S`` fixes which variables stay true: the cover is drawn from outside it,
-    so nothing ``S`` already sets is turned off. ``S`` must satisfy
-    ``dnf(S) = 0``, which is exactly what FK-B hands back, and that is also what
-    guarantees the cover exists -- no monomial can be a subset of ``S``, so
-    every one of them still has a variable available.
+    ``S`` fixes which variables stay true: the cover is drawn from outside it.
+    ``S`` must satisfy ``D(S) = 0``, which is what FK-B hands back, and that is
+    also what guarantees the cover exists -- no monomial can sit inside ``S``, so
+    every one still has a variable available.
     """
     if dnf_value(dnf, S):
         raise ValueError("the seed must be a false point of the DNF")
     ground = dnf.support() | S
     off = _greedy_cover(dnf, allowed=ground & ~S)
-    if off is None:  # pragma: no cover -- excluded by dnf(S) = 0
+    if off is None:  # pragma: no cover -- excluded by D(S) = 0
         raise AssertionError("a false point always leaves every monomial coverable")
-    return ground & ~_minimise(off, dnf)
+    return ground & ~minimality_check(off, dnf)
 
 
 def initial_cnf(dnf: Hypergraph, n_clause: int = 1) -> Hypergraph:
@@ -115,22 +109,21 @@ def initial_cnf(dnf: Hypergraph, n_clause: int = 1) -> Hypergraph:
         cover = _greedy_cover(dnf, allowed=dnf.support() & ~blocked)
         if cover is None:
             break
-        clause = _minimise(cover, dnf)
+        clause = minimality_check(cover, dnf)
         if clause in clauses:
             break
         clauses.append(clause)
         blocked |= clause
-    return sperner_reduce(Hypergraph.from_bitsets(dnf.n, clauses)).reduced
+    return irredundant(Hypergraph.from_bitsets(dnf.n, clauses)).reduced
 
 
 @dataclass(slots=True)
 class Dualisation:
     """The outcome of a dualisation run, and its trace.
 
-    ``sizes`` is ``|C|`` at the start of each pass -- the curve
-    ``Computing_CPUtimes.m`` plots to compare FK, MFK and IMFK. ``nodes`` is the
-    FK-B recursion-tree size of each equivalence test, which is where the work
-    actually goes.
+    ``sizes`` is ``nC`` at the start of each pass -- the curve
+    Computing_CPUtimes.m plots to compare FK, MFK and IMFK. ``nodes`` is the
+    FK-B tree size of each equivalence test, which is where the work goes.
     """
 
     cnf: Hypergraph
@@ -156,7 +149,7 @@ def dualise(
     ``max_passes`` stops early and reports ``complete=False``; the partial
     ``cnf`` is still a subset of ``Tr(dnf)``, never a wrong answer.
     """
-    dnf = sperner_reduce(dnf).reduced
+    dnf = irredundant(dnf).reduced
     if not dnf.edges:
         # Tr of the constant 0 is the constant 1: one empty clause.
         return Dualisation(cnf=Hypergraph(dnf.n, (0,)), complete=True)
@@ -174,7 +167,7 @@ def dualise(
             run.cnf, run.complete = cnf, True
             return run
 
-        S = tree.verdict.certificate
+        S = tree.verdict.CA
         if S is None or not (cnf_value(cnf, S) and not dnf_value(dnf, S)):
             # Only condition 1 yields the other polarity, and it cannot fire
             # here: every clause of C is a transversal of D by construction.

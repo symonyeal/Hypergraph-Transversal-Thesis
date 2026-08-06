@@ -34,7 +34,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from fka.hypergraph import Hypergraph  # noqa: E402
-from fka.sperner import sperner_reduce  # noqa: E402
+from fka.irredundant import irredundant  # noqa: E402
 from fka.transversal import is_dual_oracle  # noqa: E402
 
 SNAPSHOT = (
@@ -69,14 +69,14 @@ def main() -> int:
             )
             continue
 
-        G = sperner_reduce(Hypergraph.from_incidence(cnf.tolist())).reduced
-        H = sperner_reduce(Hypergraph.from_incidence(dnf.tolist())).reduced
-        dual = is_dual_oracle(G, H)
-        sizes = dict(sorted(collections.Counter(G.edge_sizes()).items()))
+        C = irredundant(Hypergraph.from_incidence(cnf.tolist())).reduced
+        D = irredundant(Hypergraph.from_incidence(dnf.tolist())).reduced
+        dual = is_dual_oracle(C, D)
+        sizes = dict(sorted(collections.Counter(C.edge_sizes()).items()))
         usable += dual
         print(
-            f"{path.name:34} n={G.n:3} |C|={len(G):4} |D|={len(H):4} "
-            f"dual={str(dual):5} self-dual={str(G.edges == H.edges):5} "
+            f"{path.name:34} n={C.n:3} nC={len(C):4} nD={len(D):4} "
+            f"dual={str(dual):5} self-dual={str(C.edges == D.edges):5} "
             f"clause sizes={sizes}"
         )
 

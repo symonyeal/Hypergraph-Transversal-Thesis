@@ -12,13 +12,13 @@ from fka.analysis import AnalysisOptions, annotate
 from fka.dot import to_dot
 from fka.instances import instance_dir, list_ids, load, sdfp
 from fka.report import layout, render_html, write_report
-from fka.tree import RecursionTree
+from fka.tree import Tree
 
 
 @pytest.fixture(scope="module")
 def small_tree():
     inst = load("6d")
-    return fk_a(inst.G, inst.H, instance="6d")
+    return fk_a(inst.cnf, inst.dnf, instance="6d")
 
 
 # ----------------------------------------------------------------------
@@ -33,9 +33,9 @@ def test_tree_structure_invariants(small_tree):
             child = tree[child_id]
             assert child.parent_id == node.node_id
             assert child.depth == node.depth + 1
-            assert child.branch in ("L", "R")
+            assert child.step in ("L", "R")
         # An internal node split; a leaf did not.
-        assert bool(node.children) == (node.pivot is not None)
+        assert bool(node.children) == (node.split_var is not None)
 
 
 def test_node_ids_follow_preorder(small_tree):
@@ -45,14 +45,14 @@ def test_node_ids_follow_preorder(small_tree):
 
 def test_tree_json_round_trip(small_tree, tmp_path):
     path = small_tree.save(tmp_path / "t.json")
-    restored = RecursionTree.load(path)
+    restored = Tree.load(path)
     assert len(restored) == len(small_tree)
     assert restored.dual == small_tree.dual
     for a, b in zip(small_tree, restored):
         assert a.node_id == b.node_id
-        assert a.G.edges == b.G.edges
-        assert a.H.edges == b.H.edges
-        assert a.pivot == b.pivot
+        assert a.cnf.edges == b.cnf.edges
+        assert a.dnf.edges == b.dnf.edges
+        assert a.split_var == b.split_var
         assert a.path == b.path
 
 
@@ -67,32 +67,32 @@ def test_summary_counts_verdicts(small_tree):
 # analysis
 # ----------------------------------------------------------------------
 def test_annotation_fills_every_node(small_tree):
-    tree = fk_a(load("6d").G, load("6d").H, instance="6d")
+    tree = fk_a(load("6d").cnf, load("6d").dnf, instance="6d")
     annotate(tree, AnalysisOptions(graph_classes=False))
     for node in tree:
-        assert "props_G" in node.analysis
-        assert "props_H" in node.analysis
+        assert "props_C" in node.analysis
+        assert "props_D" in node.analysis
         assert "aut_label" in node.analysis
 
 
 def test_annotation_records_root_group_of_the_fano_plane():
-    tree = fk_a(load("fano").G, load("fano").H, instance="fano")
+    tree = fk_a(load("fano").cnf, load("fano").dnf, instance="fano")
     annotate(tree, AnalysisOptions(graph_classes=False))
-    assert tree.root.analysis["aut_G"]["name"] == "PSL(3,2)"
+    assert tree.root.analysis["aut_C"]["name"] == "PSL(3,2)"
     assert tree.root.analysis["aut_agree"] is True
 
 
 def test_annotation_is_memoised_on_repeated_subproblems():
     """Thesis p.53 notes FK-A regenerates identical subproblems.
 
-    Annotation caches on the (G, H) pair, so identical nodes must come out with
+    Annotation caches on the (cnf, MBF) pair, so identical nodes must come out with
     identical analysis dicts.
     """
-    tree = fk_a(load("f2g2").G, load("f2g2").H, instance="f2g2")
+    tree = fk_a(load("f2g2").cnf, load("f2g2").dnf, instance="f2g2")
     annotate(tree, AnalysisOptions(graph_classes=False))
     seen: dict[tuple, str] = {}
     for node in tree:
-        key = (node.G.edges, node.H.edges)
+        key = (node.cnf.edges, node.dnf.edges)
         blob = json.dumps(node.analysis, sort_keys=True)
         if key in seen:
             assert seen[key] == blob
@@ -178,7 +178,7 @@ def test_every_instance_file_parses_and_is_well_formed():
         assert inst.id == instance_id
         assert inst.provenance in ("verbatim", "corrected", "derived")
         assert inst.source, f"{instance_id} has no source"
-        assert inst.G.n == inst.H.n == inst.n_vertices
+        assert inst.cnf.n == inst.dnf.n == inst.n_vertices
         assert inst.expected, f"{instance_id} has no baseline"
 
 
@@ -195,7 +195,7 @@ def test_instance_dir_resolves_from_the_package():
 def test_sdfp_generator():
     one = sdfp(1)
     assert one.n == 7 and len(one) == 7
-    assert one.edges == load("fano").G.edges
+    assert one.edges == load("fano").cnf.edges
     two = sdfp(2)
     assert two.n == 14 and len(two) == 14
     # The copies are vertex-disjoint.

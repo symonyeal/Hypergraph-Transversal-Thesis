@@ -5,7 +5,7 @@
     python -m fkb verify                    check FK-B against the oracle
     python -m fkb compare --all             FK-A vs FK-B vs the oracle
     python -m fkb benchmark                 both algorithms on the scaling families
-    python -m fkb dualize fano              generate Tr(H) by repeated FK-B
+    python -m fkb dualize fano              generate Tr(D) by repeated FK-B
 
 The instance library, the ``env``, ``list`` and ``show`` commands, and the
 baseline refresh are not duplicated here -- they belong to the instances, not
@@ -57,8 +57,8 @@ def _targets(args: argparse.Namespace) -> Optional[list[Instance]]:
 # ----------------------------------------------------------------------
 def _run_one(inst: Instance, args: argparse.Namespace, outdir: Path) -> dict:
     tree = fk_b(
-        inst.G,
-        inst.H,
+        inst.cnf,
+        inst.dnf,
         variant=args.variant,
         split_rule=args.split_rule,
         instance=inst.id,
@@ -117,12 +117,12 @@ def cmd_verify(args: argparse.Namespace) -> int:
     """Check FK-B against the brute-force oracle on every instance and setting."""
     failures = 0
     for inst in load_all():
-        truth = is_dual_oracle(inst.G, inst.H)
+        truth = is_dual_oracle(inst.cnf, inst.dnf)
         for variant in VARIANTS:
             for rule in SPLIT_RULES:
                 tree = fk_b(
-                    inst.G,
-                    inst.H,
+                    inst.cnf,
+                    inst.dnf,
                     variant=variant,
                     split_rule=rule,
                     instance=inst.id,
@@ -141,10 +141,9 @@ def cmd_verify(args: argparse.Namespace) -> int:
 def cmd_compare(args: argparse.Namespace) -> int:
     """Run FK-A, FK-B and the oracle on the same instances and tabulate them.
 
-    Node counts are not comparable as a quality measure -- the two algorithms
-    generate different subproblems, and FK-B's per-clause branches are cheaper
-    per node than FK-A's. They are reported because a change in either column
-    is the thing worth noticing.
+    Node counts are not a quality measure: the two algorithms generate
+    different subproblems, and FK-B's per-clause branches are cheaper per node.
+    They are reported because a change in either column is worth noticing.
     """
     targets = _targets(args)
     if targets is None:
@@ -165,11 +164,14 @@ def cmd_compare(args: argparse.Namespace) -> int:
     rows = []
     failures = 0
     for inst in targets:
-        truth = is_dual_oracle(inst.G, inst.H)
-        a = fk_a(inst.G, inst.H, variant=args.fka_variant, instance=inst.id, validate=True)
+        truth = is_dual_oracle(inst.cnf, inst.dnf)
+        a = fk_a(
+            inst.cnf, inst.dnf, variant=args.fka_variant,
+            instance=inst.id, validate=True,
+        )
         b = fk_b(
-            inst.G,
-            inst.H,
+            inst.cnf,
+            inst.dnf,
             variant=args.variant,
             split_rule=args.split_rule,
             instance=inst.id,
@@ -226,14 +228,14 @@ def cmd_benchmark(args: argparse.Namespace) -> int:
     algorithms are being asked to do the whole job.
     """
     names = args.family or list(FAMILIES)
-    head = ("family", "k/v", "n", "|G|", "|H|", "fk-a nodes", "sec",
+    head = ("family", "k/v", "n", "nC", "nD", "fk-a nodes", "sec",
             "fk-b nodes", "sec", "ratio")
     rows = []
 
-    def run(algorithm, G, H):
+    def run(algorithm, cnf, dnf):
         t0 = time.perf_counter()
         try:
-            tree = algorithm(G, H)
+            tree = algorithm(cnf, dnf)
         except RuntimeError:  # the max_nodes guard
             return None, time.perf_counter() - t0
         return tree, time.perf_counter() - t0
@@ -244,22 +246,22 @@ def cmd_benchmark(args: argparse.Namespace) -> int:
             E = build(size)
             # SDFP is self-transversal, so it pairs with itself; the other
             # families are DNFs and pair with their computed dual.
-            G, H = (E, E) if name == "sdfp" else (transversal(E), E)
+            cnf, dnf = (E, E) if name == "sdfp" else (transversal(E), E)
 
             a, a_s = run(
-                lambda g, h: fk_a(g, h, variant=args.fka_variant,
-                                  max_nodes=args.max_nodes), G, H)
+                lambda c, d: fk_a(c, d, variant=args.fka_variant,
+                                  max_nodes=args.max_nodes), cnf, dnf)
             b, b_s = run(
-                lambda g, h: fk_b(g, h, variant=args.variant,
+                lambda c, d: fk_b(c, d, variant=args.variant,
                                   split_rule=args.split_rule,
-                                  max_nodes=args.max_nodes), G, H)
+                                  max_nodes=args.max_nodes), cnf, dnf)
             if (a is not None and not a.dual) or (b is not None and not b.dual):
                 print(f"!! {name}({size}) is not a transversal pair; aborting")
                 return 1
 
             cap = f">{args.max_nodes}"
             rows.append((
-                name, str(size), str(G.n), str(len(G)), str(len(H)),
+                name, str(size), str(cnf.n), str(len(cnf)), str(len(dnf)),
                 cap if a is None else str(len(a)), f"{a_s:.2f}",
                 cap if b is None else str(len(b)), f"{b_s:.2f}",
                 "-" if a is None or b is None else f"{len(a) / len(b):.1f}x",
@@ -279,18 +281,18 @@ def cmd_benchmark(args: argparse.Namespace) -> int:
 
 
 def cmd_dualize(args: argparse.Namespace) -> int:
-    """Generate ``Tr(H)`` by repeated FK-B equivalence tests, and check it."""
+    """Generate ``Tr(D)`` by repeated FK-B equivalence tests, and check it."""
     targets = _targets(args)
     if targets is None:
         return 2
     failures = 0
     for inst in targets:
-        H = inst.H if args.side == "H" else inst.G
+        side = inst.dnf if args.side == "D" else inst.cnf
         t0 = time.perf_counter()
-        run = dualise(H, variant=args.variant, split_rule=args.split_rule,
+        run = dualise(side, variant=args.variant, split_rule=args.split_rule,
                       max_passes=args.max_passes)
         elapsed = time.perf_counter() - t0
-        truth = transversal(H)
+        truth = transversal(side)
         ok = run.complete and run.cnf.edges == truth.edges
         failures += not ok
         print(
@@ -369,9 +371,9 @@ def build_parser() -> argparse.ArgumentParser:
     )
     s.set_defaults(func=cmd_benchmark)
 
-    s = sub.add_parser("dualize", help="generate Tr(H) by repeated FK-B tests")
+    s = sub.add_parser("dualize", help="generate Tr(D) by repeated FK-B tests")
     add_algorithm_options(s)
-    s.add_argument("--side", choices=("G", "H"), default="H")
+    s.add_argument("--side", choices=("C", "D"), default="D")
     s.add_argument("--max-passes", type=int, default=None)
     s.set_defaults(func=cmd_dualize)
     return p

@@ -3,9 +3,9 @@ digraph FKA {
   graph [fontname="Helvetica", labelloc="t", label="k3  (FK-A, structure view)"];
   node [shape=box, style="rounded,filled", fillcolor="#ffffff", fontname="Helvetica", fontsize=10];
   edge [fontname="Helvetica", fontsize=9, color="#888888"];
-  n1 [label="Node 1\n|G|=3  |H|=3\nsplit v1", fillcolor="#ffffff"];
-  n2 [label="Node 2\n|G|=1  |H|=2\nsingle_edge", fillcolor="#eaf3ef"];
-  n3 [label="Node 3\n|G|=1  |H|=2\nsingle_edge", fillcolor="#eaf3ef"];
+  n1 [label="Node 1\nnC=3  nD=3\nsplit v1", fillcolor="#ffffff"];
+  n2 [label="Node 2\nnC=1  nD=2\nsingle_edge", fillcolor="#eaf3ef"];
+  n3 [label="Node 3\nnC=1  nD=2\nsingle_edge", fillcolor="#eaf3ef"];
   n1 -> n2 [label="L", style=solid];
   n1 -> n3 [label="R", style=dashed];
 }

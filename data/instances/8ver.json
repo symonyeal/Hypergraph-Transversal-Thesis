@@ -2,10 +2,10 @@
   "id": "8ver",
   "name": "8-Ver (corrected)",
   "family": "reinforcement-learning search results of [SS24]",
-  "source": "Islam, 'Tracing the Effects of Symmetry in Hypergraphs On the Fredman-Khachiyan Algorithm', MSc thesis, SFU 2024, Section 5.2.1, p.50, with H recomputed as Tr(G)",
+  "source": "Islam, 'Tracing the Effects of Symmetry in Hypergraphs On the Fredman-Khachiyan Algorithm', MSc thesis, SFU 2024, Section 5.2.1, p.50, with D recomputed as Tr(C)",
   "provenance": "corrected",
   "n_vertices": 8,
-  "G": [
+  "cnf": [
     [
       2,
       6,
@@ -33,7 +33,7 @@
       4
     ]
   ],
-  "H": [
+  "dnf": [
     [
       1,
       2,
@@ -135,12 +135,12 @@
       8
     ]
   ],
-  "notes": "H replaced by Tr(G), taking G as published. Evidence the repair is the intended instance: it is mutually transversal in both directions, it agrees with 18 of the 19 published edges, and it reproduces the thesis' reported epsilon(G,H) = 2/5 (p.55), which the published H does not.",
+  "notes": "D replaced by Tr(C), taking C as published. Evidence the repair is the intended instance: it is mutually transversal in both directions, it agrees with 18 of the 19 published edges, and it reproduces the thesis' reported epsilon(C,D) = 2/5 (p.55), which the published D does not.",
   "expected": {
     "dual": true,
     "epsilon": "2/5",
-    "n_edges_G": 5,
-    "n_edges_H": 20,
+    "nC": 5,
+    "nD": 20,
     "fka": {
       "faithful": {
         "nodes": 47,

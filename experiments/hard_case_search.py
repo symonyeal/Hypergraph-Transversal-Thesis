@@ -13,7 +13,7 @@ The thesis' two hard classes are the Fano plane (Section 5.2, self-transversal,
 ``Aut = PSL(3,2)``) and the alternating trees (Section 4.2, ``Tr(f_k) = g_k``,
 frequency exactly at the Fredman-Khachiyan floor). Both are *self-transversal*
 or a tight dual pair, which is the condition that leaves FK no excuse: the
-answer is "dual", so every branch has to be closed, and ``|Tr(H)| = |H|`` means
+answer is "dual", so every branch has to be closed, and ``|Tr(MBF)| = |MBF|`` means
 no part of the tree can be attributed to an exponential output.
 
 A hypergraph is self-transversal exactly when it is a **maximal intersecting
@@ -23,18 +23,18 @@ Three facts turn that class into a finite search.
 **L1.** Fix an edge ``e`` of minimum size ``s``. Every other edge meets ``e``, so
 with ``D`` the maximum degree, ``m <= 1 + s(D-1)``, hence
 
-    eps(H) = D/m > 1/s.
+    eps(MBF) = D/m > 1/s.
 
-**L2.** FK96 guarantees ``eps >= 1/log2(|G|+|H|)`` on a dual pair, and thesis
+**L2.** FK96 guarantees ``eps >= 1/log2(nC + nD)`` on a dual pair, and thesis
 Section 4.3 calls a family hard when ``eps`` sits on that floor. Writing
 
-    T(H) = eps * log2(2m)   >= 1,
+    T(MBF) = eps * log2(2m)   >= 1,
 
 L1 gives ``T > log2(2m)/s``: a tight instance needs edges of size about the
 log of their own number. The Fano plane has ``s = 3`` against ``log2(14) =
 3.81``, so ``T = 1.632`` -- the tightest instance in the library.
 
-**L3.** If ``H`` is ``s``-uniform and vertex-transitive then ``D = ms/n``, and
+**L3.** If ``MBF`` is ``s``-uniform and vertex-transitive then ``D = ms/n``, and
 L1 collapses to ``n <= s^2 - 1``. So for each ground set only a few edge sizes
 are possible at all, and every candidate is a union of orbits of a transitive
 group acting on subsets.
@@ -42,8 +42,8 @@ group acting on subsets.
 The search enumerates exactly that: every transitive group of each degree,
 every orbit of ``s``-subsets allowed by L3, and every intersecting *pair* of
 orbits (the non-uniform candidates). Candidates are filtered by two cheap
-necessary conditions before the exact test, which decides ``Tr(H) = H`` over
-all ``2^n`` subsets at once rather than by building ``Tr(H)``.
+necessary conditions before the exact test, which decides ``Tr(MBF) = MBF`` over
+all ``2^n`` subsets at once rather than by building ``Tr(MBF)``.
 
 What it finds
 -------------
@@ -142,7 +142,7 @@ def cross_intersecting(a, b) -> bool:
 
 
 def edges_are_minimal_transversals(edges) -> bool:
-    """Necessary for ``Tr(H) = H``: every edge must stay minimal as a
+    """Necessary for ``Tr(MBF) = MBF``: every edge must stay minimal as a
     transversal, so for each edge ``e`` and each ``x`` in ``e`` some edge must
     meet ``e`` in ``x`` alone. Rejects almost every intersecting orbit."""
     es = list(edges)
@@ -157,55 +157,55 @@ def edges_are_minimal_transversals(edges) -> bool:
     return True
 
 
-def is_self_transversal(H: Hypergraph) -> bool:
-    """Exact. ``Tr(H) = H`` iff no ``S`` has neither ``S`` nor ``V\\S``
+def is_self_transversal(MBF: Hypergraph) -> bool:
+    """Exact. ``Tr(MBF) = MBF`` iff no ``S`` has neither ``S`` nor ``V\\S``
     containing an edge -- that ``S`` is precisely a thesis equation 2.1
-    certificate against ``(H, H)``. Tested over all ``2^n`` subsets at once;
+    certificate against ``(MBF, MBF)``. Tested over all ``2^n`` subsets at once;
     complementation is index reversal, since ``V\\S`` is ``FULL - S``."""
-    if H.n > 22:
-        return is_dual_oracle(H, H)
-    masks = np.arange(1 << H.n, dtype=np.int64)
-    holds = np.zeros(1 << H.n, dtype=bool)
-    for e in H.edges:
+    if MBF.n > 22:
+        return is_dual_oracle(MBF, MBF)
+    masks = np.arange(1 << MBF.n, dtype=np.int64)
+    holds = np.zeros(1 << MBF.n, dtype=bool)
+    for e in MBF.edges:
         holds |= (masks & e) == e
     return not bool((~holds & ~holds[::-1]).any())
 
 
 # ----------------------------------------------------------------------
-def structure(H: Hypergraph) -> IncidenceStructure:
-    target, _ = H.compact()
+def structure(MBF: Hypergraph) -> IncidenceStructure:
+    target, _ = MBF.compact()
     return IncidenceStructure(
         list(range(target.n)), [list(verts(e)) for e in target.edges]
     )
 
 
-def canonical_key(H: Hypergraph):
+def canonical_key(MBF: Hypergraph):
     """Isomorphism-invariant key, from Sage's canonical labelling."""
-    I = structure(H)
+    I = structure(MBF)
     C = I.relabel(I.canonical_label(), inplace=False)
-    return (H.n, tuple(sorted(tuple(sorted(b)) for b in C.blocks())))
+    return (MBF.n, tuple(sorted(tuple(sorted(b)) for b in C.blocks())))
 
 
-def describe(H: Hypergraph) -> dict:
+def describe(MBF: Hypergraph) -> dict:
     """Everything Sage can say about one hit, plus both algorithms' trees."""
-    I = structure(H)
+    I = structure(MBF)
     A = I.automorphism_group()
-    m = len(H)
-    eps = max(H.degrees()) / m
+    m = len(MBF)
+    eps = max(MBF.degrees()) / m
     row = {
-        "n": H.n,
+        "n": MBF.n,
         "m": m,
-        "edge_sizes": sorted(set(H.edge_sizes())),
-        "degrees": sorted(set(H.degrees())),
+        "edge_sizes": sorted(set(MBF.edge_sizes())),
+        "degrees": sorted(set(MBF.degrees())),
         "epsilon": eps,
         "T": eps * math.log2(2 * m),
         "aut_order": int(A.order()),
         "aut_name": str(A.structure_description()),
         "primitive": bool(A.is_primitive()),
         "t_design": list(I.is_t_design(return_parameters=True)[1]),
-        "edges": H.to_sets(one_indexed=True),
+        "edges": MBF.to_sets(one_indexed=True),
     }
-    props = analyse(H, graph_classes=False)
+    props = analyse(MBF, graph_classes=False)
     row["conformal"] = props.conformal
     row["read_once"] = props.read_once
     if m >= RUN_BELOW:
@@ -214,17 +214,17 @@ def describe(H: Hypergraph) -> dict:
         # of size 8 costs 235 KB and says nothing the parameters do not, so the
         # construction is recorded instead. Cf. the fk-b.multiple withdrawal in
         # _archive/20260804-redundant-fkb-multiple-artifacts/.
-        half = (H.n + 1) // 2
-        is_majority = row["edge_sizes"] == [half] and m == math.comb(H.n, half)
+        half = (MBF.n + 1) // 2
+        is_majority = row["edge_sizes"] == [half] and m == math.comb(MBF.n, half)
         row["edges"] = None
         row["edges_omitted"] = (
-            f"majority({H.n}): every {half}-subset of {H.n} points"
+            f"majority({MBF.n}): every {half}-subset of {MBF.n} points"
             if is_majority
             else f"{m} edges, above the {RUN_BELOW}-edge recording threshold"
         )
     if m < RUN_BELOW:
-        a = fk_a(H, H, variant="modified")
-        b = fk_b(H, H, variant="faithful")
+        a = fk_a(MBF, MBF, variant="modified")
+        b = fk_b(MBF, MBF, variant="faithful")
         if not (a.verdict.dual and b.verdict.dual):
             raise AssertionError("an algorithm disagreed with the exact test")
         row["fka_nodes"] = len(a)
@@ -255,8 +255,8 @@ def search(n_from: int, n_to: int, pair_max: int = 12) -> list[dict]:
                     if not edges_are_minimal_transversals(orbit):
                         continue
                     H = Hypergraph.from_bitsets(n, orbit)
-                    if is_self_transversal(H):
-                        found.setdefault(canonical_key(H), (H, set()))[1].add(label)
+                    if is_self_transversal(MBF):
+                        found.setdefault(canonical_key(MBF), (MBF, set()))[1].add(label)
             if n > pair_max:
                 continue
             for a, b in combinations(intersecting_orbits, 2):
@@ -268,12 +268,12 @@ def search(n_from: int, n_to: int, pair_max: int = 12) -> list[dict]:
                 if not edges_are_minimal_transversals(edges):
                     continue
                 H = Hypergraph.from_bitsets(n, edges)
-                if is_self_transversal(H):
-                    found.setdefault(canonical_key(H), (H, set()))[1].add(label)
+                if is_self_transversal(MBF):
+                    found.setdefault(canonical_key(MBF), (MBF, set()))[1].add(label)
 
     rows = []
-    for H, labels in found.values():
-        row = describe(H)
+    for MBF, labels in found.values():
+        row = describe(MBF)
         row["groups"] = sorted(labels)
         rows.append(row)
     return sorted(rows, key=lambda r: (-r.get("fka_per_edge", 0), r["n"]))

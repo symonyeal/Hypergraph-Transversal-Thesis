@@ -5,7 +5,7 @@
   "source": "_archive/20260804-legacy-code/'#Trivial Aut 1 fk-A Decomposition.txt' run log, 2024",
   "provenance": "derived",
   "n_vertices": 8,
-  "G": [
+  "cnf": [
     [
       1,
       2,
@@ -192,7 +192,7 @@
       8
     ]
   ],
-  "H": [
+  "dnf": [
     [
       1,
       2,
@@ -408,8 +408,8 @@
   "expected": {
     "dual": true,
     "epsilon": "3/5",
-    "n_edges_G": 31,
-    "n_edges_H": 35,
+    "nC": 31,
+    "nD": 35,
     "fka": {
       "faithful": {
         "nodes": 103,

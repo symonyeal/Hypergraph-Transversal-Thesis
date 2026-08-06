@@ -9,9 +9,13 @@ importable library.
 | `compare_algorithms.py` | Runs FK-A and FK-B on the same instances, annotates both trees, and writes `results/fk-a-vs-fk-b.{json,md}`. |
 | `hard_case_search.py` | Enumerates every vertex-transitive self-transversal hypergraph on <= 15 points, over SageMath's transitive-group database, and measures both algorithms on each. Writes `results/hard-case-search.json`. Requires SageMath. |
 | `import_fkb_benchmarks.py` | Reads the local MATLAB FK-B snapshot's `*_CNF_DNF.mat` files and reports what is in them. Requires SciPy and the snapshot; neither is a project dependency. |
+| `hard_classes.py` | Places every instance against FK96's `c = eps * log2 N` window and classifies every node of both trees as read-once / transitive / primitive. Writes `results/hard-classes.{json,md}`. |
+| `prime_templates.py` | Searches for a template at the frequency threshold that is not read-once. Writes `results/prime-templates.md`. |
+| `selfdual_orbits.py` | Hunts self-dual families beyond the Fano plane as unions of transitive-group orbits. Writes `results/selfdual-orbits.md`. |
 
 Core correctness claims belong in `tests/`, and normal runs belong in the `fka`
-and `fkb` CLIs. Avoid adding notebooks or unstructured output logs.
+and `fkb` CLIs. Avoid adding notebooks or unstructured output logs. Naming
+follows [`../docs/dictionary.md`](../docs/dictionary.md), the same as `src/`.
 
 Each program is deterministic and safe to rerun. Any that writes into
 `data/instances/` prints what changed, so the diff can be reviewed rather than

@@ -8,7 +8,7 @@ fraction, and node counts from both FK-A variants.
     python experiments/build_instances.py
 
 Adding an instance means adding one entry to ``DEFINITIONS`` and re-running.
-Editing an existing instance's ``G``/``H`` is a research decision -- say why in
+Editing an existing instance's ``cnf``/``dnf`` is a research decision -- say why in
 ``notes`` and set ``provenance`` accordingly.
 """
 
@@ -20,12 +20,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from fka.instances import (  # noqa: E402
-    FANO_LINES,
     Instance,
     archive_root,
     instance_dir,
     refresh_expected,
 )
+from fka.selfdual import FANO_LINES  # noqa: E402
 
 THESIS = "Islam, 'Tracing the Effects of Symmetry in Hypergraphs On the Fredman-Khachiyan Algorithm', MSc thesis, SFU 2024"
 
@@ -37,8 +37,8 @@ DEFINITIONS: list[dict] = [
         "source": f"{THESIS}, Section 5.2.1, p.48",
         "provenance": "verbatim",
         "n_vertices": 8,
-        "G": [[1, 3], [1, 4], [2, 3], [2, 4], [5, 7], [5, 8], [6, 7], [6, 8]],
-        "H": [[1, 2, 7, 8], [3, 4, 5, 6], [1, 2, 5, 6], [3, 4, 7, 8]],
+        "cnf": [[1, 3], [1, 4], [2, 3], [2, 4], [5, 7], [5, 8], [6, 7], [6, 8]],
+        "dnf": [[1, 2, 7, 8], [3, 4, 5, 6], [1, 2, 5, 6], [3, 4, 7, 8]],
         "notes": (
             "The worked example of thesis Figure 5.1. Its primal graph is two "
             "disjoint C4s, so Aut is D4 wr S2 of order 128 -- the thesis writes "
@@ -55,8 +55,8 @@ DEFINITIONS: list[dict] = [
         "source": f"{THESIS}, Definition 5.2.1, p.50",
         "provenance": "verbatim",
         "n_vertices": 7,
-        "G": [list(line) for line in FANO_LINES],
-        "H": [list(line) for line in FANO_LINES],
+        "cnf": [list(line) for line in FANO_LINES],
+        "dnf": [list(line) for line in FANO_LINES],
         "notes": (
             "Self-transversal: Tr(Fano) = Fano. Aut is PSL(3,2) of order 168. "
             "The thesis uses it to show the frequency bound is tight at n = 7, "
@@ -72,8 +72,8 @@ DEFINITIONS: list[dict] = [
         "source": f"{THESIS}, Observation 5.2.3, p.54",
         "provenance": "verbatim",
         "n_vertices": 3,
-        "G": [[1, 2], [2, 3], [1, 3]],
-        "H": [[1, 2], [2, 3], [1, 3]],
+        "cnf": [[1, 2], [2, 3], [1, 3]],
+        "dnf": [[1, 2], [2, 3], [1, 3]],
         "notes": (
             "The complete 2-uniform graph on 3 vertices, self-transversal, all "
             "frequencies 2/3. The smallest finite projective plane and the "
@@ -87,11 +87,11 @@ DEFINITIONS: list[dict] = [
         "source": f"{THESIS}, Section 5.2.1, p.49",
         "provenance": "verbatim",
         "n_vertices": 6,
-        "G": [[1, 5, 6], [4, 5, 6], [1, 2], [2, 3, 4]],
-        "H": [[2, 4, 6], [2, 5], [1, 4], [1, 3, 5]],
+        "cnf": [[1, 5, 6], [4, 5, 6], [1, 2], [2, 3, 4]],
+        "dnf": [[2, 4, 6], [2, 5], [1, 4], [1, 3, 5]],
         "notes": (
-            "NOT a transversal pair as printed. Tr(G) has five edges -- it "
-            "additionally contains {2,6} and {1,3,6} -- while H contains {2,4,6}, "
+            "NOT a transversal pair as printed. Tr(C) has five edges -- it "
+            "additionally contains {2,6} and {1,3,6} -- while D contains {2,4,6}, "
             "which is a proper superset of {2,6} and so cannot be a minimal "
             "transversal. Kept verbatim for traceability; see instance '6a' for "
             "the repair."
@@ -104,17 +104,17 @@ DEFINITIONS: list[dict] = [
         "source": f"{THESIS}, Section 5.2.1, p.49, with a corrected hyperedge",
         "provenance": "corrected",
         "n_vertices": 6,
-        "G": [[1, 5, 6], [4, 5], [1, 2], [2, 3, 4]],
-        "H": [[2, 4, 6], [2, 5], [1, 4], [1, 3, 5]],
+        "cnf": [[1, 5, 6], [4, 5], [1, 2], [2, 3, 4]],
+        "dnf": [[2, 4, 6], [2, 5], [1, 4], [1, 3, 5]],
         "notes": (
-            "Repair of '6a-verbatim': G's edge {v4,v5,v6} should be {v4,v5}. "
-            "Evidence: Tr(H) as published equals exactly this G, the repaired "
+            "Repair of '6a-verbatim': C's edge {v4,v5,v6} should be {v4,v5}. "
+            "Evidence: Tr(D) as published equals exactly this C, the repaired "
             "pair is mutually transversal in both directions, and it reproduces "
             "the thesis' own reported values for the instance -- epsilon = 1/2 "
             "(p.55) and Aut = C2 x C2 at the root (Figure 5.4a). The verbatim "
             "pair reproduces neither. Note the thesis also quotes generators "
             "<(v1 v4),(v5 v6)> on p.18; (v1 v4) is not an automorphism of either "
-            "form of G, though the group is C2 x C2 as stated."
+            "form of C, though the group is C2 x C2 as stated."
         ),
     },
     {
@@ -124,15 +124,15 @@ DEFINITIONS: list[dict] = [
         "source": f"{THESIS}, Section 5.2.1, p.49",
         "provenance": "verbatim",
         "n_vertices": 6,
-        "G": [
+        "cnf": [
             [1, 3, 5], [1, 2, 6], [1, 2, 3], [1, 5, 6],
             [3, 4, 5], [2, 3, 4], [4, 5, 6], [2, 4, 6],
         ],
-        "H": [[2, 5], [1, 4], [3, 6]],
+        "dnf": [[2, 5], [1, 4], [3, 6]],
         "notes": (
-            "H is a perfect matching on the three twin pairs. Aut(G) = Aut(H) = "
-            "C2 x S4 of order 48, matching thesis Figure 5.4b. H is read-once "
-            "and alpha-acyclic; G is read-once but not alpha-acyclic (no vertex "
+            "D is a perfect matching on the three twin pairs. Aut(C) = Aut(D) = "
+            "C2 x S4 of order 48, matching thesis Figure 5.4b. D is read-once "
+            "and alpha-acyclic; C is read-once but not alpha-acyclic (no vertex "
             "lies in a single edge, so GYO reduction stalls immediately)."
         ),
     },
@@ -143,13 +143,13 @@ DEFINITIONS: list[dict] = [
         "source": f"{THESIS}, Section 5.2.1, p.49",
         "provenance": "verbatim",
         "n_vertices": 6,
-        "G": [
+        "cnf": [
             [3, 4], [1, 5], [2, 3], [4, 5],
             [5, 6], [3, 6], [2, 5], [1, 3],
         ],
-        "H": [[3, 5], [1, 2, 4, 6]],
+        "dnf": [[3, 5], [1, 2, 4, 6]],
         "notes": (
-            "G is 2-uniform, so it is literally a graph. Aut = C2 x S4 of order "
+            "C is 2-uniform, so it is literally a graph. Aut = C2 x S4 of order "
             "48, matching thesis Figure 5.4c."
         ),
     },
@@ -160,9 +160,9 @@ DEFINITIONS: list[dict] = [
         "source": f"{THESIS}, Section 5.2.1, p.49",
         "provenance": "verbatim",
         "n_vertices": 6,
-        "G": [[1, 2, 6], [2, 4], [3, 4, 5], [1, 3, 5, 6]],
-        "H": [[2, 3], [2, 5], [1, 4], [4, 6]],
-        "notes": "Aut(G) = D4 of order 8, matching thesis Figure 5.4d.",
+        "cnf": [[1, 2, 6], [2, 4], [3, 4, 5], [1, 3, 5, 6]],
+        "dnf": [[2, 3], [2, 5], [1, 4], [4, 6]],
+        "notes": "Aut(C) = D4 of order 8, matching thesis Figure 5.4d.",
     },
     {
         "id": "7ver",
@@ -171,11 +171,11 @@ DEFINITIONS: list[dict] = [
         "source": f"{THESIS}, Section 5.2.1, p.50",
         "provenance": "verbatim",
         "n_vertices": 7,
-        "G": [
+        "cnf": [
             [1, 2, 6], [1, 5, 7], [3, 4, 7], [2, 5, 7], [1, 5, 6], [1, 3, 7],
             [3, 4, 5], [2, 3, 4], [2, 4, 6], [1, 6, 7], [2, 5, 6],
         ],
-        "H": [
+        "dnf": [
             [3, 6, 7], [3, 5, 6], [1, 2, 3], [2, 5, 7],
             [4, 6, 7], [1, 4, 5], [1, 2, 4],
         ],
@@ -191,17 +191,17 @@ DEFINITIONS: list[dict] = [
         "source": f"{THESIS}, Section 5.2.1, p.50",
         "provenance": "verbatim",
         "n_vertices": 8,
-        "G": [[2, 6, 7, 8], [3, 7, 8], [1, 4, 5], [2, 5, 6], [1, 3, 4]],
-        "H": [
+        "cnf": [[2, 6, 7, 8], [3, 7, 8], [1, 4, 5], [2, 5, 6], [1, 3, 4]],
+        "dnf": [
             [3, 4, 6], [2, 3, 5], [8, 1, 2], [8, 3, 5], [4, 5, 7], [2, 4, 7],
             [1, 5, 7], [1, 2, 7], [3, 5, 7], [1, 3, 7], [8, 1, 6], [8, 4, 6],
             [3, 5, 6], [8, 2, 4], [8, 1, 5], [2, 3, 4], [4, 6, 7], [1, 3, 6],
             [8, 4, 5],
         ],
         "notes": (
-            "NOT a transversal pair as printed. H lists 19 edges; Tr(G) has 20. "
-            "H omits {1,2,3} and {1,6,7}, and includes {1,3,7}, which is not a "
-            "transversal of G at all -- it misses the edge {2,5,6}. Kept "
+            "NOT a transversal pair as printed. D lists 19 edges; Tr(C) has 20. "
+            "D omits {1,2,3} and {1,6,7}, and includes {1,3,7}, which is not a "
+            "transversal of C at all -- it misses the edge {2,5,6}. Kept "
             "verbatim; see instance '8ver' for the repair."
         ),
     },
@@ -209,22 +209,22 @@ DEFINITIONS: list[dict] = [
         "id": "8ver",
         "name": "8-Ver (corrected)",
         "family": "reinforcement-learning search results of [SS24]",
-        "source": f"{THESIS}, Section 5.2.1, p.50, with H recomputed as Tr(G)",
+        "source": f"{THESIS}, Section 5.2.1, p.50, with D recomputed as Tr(C)",
         "provenance": "corrected",
         "n_vertices": 8,
-        "G": [[2, 6, 7, 8], [3, 7, 8], [1, 4, 5], [2, 5, 6], [1, 3, 4]],
-        "H": [
+        "cnf": [[2, 6, 7, 8], [3, 7, 8], [1, 4, 5], [2, 5, 6], [1, 3, 4]],
+        "dnf": [
             [1, 2, 3], [2, 3, 4], [2, 3, 5], [1, 3, 6], [3, 4, 6], [3, 5, 6],
             [1, 2, 7], [2, 4, 7], [1, 5, 7], [3, 5, 7], [4, 5, 7], [1, 6, 7],
             [4, 6, 7], [1, 2, 8], [2, 4, 8], [1, 5, 8], [3, 5, 8], [4, 5, 8],
             [1, 6, 8], [4, 6, 8],
         ],
         "notes": (
-            "H replaced by Tr(G), taking G as published. Evidence the repair is "
+            "D replaced by Tr(C), taking C as published. Evidence the repair is "
             "the intended instance: it is mutually transversal in both "
             "directions, it agrees with 18 of the 19 published edges, and it "
-            "reproduces the thesis' reported epsilon(G,H) = 2/5 (p.55), which "
-            "the published H does not."
+            "reproduces the thesis' reported epsilon(C,D) = 2/5 (p.55), which "
+            "the published D does not."
         ),
     },
     {
@@ -234,8 +234,8 @@ DEFINITIONS: list[dict] = [
         "source": "_archive/20260804-legacy-code/'#Trivial Aut 1 fk-A Decomposition.txt' run log, 2024",
         "provenance": "derived",
         "n_vertices": 8,
-        "G": None,  # filled in below from the archived log
-        "H": None,
+        "cnf": None,  # filled in below from the archived log
+        "dnf": None,
         "notes": (
             "Recovered from the archived FK-A decomposition log. Both sides have "
             "trivial automorphism group, matching the thesis' description of the "
@@ -274,8 +274,8 @@ def _self_dual_fano_spec(k: int) -> dict:
         ),
         "provenance": "derived",
         "n_vertices": 7 * k + 2,
-        "G": edges,
-        "H": edges,
+        "cnf": edges,
+        "dnf": edges,
         "notes": (
             f"On 7k+2 = {7 * k + 2} vertices with k = {k}. Writing a and b for "
             "the two extra vertices, the edges are {a,b}; every Fano line plus "
@@ -321,8 +321,8 @@ def _witt_11_specs() -> list[dict]:
             ),
             "provenance": "derived",
             "n_vertices": 11,
-            "G": blocks,
-            "H": blocks,
+            "cnf": blocks,
+            "dnf": blocks,
             "notes": (
                 "Self-transversal: Tr(W11) = W11, verified against the Berge "
                 "oracle. 66 blocks of size 5 on 11 points, every 4-subset in "
@@ -345,8 +345,8 @@ def _witt_11_specs() -> list[dict]:
             "source": "Self-dualisation of W11, the construction of SDFP(k) with the Fano plane replaced by S(4,5,11)",
             "provenance": "derived",
             "n_vertices": 13,
-            "G": sd,
-            "H": sd,
+            "cnf": sd,
+            "dnf": sd,
             "notes": (
                 "SDFP(k)'s construction on a different base: {a,b}, every block "
                 "plus b, and every block plus a, for 2*66 + 1 = 133 edges on 13 "
@@ -360,7 +360,47 @@ def _witt_11_specs() -> list[dict]:
     ]
 
 
+def _word_spec(w: str) -> dict:
+    """``T_w`` for a word in the atoms X = (v1^v2)v(v3^v4) and Y = X^d."""
+    from fka.hypergraph import Hypergraph
+    from fka.substitution import substitute
+
+    atoms = {"X": Hypergraph.from_sets(4, [[0, 1], [2, 3]]),
+             "Y": Hypergraph.from_sets(4, [[0, 2], [0, 3], [1, 2], [1, 3]])}
+
+    def build(word: str) -> Hypergraph:
+        D = atoms[word[-1]]
+        for ch in reversed(word[:-1]):
+            D = substitute(atoms[ch], [D] * 4)
+        return D
+
+    swapped = w.translate(str.maketrans("XY", "YX"))
+    C, D = build(w), build(swapped)
+    return {
+        "id": f"word-{w.lower()}",
+        "name": f"Alternating tree of word {w}",
+        "family": "read-once, word-indexed alternating tree",
+        "source": "Derived here; generalises thesis 4.2's GK- and TK-families",
+        "provenance": "derived",
+        "n_vertices": C.n,
+        "cnf": C.to_sets(one_indexed=True),
+        "dnf": D.to_sets(one_indexed=True),
+        "notes": (
+            f"T_{w} = substitution of the atoms along the word {w}, with "
+            f"Tr(T_{w}) = T_{swapped} by (S[T])^d = S^d[T^d] and X^d = Y. "
+            "Writing a(w) = log2|E(T_w)|, composition gives "
+            "a(w) + a(wbar) = 3(2^k - 1) for every word of length k, so the "
+            "family's threshold ratio max(a, abar)/(2^k - 1) is at least 3/2, "
+            "and a(w) - a(wbar) is odd so it is never met. The constant words "
+            "XX..X and YY..Y are exactly the GK- and TK-families and are the "
+            "worst-balanced ones, both at 2; this mixed word sits at 5/3, "
+            "strictly past the tight families of Observation 2.3.3."
+        ),
+    }
+
+
 DEFINITIONS.extend(_witt_11_specs())
+DEFINITIONS.extend(_word_spec(w) for w in ("XY", "YX"))
 
 
 def _load_trivial_aut() -> tuple[list[list[int]], list[list[int]]]:
@@ -383,8 +423,8 @@ def _load_trivial_aut() -> tuple[list[list[int]], list[list[int]]]:
         m = re.search(rf"{name}=\s*(\[\[.*?\]\])", text, re.S)
         if not m:
             raise ValueError(f"{name} not found in {path}")
-        H = Hypergraph.from_incidence(ast.literal_eval(m.group(1)))
-        return H.to_sets(one_indexed=True)
+        D = Hypergraph.from_incidence(ast.literal_eval(m.group(1)))
+        return D.to_sets(one_indexed=True)
 
     return grab("np_f"), grab("np_g")
 
@@ -409,13 +449,13 @@ def main() -> int:
     for spec in DEFINITIONS:
         spec = dict(spec)
         if spec["id"] == "trivial-aut-1":
-            spec["G"], spec["H"] = _load_trivial_aut()
+            spec["cnf"], spec["dnf"] = _load_trivial_aut()
         inst = Instance(
             id=spec["id"],
             name=spec["name"],
             n_vertices=spec["n_vertices"],
-            G_edges=spec["G"],
-            H_edges=spec["H"],
+            cnf_edges=spec["cnf"],
+            dnf_edges=spec["dnf"],
             family=spec.get("family", ""),
             source=spec.get("source", ""),
             provenance=spec.get("provenance", "verbatim"),
@@ -428,7 +468,7 @@ def main() -> int:
         e = inst.expected
         print(
             f"{inst.id:16} dual={str(e['dual']):5} eps={e['epsilon']:>5} "
-            f"|G|={e['n_edges_G']:3} |H|={e['n_edges_H']:3} "
+            f"nC={e['nC']:3} nD={e['nD']:3} "
             f"fk-a={e['fka']['modified']['nodes']:5} fk-b={e['fkb']['faithful']['nodes']:5} "
             f"-> {'_archive/' + ARCHIVE if withdrawn else 'data/instances'}/{path.name}"
         )

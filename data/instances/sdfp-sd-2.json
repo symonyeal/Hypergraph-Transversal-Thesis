@@ -5,7 +5,7 @@
   "source": "Self-dualisation of thesis Definition 5.2.1's k disjoint Fano planes. Matches the shape of SDFP16_CNF_DNF.mat (k=2) and SDFP23_CNF_DNF.mat (k=3) in the FK-B MATLAB reference",
   "provenance": "derived",
   "n_vertices": 16,
-  "G": [
+  "cnf": [
     [
       1,
       2,
@@ -536,7 +536,7 @@
       16
     ]
   ],
-  "H": [
+  "dnf": [
     [
       1,
       2,
@@ -1071,8 +1071,8 @@
   "expected": {
     "dual": true,
     "epsilon": "25/32",
-    "n_edges_G": 64,
-    "n_edges_H": 64,
+    "nC": 64,
+    "nD": 64,
     "fka": {
       "faithful": {
         "nodes": 2899,

@@ -5,7 +5,7 @@
   "source": "Islam, 'Tracing the Effects of Symmetry in Hypergraphs On the Fredman-Khachiyan Algorithm', MSc thesis, SFU 2024, Definition 5.2.1, p.50",
   "provenance": "verbatim",
   "n_vertices": 7,
-  "G": [
+  "cnf": [
     [
       1,
       2,
@@ -42,7 +42,7 @@
       7
     ]
   ],
-  "H": [
+  "dnf": [
     [
       1,
       2,
@@ -83,8 +83,8 @@
   "expected": {
     "dual": true,
     "epsilon": "3/7",
-    "n_edges_G": 7,
-    "n_edges_H": 7,
+    "nC": 7,
+    "nD": 7,
     "fka": {
       "faithful": {
         "nodes": 59,

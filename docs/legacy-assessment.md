@@ -26,7 +26,7 @@ contracts.
 
 Each algorithmic defect above has a focused regression test under `tests/`.
 Randomized oracle comparisons then test the repaired implementation through
-both algorithm variants and both pivot rules.
+both algorithm variants and both split rules.
 
 ## Preserved evidence
 

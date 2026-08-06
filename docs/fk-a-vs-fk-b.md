@@ -41,7 +41,7 @@ and [hard-cases.md](hard-cases.md).
 
 ## 2. FK-A's blow-up is re-derived subproblems, and the rate predicts the gap
 
-Sorting the instances by the fraction of FK-A nodes whose `(G, H)` pair already
+Sorting the instances by the fraction of FK-A nodes whose `(cnf, dnf)` pair already
 appeared elsewhere in its own tree:
 
 | instance | FK-A repeat rate | ratio |
@@ -65,6 +65,10 @@ recursion tree" (p.53) — and at `k = 3` it is essentially the whole tree.
 Where FK-A repeats nothing at all (the threshold family, 0%), FK-B has nothing
 to save and its extra machinery is pure cost. **The repeat rate is the
 predictor**, with one instructive exception below.
+
+(An exhaustive re-run over 22 instances adds a second: `word-xy` repeats
+95.2% of its nodes and FK-B gains only 2.99x. Tree size, not symmetry, is what
+separates it from `gk-f3`'s 52.96x. See `docs/hard-classes.md` section 5.)
 
 ## 3. Why the repeats happen: symmetry
 
@@ -101,7 +105,7 @@ shreds the group (8.8% and 13.5% of its nodes reach the trivial group, against
 else by removing a whole orbit representative at once — is what destroys the
 symmetry fastest. See [hard-cases.md](hard-cases.md).
 
-The same effect read the other way — mean `|Aut(G)|` over the tree, as a
+The same effect read the other way — mean `|Aut(C)|` over the tree, as a
 fraction of the root's:
 
 | instance | root `|Aut|` | FK-A retained | FK-B retained |
@@ -124,7 +128,7 @@ scaled copy of the original.
 
 ## 4. Why FK-B escapes: a shallower base case
 
-FK-A's base case is `|G| · |H| ≤ 1`, plus the thesis Section 5.1.1 `D_{1,k}`
+FK-A's base case is `nC · nD ≤ 1`, plus the thesis Section 5.1.1 `D_{1,k}`
 rule. FK-B's is `min(|C|, |D|) ≤ 2`, decided outright by enumerating the
 minimal transversals of the two-term side.
 
@@ -142,8 +146,8 @@ internal `dual` confirmations of subtrees that only exist because of that.
 
 ## 5. Why FK-B loses on the threshold family
 
-The threshold family inverts the shape: `|G| = 6` against `|H| = 25` at
-`v = 10`. FK-A's `single_edge` rule fires almost immediately — `|G| = 1` arises
+The threshold family inverts the shape: `nC = 6` against `nD = 25` at
+`v = 10`. FK-A's `single_edge` rule fires almost immediately — `nC = 1` arises
 after a couple of splits, and `D_{1,k}` then decides in `O(k)` — so it finishes
 in 9 nodes with **no repeated subproblems at all**.
 
@@ -168,7 +172,7 @@ algorithms must emit work proportional to an exponential output, so neither can
 pull away, and the repeat rate stops being predictive. Symmetry-driven repeats
 are avoidable; output-driven ones are not.
 
-## 7. The thesis' `Aut(G) = Aut(H)` claim
+## 7. The thesis' `Aut(C) = Aut(D)` claim
 
 Thesis p.51 states that "the input hypergraphs G and H (if they are transversals
 of each other) have the same automorphism group". Across **4,034 annotated
@@ -183,7 +187,7 @@ of the recursion, not only at the root, and it holds for FK-B's decomposition,
 which the thesis never examined.
 
 The previously recorded counterexample was `6a` *as published*, where
-`Aut(G) = C₂` and `Aut(H) = C₂ × C₂`. That instance is **not a transversal
+`Aut(C) = C₂` and `Aut(D) = C₂ × C₂`. That instance is **not a transversal
 pair** — which is exactly the hypothesis the claim carries — so it never
 contradicted it. It was withdrawn to
 `_archive/20260804-verbatim-nontransversal/` on 2026-08-04 and the distinction
@@ -200,7 +204,7 @@ is locked by `tests/test_symmetry.py`.
 | **Output-bound** | `matching(v)` | high but unavoidable | neither, flat ~1.9x | `|Tr|` is exponential; both must pay it |
 | **Shape-easy** | `threshold(v)`, `8ver` | 0–48% | **FK-A** | `D_{1,k}` settles it before FK-B's per-term fan-out earns anything |
 
-The practical consequence for this project: **`ε(G, H)` and `|Aut|` at the root
+The practical consequence for this project: **`ε(C, D)` and `|Aut|` at the root
 predict which algorithm to reach for.** A high root automorphism order with a
 self-dual structure is FK-A's worst case and FK-B's best; a small, lopsided pair
 is the reverse. Neither dominates, and the instance library now contains

@@ -17,19 +17,22 @@ one-way and is about where files sit, not about one algorithm needing the other.
 
 | Module | Owns |
 | --- | --- |
-| `fka/hypergraph.py`, `fka/sperner.py` | exact data operations |
-| `fka/tree.py` | the serializable `RecursionTree`, shared by both algorithms |
+| `fka/hypergraph.py`, `fka/irredundant.py` | the term-set model, its restrictions, and `Irredundant` |
+| `fka/tree.py` | the serializable `Tree`, shared by both algorithms |
 | `fka/transversal.py` | the independent Berge-method oracle |
-| `fka/automorphism.py`, `fka/groups.py` | `Aut(H)`, and naming the group it finds |
+| `fka/algorithm.py` | FK-A |
+| `fkb/algorithm.py` | FK-B |
+| `fkb/dualize.py` | `Tr(D)` by repeated FK-B equivalence tests |
+| `fka/automorphism.py` | the one automorphism search, for one term set or a pair |
+| `fka/groups.py` | naming the group it finds, without SageMath |
 | `fka/graphs.py`, `fka/properties.py` | the primal graph's class; conformality, alpha-acyclicity, read-once |
+| `fka/selfdual.py` | self-dual families and primitivity |
+| `fka/substitution.py`, `fka/bound.py` | monotone composition and the Chapter 2 frequency bound |
 | `fka/analysis.py` | annotating completed nodes, memoizing repeated subproblems |
 | `fka/backends/` | SageMath as an optional independent check, never an import-time dependency |
 | `fka/report.py`, `fka/dot.py` | rendering a stored tree without changing it |
 | `fka/instances.py` | the instance library, its generators, and its baselines |
-| `fka/algorithm.py` | FK-A |
 | `fka/cli.py`, `fkb/cli.py` | the two entry points; neither holds research logic |
-| `fkb/algorithm.py` | FK-B |
-| `fkb/dualize.py` | `Tr(H)` by repeated FK-B equivalence tests |
 
 `fka/automorphism.py` is the module Chapter 3 is about: every recursion node is
 annotated with the group of both its subhypergraphs, and that annotation is what
@@ -39,10 +42,9 @@ Neither algorithm plots, computes automorphism groups, or touches the filesystem
 while recursing. That separation is what makes a result reproducible and
 reviewable months later, and it is what lets one visualiser serve both.
 
-Start with [glossary.md](glossary.md) if the two algorithms' vocabularies are
-not yet interchangeable in your head. A monotone Boolean function is a
-hypergraph and its dual is the transversal hypergraph; that identification is
-what lets one model, one library and one visualiser serve both.
+The code is written in one vocabulary, the monotone-Boolean register of the
+FK-B reference. [dictionary.md](dictionary.md) maps it to the thesis' hypergraph
+notation and is the only place that correspondence is recorded.
 
 ## Adding a research instance
 
@@ -80,7 +82,7 @@ runs against it by accident. See
 
 Two folders, and each holds all of its kind:
 
-- **`data/`** — every research input. `instances/` is the `(G, H)` library,
+- **`data/`** — every research input. `instances/` is the `(cnf, dnf)` library,
   `reference/` the MATLAB FK-B authors' recorded test vectors, `baselines/` the
   node counts and split sequences printed in the thesis. No test embeds its own
   data; `fka.instances.load_data` reads it. Superseded inputs move to
@@ -93,7 +95,7 @@ Two folders, and each holds all of its kind:
   written compact: a tree is regenerated wholesale and never hand-edited, and
   indenting one costs about 2.7x the bytes.
 - HTML is a single-file interactive view supporting structure, automorphism, and
-  property views; clicking a node reveals its exact subproblem and certificate.
+  property views; clicking a node reveals its subproblem and conflicting assignment.
 - DOT is optional interchange for Graphviz. It is not required for HTML.
 
 Files are `<instance>.<algorithm>.<variant>.<extension>` — for example
@@ -131,11 +133,11 @@ run, when a specific group is the question — not as a default.
 
 - Unit tests cover representation, Sperner reduction, tree serialization,
   groups, graph classes, properties, and output safety.
-- Randomized tests compare both algorithms, all variants, and all pivot and
+- Randomized tests compare both algorithms, all variants, and all
   split rules against the independent transversal oracle, and verify that every
-  certificate and conflicting assignment holds at the root.
+  conflicting assignment holds at the root.
 - Cross-algorithm tests assert FK-A and FK-B never disagree.
-- Thesis tests lock published node counts and, where available, full pivot
+- Thesis tests lock published node counts and, where available, full split
   sequences.
 - Conformance tests replay the MATLAB FK-B reference's own recorded test
   vectors from `Unit_Tests_Equivalency.m` and `Unit_tests_Check_Conditions.m`.

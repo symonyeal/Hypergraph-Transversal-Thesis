@@ -5,7 +5,7 @@ suite reads lives anywhere else.
 
 | Folder | Holds | Read by |
 | --- | --- | --- |
-| `instances/` | the `(G, H)` library — 14 named problem instances | `fka.instances.load`, `load_all` |
+| `instances/` | the `(cnf, dnf)` library — 16 named problem instances | `fka.instances.load`, `load_all` |
 | `reference/` | the MATLAB FK-B authors' own recorded test vectors | `tests/test_fkb_reference.py` |
 | `baselines/` | node counts and split sequences printed in the thesis | `tests/test_thesis_reproduction.py` |
 
@@ -13,12 +13,12 @@ Read any of it with `fka.instances.load_data("baselines", "published-trees.json"
 Superseded inputs are not deleted; they move to `../_archive/<date>-<slug>/`
 with a note, and come back through `fka.instances.load_archived`.
 
-`G` is the CNF side, `H` the DNF side, and they are the same two hypergraphs
-whichever algorithm reads them — see [`../docs/glossary.md`](../docs/glossary.md).
+`cnf` and `dnf` are the same two term sets whichever algorithm reads them; the
+hypergraph reading is in [`../docs/dictionary.md`](../docs/dictionary.md).
 
 ## `instances/`
 
-Each JSON file contains the input pair in 1-indexed vertex notation, provenance,
+Each JSON file contains the input pair in 1-indexed variable notation, provenance,
 a source citation, research notes, and independently refreshable expected values.
 
 ```json
@@ -26,13 +26,13 @@ a source citation, research notes, and independently refreshable expected values
   "id": "fano",
   "provenance": "verbatim" | "corrected" | "derived",
   "n_vertices": 7,
-  "G": [[1, 2, 4], ...],
-  "H": [[1, 2, 4], ...],
+  "cnf": [[1, 2, 4], ...],
+  "dnf": [[1, 2, 4], ...],
   "notes": "...",
   "expected": {
     "dual": true,                  from the brute-force oracle, never from FK-A or FK-B
     "epsilon": "3/7",              exact fraction
-    "n_edges_G": 7, "n_edges_H": 7,
+    "nC": 7, "nD": 7,
     "fka": {"faithful": {...}, "modified": {...}},
     "fkb": {"faithful": {...}, "multiple": {...}}
   }

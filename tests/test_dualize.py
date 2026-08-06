@@ -12,16 +12,16 @@ from fkb.dualize import dualise, initial_cnf, maximum_false_point
 
 
 @pytest.mark.parametrize("instance_id", [i.id for i in load_all()])
-@pytest.mark.parametrize("side", ["G", "H"])
+@pytest.mark.parametrize("side", ["cnf", "dnf"])
 def test_reproduces_the_oracle_transversal(instance_id, side):
-    """The whole point: FK-B as a generator must produce exactly ``Tr(H)``.
+    """The whole point: FK-B as a generator must produce exactly ``Tr(D)``.
 
     Checked against Berge's method, which shares no code with this route.
     """
-    H = getattr(load(instance_id), side)
-    run = dualise(H)
+    D = getattr(load(instance_id), side)
+    run = dualise(D)
     assert run.complete
-    assert run.cnf.edges == transversal(H).edges
+    assert run.cnf.edges == transversal(D).edges
 
 
 @pytest.mark.parametrize(
@@ -41,51 +41,51 @@ def test_one_pass_per_output_edge():
     That is the bound the self-reduction promises, and it is what makes the
     loop terminate rather than merely appear to.
     """
-    H = load("trivial-aut-1").H
-    run = dualise(H)
-    assert run.passes == len(transversal(H))
+    D = load("trivial-aut-1").dnf
+    run = dualise(D)
+    assert run.passes == len(transversal(D))
     assert run.sizes == list(range(1, run.passes + 1))
 
 
 def test_maximum_false_point_is_maximal_and_false():
     """Its complement must be a *minimal* transversal, or a clause repeats."""
-    H = load("fano").H
+    D = load("fano").dnf
     S = 0  # the empty assignment is false for any monomial-bearing DNF
-    mfp = maximum_false_point(H, S)
-    assert not dnf_value(H, mfp)
+    mfp = maximum_false_point(D, S)
+    assert not dnf_value(D, mfp)
     # Maximal: turning on any further variable makes the DNF true.
-    for v in range(H.n):
+    for v in range(D.n):
         if not (mfp >> v) & 1:
-            assert dnf_value(H, mfp | (1 << v))
-    assert (H.support() & ~mfp) in transversal(H).edges
+            assert dnf_value(D, mfp | (1 << v))
+    assert (D.support() & ~mfp) in transversal(D).edges
 
 
 def test_maximum_false_point_keeps_the_seed_true():
-    H = load("6b").H
-    S = next(s for s in range(1 << H.n) if not dnf_value(H, s) and s)
-    mfp = maximum_false_point(H, S)
+    D = load("6b").dnf
+    S = next(s for s in range(1 << D.n) if not dnf_value(D, s) and s)
+    mfp = maximum_false_point(D, S)
     assert mfp & S == S, "the seed's variables must survive"
 
 
 def test_maximum_false_point_rejects_a_true_seed():
-    H = load("fano").H
+    D = load("fano").dnf
     with pytest.raises(ValueError, match="false point"):
-        maximum_false_point(H, H.edges[0])
+        maximum_false_point(D, D.edges[0])
 
 
 def test_initial_cnf_is_made_of_real_transversals():
-    H = load("7ver").H
-    truth = transversal(H)
-    start = initial_cnf(H, n_clause=3)
+    D = load("7ver").dnf
+    truth = transversal(D)
+    start = initial_cnf(D, n_clause=3)
     assert start.edges, "the start must not be empty"
     for c in start.edges:
         assert c in truth.edges
 
 
 def test_partial_run_is_a_subset_never_a_wrong_answer():
-    H = load("trivial-aut-1").H
-    truth = set(transversal(H).edges)
-    run = dualise(H, max_passes=5)
+    D = load("trivial-aut-1").dnf
+    truth = set(transversal(D).edges)
+    run = dualise(D, max_passes=5)
     assert not run.complete
     assert run.passes == 5
     assert set(run.cnf.edges) <= truth
@@ -101,10 +101,10 @@ def test_degenerate_inputs():
 
 @pytest.mark.parametrize("variant", ["faithful", "multiple"])
 def test_both_variants_dualise_identically(variant):
-    H = load("f2g2").H
-    run = dualise(H, variant=variant)
+    D = load("f2g2").dnf
+    run = dualise(D, variant=variant)
     assert run.complete
-    assert run.cnf.edges == transversal(H).edges
+    assert run.cnf.edges == transversal(D).edges
 
 
 @pytest.mark.slow
@@ -114,11 +114,11 @@ def test_reproduces_the_oracle_on_random_instances(rng):
     checked = 0
     for _ in range(120):
         n = rng.randint(2, 7)
-        H = random_sperner(n, rng.randint(1, 5), rng)
-        if not H.edges:
+        D = random_sperner(n, rng.randint(1, 5), rng)
+        if not D.edges:
             continue
-        run = dualise(H)
+        run = dualise(D)
         assert run.complete
-        assert run.cnf.edges == transversal(H).edges, H.label()
+        assert run.cnf.edges == transversal(D).edges, D.label()
         checked += 1
     assert checked > 80

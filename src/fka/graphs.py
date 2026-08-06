@@ -106,19 +106,19 @@ class Graph:
         return seen == (1 << self.n) - 1
 
 
-def primal_graph(H: Hypergraph) -> Graph:
-    """The primal (2-section) graph of ``H``.
+def primal_graph(MBF: Hypergraph) -> Graph:
+    """The primal (2-section) graph of ``MBF``.
 
-    Two vertices are adjacent iff some hyperedge contains both. Isolated
-    vertices of ``H`` stay as isolated vertices here, so the graph is always on
-    the same ground set as ``H``.
+    Two vertices are adjacent iff some term contains both. Isolated
+    vertices of ``MBF`` stay as isolated vertices here, so the graph is always on
+    the same ground set as ``MBF``.
     """
-    adj = [0] * H.n
-    for e in H.edges:
+    adj = [0] * MBF.n
+    for e in MBF.edges:
         vs = verts(e)
         for u in vs:
             adj[u] |= e & ~(1 << u)
-    return Graph(H.n, tuple(adj))
+    return Graph(MBF.n, tuple(adj))
 
 
 # ----------------------------------------------------------------------

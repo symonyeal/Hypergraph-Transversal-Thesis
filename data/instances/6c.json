@@ -5,7 +5,7 @@
   "source": "Islam, 'Tracing the Effects of Symmetry in Hypergraphs On the Fredman-Khachiyan Algorithm', MSc thesis, SFU 2024, Section 5.2.1, p.49",
   "provenance": "verbatim",
   "n_vertices": 6,
-  "G": [
+  "cnf": [
     [
       3,
       4
@@ -39,7 +39,7 @@
       3
     ]
   ],
-  "H": [
+  "dnf": [
     [
       3,
       5
@@ -51,12 +51,12 @@
       6
     ]
   ],
-  "notes": "G is 2-uniform, so it is literally a graph. Aut = C2 x S4 of order 48, matching thesis Figure 5.4c.",
+  "notes": "C is 2-uniform, so it is literally a graph. Aut = C2 x S4 of order 48, matching thesis Figure 5.4c.",
   "expected": {
     "dual": true,
     "epsilon": "1/2",
-    "n_edges_G": 8,
-    "n_edges_H": 2,
+    "nC": 8,
+    "nD": 2,
     "fka": {
       "faithful": {
         "nodes": 17,

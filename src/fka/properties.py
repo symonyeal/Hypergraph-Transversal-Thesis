@@ -1,16 +1,13 @@
-"""Hypergraph properties tracked across the recursion.
+"""Structural properties tracked across the recursion.
 
 The annotations on the thesis' automorphism trees: conformality,
 alpha-acyclicity, read-once, and the primal graph's class (:mod:`fka.graphs`).
 
-"Conformal" and "normal" are the same predicate, though the legacy notebook
-computed both -- *conformal* as every **maximal** clique of the primal graph
-lying in a hyperedge, *normal* as every clique doing so. Every clique sits
-inside a maximal one and containment is transitive, so the two can never
-disagree, and the "normal" pass enumerated an exponentially larger set for
-nothing. Only :func:`is_conformal` is computed; :func:`is_normal` is a
-documented alias, because the read-once literature (Gurvich;
-Golumbic-Mintz-Rotics) states the criterion with that word.
+"Conformal" and "normal" name the same predicate -- conformal is every
+**maximal** clique of the primal graph lying in a term, normal is every clique
+doing so, and since every clique sits inside a maximal one they cannot disagree.
+Only :func:`is_conformal` exists; the read-once literature (Gurvich;
+Golumbic-Mintz-Rotics) states the criterion with the other word.
 """
 
 from __future__ import annotations
@@ -23,51 +20,46 @@ from .hypergraph import Hypergraph, bits, verts
 
 __all__ = [
     "is_conformal",
-    "is_normal",
     "nonconformal_clique",
     "is_alpha_acyclic",
     "is_read_once",
-    "HypergraphProperties",
+    "Properties",
     "analyse",
 ]
 
 
-def nonconformal_clique(H: Hypergraph, g: Optional[Graph] = None) -> Optional[tuple[int, ...]]:
-    """A maximal clique of the primal graph inside no hyperedge, or ``None``.
+def nonconformal_clique(MBF: Hypergraph, g: Optional[Graph] = None) -> Optional[tuple[int, ...]]:
+    """A maximal clique of the primal graph inside no term, or ``None``.
 
     Returning the offending clique rather than a bare boolean is what makes the
     result usable: the thesis reports *which* clique breaks conformality when
     discussing the Fano plane and the asymmetric instances (Section 5.2.2).
     """
-    g = primal_graph(H) if g is None else g
+    g = primal_graph(MBF) if g is None else g
     for clique in g.maximal_cliques():
         c = bits(clique)
-        if not any((c & e) == c for e in H.edges):
+        if not any((c & e) == c for e in MBF.edges):
             return tuple(v + 1 for v in clique)
     return None
 
 
-def is_conformal(H: Hypergraph, g: Optional[Graph] = None) -> bool:
-    """Every maximal clique of the primal graph is contained in a hyperedge."""
-    return nonconformal_clique(H, g) is None
+def is_conformal(MBF: Hypergraph, g: Optional[Graph] = None) -> bool:
+    """Every maximal clique of the primal graph is contained in a term."""
+    return nonconformal_clique(MBF, g) is None
 
 
-#: Alias -- see the module docstring for why these coincide.
-is_normal = is_conformal
-
-
-def is_alpha_acyclic(H: Hypergraph) -> bool:
+def is_alpha_acyclic(MBF: Hypergraph) -> bool:
     """Decide alpha-acyclicity by GYO reduction.
 
     Repeatedly apply, in any order:
 
-    1. delete a vertex that lies in exactly one hyperedge ("ear removal");
-    2. delete a hyperedge contained in another (and any empty hyperedge).
+    1. delete a variable that lies in exactly one term ("ear removal");
+    2. delete a term contained in another (and any empty term).
 
-    ``H`` is alpha-acyclic exactly when this strips the hypergraph to nothing.
+    ``MBF`` is alpha-acyclic exactly when this strips the hypergraph to nothing.
     The reduction is confluent, so the order of the steps does not matter.
     """
-    edges = list(dict.fromkeys(H.edges))
+    edges = list(dict.fromkeys(MBF.edges))
     changed = True
     while changed and edges:
         changed = False
@@ -106,8 +98,8 @@ def is_alpha_acyclic(H: Hypergraph) -> bool:
     return not edges
 
 
-def is_read_once(H: Hypergraph, g: Optional[Graph] = None) -> bool:
-    """Decide whether ``H`` is a read-once hypergraph.
+def is_read_once(MBF: Hypergraph, g: Optional[Graph] = None) -> bool:
+    """Decide whether ``MBF`` is a read-once hypergraph.
 
     Gurvich's criterion, as used by Golumbic-Mintz-Rotics [GMR06] and cited in
     thesis Section 4.4: a positive DNF is read-once iff it is normal (here:
@@ -115,21 +107,21 @@ def is_read_once(H: Hypergraph, g: Optional[Graph] = None) -> bool:
 
     An edgeless hypergraph is read-once vacuously.
     """
-    if not H.edges:
+    if not MBF.edges:
         return True
-    g = primal_graph(H) if g is None else g
-    return is_conformal(H, g) and is_cograph(g)
+    g = primal_graph(MBF) if g is None else g
+    return is_conformal(MBF, g) and is_cograph(g)
 
 
 @dataclass(frozen=True, slots=True)
-class HypergraphProperties:
-    """Everything the recursion-tree annotation records about one hypergraph."""
+class Properties:
+    """Everything the annotation records about one side of a node."""
 
     n_vertices: int
     n_edges: int
     edge_sizes: tuple[int, ...]
     degrees: tuple[int, ...]
-    sperner: bool
+    irredundant: bool
     conformal: bool
     nonconformal_clique: Optional[tuple[int, ...]]
     alpha_acyclic: bool
@@ -156,7 +148,7 @@ class HypergraphProperties:
             "n_edges": self.n_edges,
             "edge_sizes": list(self.edge_sizes),
             "degrees": list(self.degrees),
-            "sperner": self.sperner,
+            "irredundant": self.irredundant,
             "conformal": self.conformal,
             "nonconformal_clique": (
                 None if self.nonconformal_clique is None else list(self.nonconformal_clique)
@@ -171,26 +163,26 @@ class HypergraphProperties:
         }
 
 
-def analyse(H: Hypergraph, *, graph_classes: bool = True) -> HypergraphProperties:
-    """Run every property test on ``H``.
+def analyse(MBF: Hypergraph, *, graph_classes: bool = True) -> Properties:
+    """Run every property test on ``MBF``.
 
     ``graph_classes=False`` skips the primal-graph classification, which is the
     expensive part (it enumerates induced subgraphs). The hypergraph-level
     properties are cheap and always computed.
     """
-    g = primal_graph(H)
-    bad_clique = nonconformal_clique(H, g)
+    g = primal_graph(MBF)
+    bad_clique = nonconformal_clique(MBF, g)
     conformal = bad_clique is None
-    return HypergraphProperties(
-        n_vertices=H.n,
-        n_edges=len(H),
-        edge_sizes=tuple(H.edge_sizes()),
-        degrees=tuple(H.degrees()),
-        sperner=H.is_sperner(),
+    return Properties(
+        n_vertices=MBF.n,
+        n_edges=len(MBF),
+        edge_sizes=tuple(MBF.edge_sizes()),
+        degrees=tuple(MBF.degrees()),
+        irredundant=MBF.is_sperner(),
         conformal=conformal,
         nonconformal_clique=bad_clique,
-        alpha_acyclic=is_alpha_acyclic(H),
-        read_once=(conformal and is_cograph(g)) if H.edges else True,
+        alpha_acyclic=is_alpha_acyclic(MBF),
+        read_once=(conformal and is_cograph(g)) if MBF.edges else True,
         graph_classes=classify_graph(g) if graph_classes else None,
-        isolated_vertices=H.isolated_vertices(),
+        isolated_vertices=MBF.isolated_vertices(),
     )

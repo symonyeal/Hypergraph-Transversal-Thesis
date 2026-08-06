@@ -8,7 +8,7 @@ import pytest
 
 from fka.backends import has_sage
 from fka.hypergraph import Hypergraph
-from fka.sperner import sperner_reduce
+from fka.irredundant import irredundant
 
 
 def pytest_collection_modifyitems(config, items):
@@ -22,17 +22,16 @@ def pytest_collection_modifyitems(config, items):
 
 
 def random_sperner(n: int, m: int, rng: random.Random) -> Hypergraph:
-    """A random Sperner hypergraph on ``n`` vertices, aiming for ``m`` edges.
+    """A random irredundant function on ``n`` variables, aiming for ``m`` terms.
 
-    Built by drawing random non-empty subsets and Sperner-reducing, so the
-    result is an antichain but its size is only approximately ``m``.
+    Built by drawing random non-empty subsets and reducing, so the result is an
+    antichain but its size is only approximately ``m``.
     """
-    edges = []
+    terms = []
     for _ in range(m):
         size = rng.randint(1, max(1, n // 2))
-        edges.append(rng.sample(range(n), size))
-    H = Hypergraph.from_sets(n, edges)
-    return sperner_reduce(H).reduced
+        terms.append(rng.sample(range(n), size))
+    return irredundant(Hypergraph.from_sets(n, terms)).reduced
 
 
 @pytest.fixture

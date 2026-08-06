@@ -17,9 +17,9 @@ import pytest
 from fka.algorithm import fk_a
 from fka.automorphism import automorphism_group
 from fka.hypergraph import Hypergraph, bits, popcount, verts
+from fka.algorithm import eps_exact
 from fka.instances import (
     FANO_LINES,
-    exact_epsilon,
     load,
     self_dual_fano,
     self_dualise,
@@ -62,7 +62,7 @@ def test_witt_11_blocks_pairwise_meet():
 
 def test_witt_11_frequency_and_symmetry():
     W = witt_11()
-    assert str(exact_epsilon(W, W)) == "5/11"
+    assert str(eps_exact(W, W)) == "5/11"
     aut = automorphism_group(W)
     assert aut.order == 7920                     # M11
     assert len(aut.orbits) == 1                  # vertex-transitive
@@ -86,22 +86,22 @@ def test_witt_11_group_is_m11_by_sage():
 @pytest.mark.parametrize("instance_id", ["w11", "w11-sd-1"])
 def test_new_instances_agree_with_the_oracle(instance_id):
     inst = load(instance_id)
-    G, H = inst.G, inst.H
-    assert is_dual_oracle(G, H)
+    cnf, dnf = inst.cnf, inst.dnf
+    assert is_dual_oracle(cnf, dnf)
     for variant in ("faithful", "modified"):
-        assert fk_a(G, H, variant=variant).verdict.dual
+        assert fk_a(cnf, dnf, variant=variant).verdict.dual
     for variant in ("faithful", "multiple"):
-        assert fk_b(G, H, variant=variant).verdict.dual
+        assert fk_b(cnf, dnf, variant=variant).verdict.dual
 
 
 def test_w11_is_harder_than_fano_for_both_algorithms():
-    """The point of the instance. Per unit of input -- nodes over |G| + |H| --
+    """The point of the instance. Per unit of input -- nodes over nC + nD --
     W11 costs both algorithms more than the Fano plane does, and the margin is
     largest for FK-B, which the Fano plane barely troubles."""
     fano, w11 = load("fano"), load("w11")
     for algorithm in (fk_a, fk_b):
-        f = len(algorithm(fano.G, fano.H)) / (len(fano.G_edges) + len(fano.H_edges))
-        w = len(algorithm(w11.G, w11.H)) / (len(w11.G_edges) + len(w11.H_edges))
+        f = len(algorithm(fano.cnf, fano.dnf)) / (len(fano.cnf_edges) + len(fano.dnf_edges))
+        w = len(algorithm(w11.cnf, w11.dnf)) / (len(w11.cnf_edges) + len(w11.dnf_edges))
         assert w > f
 
 
