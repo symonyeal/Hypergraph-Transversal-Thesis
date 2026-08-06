@@ -43,13 +43,13 @@ what lets one model, one library and one visualiser serve both.
    or `derived` for provenance.
 2. If a printed source needs repair, keep the as-printed form and state exactly
    what changed and why in the corrected file's `notes`.
-3. Rerun `python experiments/build_instances.py`. It recomputes
+3. Rerun `C:\Python314\python.exe experiments/build_instances.py`. It recomputes
    every `expected` block: duality from the oracle, `epsilon` as an exact
    fraction, and node counts for both algorithms and all four variants. Review
    every changed value; never accept the diff mechanically.
-4. Run `python -m pytest`, then
-   `python -m fka verify` and
-   `python -m fkb verify`.
+4. Run `C:\Python314\python.exe -m pytest`, then
+   `C:\Python314\python.exe -m fka verify` and
+   `C:\Python314\python.exe -m fkb verify`.
 5. Generate the deliverables with `-m fka run <id>` and `-m fkb run <id>`.
 6. Put a durable mathematical claim in a focused test and cite the thesis page
    or archived source log in its docstring.

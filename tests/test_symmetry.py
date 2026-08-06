@@ -96,10 +96,48 @@ def test_automorphisms_are_actual_automorphisms():
     ],
 )
 def test_automorphism_groups_match_the_thesis(instance_id, side, order, name):
+    """The order is backend-independent; the *name* is the package catalogue's.
+
+    ``backend="python"`` is explicit because GAP's ``StructureDescription`` is
+    not canonical for these groups: handed the search's generators for
+    ``f2g2`` it answers ``(((C4 x C4) : C2) : C2) : C2``, and handed an
+    abstract ``D4 wr C2`` it answers ``(((C2 x C2 x C2 x C2) : C2) : C2) : C2``
+    -- the thesis' own second spelling, and an isomorphic group either way.
+    Under the default backend this assertion would therefore pass on CPython
+    and fail under Sage. :func:`test_sage_group_names_are_isomorphic` checks
+    what the Sage backend actually owes: a group of the right isomorphism type.
+    """
     inst = load(instance_id)
-    result = automorphism_group(inst.G if side == "G" else inst.H)
+    H = inst.G if side == "G" else inst.H
+    result = automorphism_group(H, backend="python")
     assert result.order == order
     assert result.name == name
+
+
+@pytest.mark.sage
+@pytest.mark.parametrize(
+    "instance_id,side,order",
+    [("fano", "G", 168), ("f2g2", "G", 128), ("6b", "G", 48), ("w11", "G", 7920)],
+)
+def test_sage_group_names_are_isomorphic(instance_id, side, order):
+    """Sage's name may spell the group differently; it must not describe a
+    different group. Checked against the catalogue name through GAP."""
+    from sage.all import libgap
+
+    from fka.backends.sage_backend import sage_automorphism_group
+
+    inst = load(instance_id)
+    H = inst.G if side == "G" else inst.H
+    py = automorphism_group(H, backend="python")
+    sg = sage_automorphism_group(H)
+    assert sg["order"] == py.order == order
+
+    gens = [libgap.eval(g) for g in sg["generators"] if g != "()"]
+    from_sage = libgap.Group(gens)
+    from_catalogue = libgap.Group(
+        [libgap.eval(g) for g in py.generators if g != "()"]
+    )
+    assert libgap.IsomorphismGroups(from_sage, from_catalogue) != libgap.eval("fail")
 
 
 def test_asymmetric_instance_has_trivial_group():

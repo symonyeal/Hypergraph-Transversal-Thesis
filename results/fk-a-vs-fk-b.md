@@ -20,6 +20,8 @@ much of the instance's symmetry the average subproblem still carries.
 | `sdfp-sd-1` | 9 | 15 | 15 | yes | order 336 (non-abelian, unidentified) (336) | 75 | 37 | 2.027x | 0.0658 | 0.0718 |
 | `sdfp-sd-2` | 16 | 64 | 64 | yes | — (—) | 1427 | 231 | 6.177x | — | — |
 | `trivial-aut-1` | 8 | 31 | 35 | yes | C1 (1) | 41 | 33 | 1.242x | 4.8462 | 5.3636 |
+| `w11` | 11 | 66 | 66 | yes | — (—) | 475 | 323 | 1.471x | — | — |
+| `w11-sd-1` | 13 | 133 | 133 | yes | — (—) | 955 | 719 | 1.328x | — | — |
 | `sdfp-sd-3` ‡ | 23 | 365 | 365 | yes | — (—) | 26931 | 1677 | 16.059x | — | — |
 
 ‡ too large to annotate; node counts only. See `ANNOTATE_BELOW`.
@@ -43,6 +45,8 @@ computed. A node above `skip_group_above` edges is not counted.
 | `sdfp-sd-1` | `C2`×28, `S3`×8, `PSL(3,2)`×4, `S4`×4 | `C2`×16, `C2 x C2`×8, `S4`×4, `PSL(3,2)`×2 |
 | `sdfp-sd-2` | `C2`×266, `S4`×212, `C1`×186, `S3`×162 | `D4`×101, `S3`×78, `C2`×14, `C2 x D4`×7 |
 | `trivial-aut-1` | `C2`×22, `S3`×6, `C1`×5, `S4`×3 | `C2`×15, `C1`×5, `S4`×3, `C2 x C2`×3 |
+| `w11` | `C2`×194, `S3`×52, `D4`×46, `S4`×36 | `C2`×122, `S3`×78, `C2 x C2`×40, `C1`×28 |
+| `w11-sd-1` | `C2`×388, `S3`×104, `D4`×92, `S4`×72 | `C2`×206, `C2 x C2`×132, `S3`×108, `C1`×96 |
 | `sdfp-sd-3` | not annotated | not annotated |
 
 ## FK-B split branches
@@ -65,4 +69,6 @@ the plain two-way split, which is FK-A's step.
 | `sdfp-sd-1` | `mu_C`×1, `mu_D`×5, `split`×11 |
 | `sdfp-sd-2` | `mu_C`×8, `mu_D`×18, `split`×7 |
 | `trivial-aut-1` | `split`×16 |
+| `w11` | `mu_C`×10, `mu_D`×10, `split`×131 |
+| `w11-sd-1` | `mu_C`×34, `mu_D`×42, `split`×241 |
 | `sdfp-sd-3` | `mu_C`×10, `mu_D`×11, `split`×1 |

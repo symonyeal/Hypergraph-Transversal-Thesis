@@ -49,30 +49,32 @@ per-frame Graphviz images with:
 From this directory, the source-tree tests require no installation:
 
 ```text
-C:\Python314\python.exe -m pytest
+python -m pytest
 ```
 
-Install the command-line package into the machine's existing Python (no project
+Install the command-line package into whichever interpreter you use (no project
 virtual environment is required):
 
 ```text
-C:\Python314\python.exe -m pip install -e ".[dev]"
+python -m pip install -e ".[dev]"
 ```
 
-Then use the same interpreter consistently:
+Then use the same interpreter consistently. Under SageMath, substitute that
+environment's Python and the Sage-backed checks come with it — see
+[docs/sagemath.md](docs/sagemath.md):
 
 ```text
-C:\Python314\python.exe -m fka env            what this interpreter can do
-C:\Python314\python.exe -m fka list           the instance library
-C:\Python314\python.exe -m fka show fano      one instance, with its baseline
-C:\Python314\python.exe -m fka run fano       FK-A + annotation + HTML report
-C:\Python314\python.exe -m fka verify         FK-A against the oracle
+python -m fka env            what this interpreter can do
+python -m fka list           the instance library
+python -m fka show fano      one instance, with its baseline
+python -m fka run fano       FK-A + annotation + HTML report
+python -m fka verify         FK-A against the oracle
 
-C:\Python314\python.exe -m fkb run fano       FK-B, same reports
-C:\Python314\python.exe -m fkb verify         FK-B against the oracle
-C:\Python314\python.exe -m fkb compare --all  FK-A vs FK-B vs the oracle
-C:\Python314\python.exe -m fkb benchmark      both, on the scaling families
-C:\Python314\python.exe -m fkb dualize --all  Tr(H) by repeated FK-B tests
+python -m fkb run fano       FK-B, same reports
+python -m fkb verify         FK-B against the oracle
+python -m fkb compare --all  FK-A vs FK-B vs the oracle
+python -m fkb benchmark      both, on the scaling families
+python -m fkb dualize --all  Tr(H) by repeated FK-B tests
 ```
 
 `run` writes a portable HTML explorer and machine-readable JSON to `results/`.
@@ -117,7 +119,7 @@ Open the HTML directly; it has no network, font, JavaScript, or image dependency
 | `tests/` | Unit, randomized, thesis-reproduction, MATLAB-conformance, output, and Sage checks |
 | `results/` | Every run of both algorithms and every variant, plus the cross-algorithm report |
 | `experiments/` | Explicit migration or one-off research programs |
-| `docs/` | Architecture, the FK-A/FK-B findings, Sage setup, and assessment notes |
+| `docs/` | Architecture, the FK-A/FK-B findings, the hard-case search, Sage setup, and assessment notes |
 | `Reading/` | Local-only third-party reference library; PDFs are not redistributed |
 | `FK- B/` | Local-only third-party MATLAB FK-B reference snapshot |
 | `Dedekind/` | Third-party MIT snapshot of Jäkel's `d(9)` computation — the size of the space both algorithms search |
@@ -129,14 +131,22 @@ research logic to notebooks or `.txt` logs. Add a module or an explicit program,
 store inputs as JSON, and make the claim executable as a test. See
 [docs/architecture.md](docs/architecture.md) for the repeatable workflow and
 [docs/fk-a-vs-fk-b.md](docs/fk-a-vs-fk-b.md) for what the comparison found.
+[docs/hard-cases.md](docs/hard-cases.md) reports the search for new hard
+instances and the one it found: the Witt design `S(4,5,11)`, in the library as
+`w11`.
 
 ## SageMath
 
 The package runs completely under CPython. Sage is an optional independent
 backend, not an import-time dependency. Use the Binder badge above to run Sage
-10.9 in a browser without installing it locally. GitHub Actions runs the same
-Sage-backed checks for every definitive revision. On this Windows machine,
-local Sage would require WSL 2; see [docs/sagemath.md](docs/sagemath.md).
+10.9 in a browser without installing it locally, and GitHub Actions runs the
+same Sage-backed checks for every definitive revision.
+
+Sage 10.9 is installed on the maintenance workstation, so the Sage-marked tests
+execute rather than skip: 373 passed / 1 skipped under Sage's Python against
+361 passed / 13 skipped under plain CPython.
+[docs/sagemath.md](docs/sagemath.md) has the conda recipe and the two traps in
+that build (no `sage -python`, no GAP `design` package).
 
 ## Authorship and license
 

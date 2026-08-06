@@ -24,6 +24,8 @@ split rule. What differs is only how much work each does to get there.
 | `threshold(10)` | 9 | 27 | **0.33x** — FK-B worse |
 | `8ver` | 21 | 21 | 1.00x |
 | `matching(12)` | 125 | 65 | 1.92x |
+| `w11-sd-1` | 955 | 719 | 1.33x |
+| `w11` | 475 | 323 | **1.47x** |
 | `fano` | 35 | 11 | 3.18x |
 | `sdfp-sd-2` | 1,427 | 231 | 6.18x |
 | `sdfp-sd-3` | 26,931 | 1,677 | **16.06x** |
@@ -31,6 +33,11 @@ split rule. What differs is only how much work each does to get there.
 FK-B is not uniformly better. It wins by a growing margin on symmetric,
 self-dual instances and it *loses* by a factor of three on the threshold family.
 Any claim of the form "FK-B is faster" needs the instance class attached.
+
+`w11` is the qualification added on 2026-08-05, and it is the sharpest one: it
+is symmetric *and* self-dual, the shape that should be FK-B's best case, yet the
+margin collapses to 1.47x. Symmetry alone does not hand FK-B the win — see §3
+and [hard-cases.md](hard-cases.md).
 
 ## 2. FK-A's blow-up is re-derived subproblems, and the rate predicts the gap
 
@@ -44,6 +51,7 @@ appeared elsewhere in its own tree:
 | `8ver` | 47.6% | 1.00x |
 | `fano` | 60.0% | 3.18x |
 | `f2g2` | 68.0% | 3.57x |
+| `w11` | 70.5% | 1.47x |
 | `sdfp-sd-1` | 78.7% | 2.03x |
 | `sdfp-sd-2` | 91.2% | 6.18x |
 | `sdfp-sd-3` | **98.3%** | **16.06x** |
@@ -65,16 +73,33 @@ vertex-transitive instance every vertex looks the same, so the two subproblems
 it produces are near-isomorphic to each other and to their parent — and FK-A
 carries no memo, so each copy is explored from scratch.
 
-The annotation pass makes this measurable. Over all annotated nodes of all
-twelve live instances:
+The annotation pass makes this measurable. Over all annotated nodes of the
+fourteen live instances, with the twelve this section originally reported on
+kept alongside for comparison:
 
-| | nodes analysed | nodes with trivial automorphism group |
-| --- | ---: | ---: |
-| FK-A | 1,427 | **202** |
-| FK-B | 2,028 | **20** |
+| | nodes analysed | trivial automorphism group | rate |
+| --- | ---: | ---: | ---: |
+| FK-A, the original twelve | 1,427 | **202** | 14.2% |
+| FK-B, the original twelve | 363 | **20** | 5.5% |
+| FK-A, all fourteen | 2,639 | 244 | 9.2% |
+| FK-B, all fourteen | 1,395 | 144 | **10.3%** |
 
-FK-A drives ten times as many nodes to the trivial group, on 30% *fewer*
-analysed nodes. On `sdfp-sd-2` alone the split is 186 against 2.
+**Corrected 2026-08-05.** This table previously read `FK-B | 2,028 | 20` and
+concluded that FK-A drives ten times as many nodes to the trivial group "on 30%
+*fewer* analysed nodes". The 2,028 was not reproducible: FK-B's whole tree over
+those twelve instances is 367 nodes, so it cannot have annotated 2,028 of them.
+The correct figure is 363, and FK-A therefore analysed nearly **four times as
+many** nodes, not fewer. What survives is the ratio: FK-A drives 14.2% of its
+nodes to the trivial group against FK-B's 5.5%, a factor of 2.6 rather than 10.
+On `sdfp-sd-2` alone the split is 186 against 2, which was and remains correct.
+
+The fourteen-instance row is not the same claim, and the reversal is the
+interesting part: on `w11` and `w11-sd-1` **FK-B** is the algorithm that
+shreds the group (8.8% and 13.5% of its nodes reach the trivial group, against
+3.5% for FK-A on both). Those two instances are the ones whose root group is
+4-transitive, and there FK-B's per-term branch — the step that wins everywhere
+else by removing a whole orbit representative at once — is what destroys the
+symmetry fastest. See [hard-cases.md](hard-cases.md).
 
 The same effect read the other way — mean `|Aut(G)|` over the tree, as a
 fraction of the root's:
@@ -146,9 +171,12 @@ are avoidable; output-driven ones are not.
 ## 7. The thesis' `Aut(G) = Aut(H)` claim
 
 Thesis p.51 states that "the input hypergraphs G and H (if they are transversals
-of each other) have the same automorphism group". Across **3,455 annotated
-nodes** — 1,427 FK-A and 2,028 FK-B, over all twelve live instances — there are
-**zero** nodes where the two sides' groups differ, in either algorithm.
+of each other) have the same automorphism group". Across **4,034 annotated
+nodes** — 2,639 FK-A and 1,395 FK-B, over all fourteen live instances — there
+are **zero** nodes where the two sides' groups differ, in either algorithm.
+(This section previously totalled 3,455 over twelve instances, carrying the same
+mis-stated FK-B figure corrected in §3; the count of disagreements was zero
+then and is zero now, over more nodes and two further instances.)
 
 This is stronger than the thesis states it, in two ways: it holds at every node
 of the recursion, not only at the root, and it holds for FK-B's decomposition,
@@ -163,11 +191,12 @@ is locked by `tests/test_symmetry.py`.
 
 ---
 
-## Summary: three regimes
+## Summary: four regimes
 
 | regime | example | FK-A repeats | who wins | why |
 | --- | --- | --- | --- | --- |
 | **Symmetry-bound** | `sdfp-sd-*`, `fano`, `f2g2` | 60–98% | **FK-B**, growing with size | FK-A re-derives orbit-equivalent subproblems; FK-B's per-term branch takes a whole orbit representative at once |
+| **Primitively symmetric** | `w11`, `w11-sd-1` | 70% | **neither**, ~1.5x | The root group is 4-transitive, so no vertex, pair, triple or quadruple is distinguishable. FK-B's cheap path stops firing: it needs 323 nodes at depth 9 where the Fano plane costs it 11 at depth 3. Added 2026-08-05; see [hard-cases.md](hard-cases.md) |
 | **Output-bound** | `matching(v)` | high but unavoidable | neither, flat ~1.9x | `|Tr|` is exponential; both must pay it |
 | **Shape-easy** | `threshold(v)`, `8ver` | 0–48% | **FK-A** | `D_{1,k}` settles it before FK-B's per-term fan-out earns anything |
 

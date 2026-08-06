@@ -3,50 +3,12 @@
 from __future__ import annotations
 
 import random
-from pathlib import Path
 
 import pytest
 
 from fka.backends import has_sage
 from fka.hypergraph import Hypergraph
 from fka.sperner import sperner_reduce
-
-
-def _usable(path: Path) -> bool:
-    """Whether pytest can own ``path``: create it, list it, and write inside it."""
-    try:
-        path.mkdir(parents=True, exist_ok=True)
-        list(path.iterdir())
-        probe = path / ".probe"
-        probe.write_text("", encoding="utf-8")
-        probe.unlink()
-    except OSError:
-        return False
-    return True
-
-
-def pytest_configure(config):
-    """Keep temporary test artifacts in the shared work folder on this PC.
-
-    The project contract forbids session-scoped ``%TEMP%`` files.  On Binder,
-    Linux, and CI the normal pytest temporary directory remains appropriate and
-    avoids embedding a machine-specific Windows path in ``pyproject.toml``.
-
-    Each candidate is probed rather than assumed. A basetemp pytest cannot list
-    or delete makes every ``tmp_path`` test error out before it runs, and one
-    wedged that way is not recoverable from in-process, so an unusable candidate
-    is passed over instead of taking the whole suite down with it.
-    """
-    if config.option.basetemp is not None:
-        return
-    project = Path(__file__).resolve().parents[1]
-    shared = project.parents[2] / "Claude Func Folder"
-    if not shared.is_dir():
-        return
-    for name in ("pytest-fka", "pytest-fk"):
-        if _usable(shared / name):
-            config.option.basetemp = str(shared / name)
-            return
 
 
 def pytest_collection_modifyitems(config, items):
