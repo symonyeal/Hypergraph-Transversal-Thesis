@@ -59,6 +59,13 @@ time to rediscover:
   verification in the same Sage 10.9 image on every push and pull request. Do
   not claim Sage verification for a revision unless its Sage job passes.
 
+**That job did not work before 2026-08-06.** It invoked `/sage/sage`, and the
+base image has no `/sage` — Sage is built at `/home/sage/sage` and symlinked to
+`/usr/bin/sage`. Every run since the job was added exited 127 on its first
+command, so no revision has ever been Sage-verified by CI, whatever the badge
+showed. The same wrong path was in `Dockerfile`, so the Binder badge was
+broken too. Both are fixed; the local run is what verified Sage before that.
+
 ## Verification commands
 
 Substitute the Sage environment's interpreter for `python`:
@@ -107,4 +114,4 @@ where the name comes from this package's catalogue and is a stable contract, and
 checks the Sage backend against what it actually owes: a group of the right
 isomorphism type. Before 2026-08-05 that test asserted the catalogue name
 against whichever backend happened to be live, so it passed on CPython and
-failed under Sage — including in the Sage CI job.
+failed under Sage. It did *not* fail in CI, for the reason below.
